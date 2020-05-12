@@ -13,6 +13,7 @@ import java.util.Optional;
 public class JDBCUserDao implements UserDao {
     private static final Logger logger = LogManager.getLogger(JDBCUserDao.class);
     private final Connection connection;
+    private final UserMapper mapper = new UserMapper();
 
     public JDBCUserDao(Connection connection) {
         this.connection = connection;
@@ -20,15 +21,14 @@ public class JDBCUserDao implements UserDao {
 
     @Override
     public void create(User entity) throws SQLException {
-        final String query = "replace into users (email, name, name_ukr, password, role) values (?, ?, ?, ?, ?)";
-        try (PreparedStatement ps = connection.prepareStatement(query)) {
+        try (PreparedStatement ps = connection.prepareStatement(SQL_REPLACE)) {
             ps.setString(1, entity.getEmail());
             ps.setString(2, entity.getName());
             ps.setString(3, entity.getNameUkr());
             ps.setString(4, entity.getPassword());
             ps.setString(5, entity.getRole().name());
             ps.executeUpdate();
-                } catch (SQLException e) {
+        } catch (SQLException e) {
             logger.error(e);
             throw new SQLException();
         }
@@ -36,9 +36,18 @@ public class JDBCUserDao implements UserDao {
 
     @Override
     public User findById(int id) {
-
-
-        return null;
+        User user = null;
+        try (PreparedStatement statement = connection.prepareStatement(SQL_FIND_BY_ID)) {
+            statement.setLong(1, id);
+            try (ResultSet rs = statement.executeQuery()) {
+                while (rs.next()) {
+                    user = mapper.extractFromResultSet(rs);
+                }
+            }
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+        }
+        return user;
     }
 
     @Override
@@ -53,23 +62,32 @@ public class JDBCUserDao implements UserDao {
 
     @Override
     public void delete(int id) {
-
+        try (PreparedStatement statement = connection.prepareStatement(SQL_DELETE)) {
+            statement.setLong(1, id);
+            statement.execute();
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+        }
     }
 
     @Override
     public void close() {
-
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public Optional<User> findUserByEmail(String email) {
         Optional<User> user = Optional.empty();
-        final String query = "select * from users where email='" + email + "'";
-        try (Statement st = connection.createStatement();
-             ResultSet rs = st.executeQuery(query)) {
-            UserMapper mapper = new UserMapper();
-            if (rs.next()) {
-                user = Optional.of(mapper.extractFromResultSet(rs));
+        try (PreparedStatement ps = connection.prepareStatement(SQL_FIND_BY_EMAIL)) {
+            ps.setString(1, email);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    user = Optional.of(mapper.extractFromResultSet(rs));
+                }
             }
         } catch (SQLException e) {
             logger.error(e);

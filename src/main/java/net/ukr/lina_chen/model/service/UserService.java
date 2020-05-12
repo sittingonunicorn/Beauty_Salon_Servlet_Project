@@ -5,6 +5,7 @@ import net.ukr.lina_chen.exceptions.InvalidUserDataException;
 import net.ukr.lina_chen.exceptions.UserExistsException;
 import net.ukr.lina_chen.model.dao.UserDao;
 import net.ukr.lina_chen.model.dao.factory.DaoFactory;
+import net.ukr.lina_chen.model.dto.UserDTO;
 import net.ukr.lina_chen.model.entity.Role;
 import net.ukr.lina_chen.model.entity.User;
 import org.mindrot.jbcrypt.BCrypt;
@@ -19,6 +20,7 @@ public class UserService {
 
     public UserService() {
         this.validator = new NewUserDataValidator();
+
     }
 
     public Optional<User> getUserByEmailAndPassword(String email, String password) {
@@ -38,25 +40,35 @@ public class UserService {
         }
     }
 
-    public void saveNewUser(User user) throws SQLException, UserExistsException {
+    public void saveNewUser(UserDTO user) throws SQLException, UserExistsException {
         if (userExists(user.getEmail())) {
             throw new UserExistsException("User with such email already exists");
         }
         try (UserDao userDao = factory.createUserDao()) {
-            userDao.create(user);
+            userDao.create(createUser(user));
         }
     }
 
-    public User extractUserFromRequest(HttpServletRequest request) throws InvalidUserDataException {
+    public UserDTO extractUserFromRequest(HttpServletRequest request) throws InvalidUserDataException {
 
         validator.validateUser(request);
 
-        return User.Builder.anUser()
+        return UserDTO.Builder.anUserDTO()
                 .withEmail(request.getParameter("email"))
                 .withName(request.getParameter("name"))
                 .withNameUkr(request.getParameter("nameUkr"))
                 .withPassword(BCrypt.hashpw(request.getParameter("password"), BCrypt.gensalt(10)))
                 .withRole(Role.USER)
+                .build();
+    }
+
+    public User createUser (UserDTO userDTO){
+        return User.Builder.anUser()
+                .withEmail(userDTO.getEmail())
+                .withName(userDTO.getName())
+                .withNameUkr(userDTO.getNameUkr())
+                .withPassword(userDTO.getPassword())
+                .withRole(userDTO.getRole())
                 .build();
     }
 

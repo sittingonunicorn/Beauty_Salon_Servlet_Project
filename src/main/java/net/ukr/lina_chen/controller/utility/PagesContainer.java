@@ -12,4 +12,5 @@ public interface PagesContainer {
     String REDIRECT_LOGIN="redirect:/login";
     String REGISTRATION_PAGE="/WEB-INF/registration.jsp";
     String ERROR_PAGE="/WEB-INF/error.jsp";
+    String SERVICETYPES_PAGE = "/WEB-INF/user/servicetypes.jsp";
 }

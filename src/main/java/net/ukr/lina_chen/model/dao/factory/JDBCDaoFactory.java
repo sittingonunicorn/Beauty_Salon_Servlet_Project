@@ -1,6 +1,8 @@
 package net.ukr.lina_chen.model.dao.factory;
 
 
+import net.ukr.lina_chen.model.dao.MasterDao;
+import net.ukr.lina_chen.model.dao.ProfessionDao;
 import net.ukr.lina_chen.model.dao.UserDao;
 
 import javax.sql.DataSource;
@@ -14,6 +16,16 @@ public class JDBCDaoFactory extends DaoFactory {
     @Override
     public UserDao createUserDao() {
         return new JDBCUserDao(getConnection());
+    }
+
+    @Override
+    public MasterDao createMasterDao() {
+        return new JDBCMasterDao(getConnection());
+    }
+
+    @Override
+    public ProfessionDao createProfessionDao() {
+        return new JDBCProfessionDao(getConnection());
     }
 
     private Connection getConnection(){

@@ -36,6 +36,8 @@ public class Servlet extends HttpServlet {
                 new ErrorCommand());
         commands.put("index",
                 new IndexCommand());
+        commands.put("user/servicetypes",
+                new ServicetypesCommand());
     }
 
     @Override
