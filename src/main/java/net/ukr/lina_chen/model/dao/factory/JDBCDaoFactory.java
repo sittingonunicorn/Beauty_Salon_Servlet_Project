@@ -1,9 +1,7 @@
 package net.ukr.lina_chen.model.dao.factory;
 
 
-import net.ukr.lina_chen.model.dao.MasterDao;
-import net.ukr.lina_chen.model.dao.ProfessionDao;
-import net.ukr.lina_chen.model.dao.UserDao;
+import net.ukr.lina_chen.model.dao.*;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -11,7 +9,7 @@ import java.sql.SQLException;
 
 public class JDBCDaoFactory extends DaoFactory {
 
-    private DataSource dataSource = ConnectionPoolHolder.getDataSource();
+    private final DataSource dataSource = ConnectionPoolHolder.getDataSource();
 
     @Override
     public UserDao createUserDao() {
@@ -26,6 +24,16 @@ public class JDBCDaoFactory extends DaoFactory {
     @Override
     public ProfessionDao createProfessionDao() {
         return new JDBCProfessionDao(getConnection());
+    }
+
+    @Override
+    public BeautyserviceDao createBeautyserviceDao() {
+        return new JDBCBeautyserviceDao(getConnection());
+    }
+
+    @Override
+    public AppointmentDao createAppointmentDao(){
+        return new JDBCAppointmentDao(getConnection());
     }
 
     private Connection getConnection(){

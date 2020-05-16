@@ -1,7 +1,7 @@
 package net.ukr.lina_chen.controller;
 
 import net.ukr.lina_chen.controller.command.*;
-import net.ukr.lina_chen.model.service.UserService;
+import net.ukr.lina_chen.model.service.*;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -15,8 +15,9 @@ import java.util.Map;
 
 
 public class Servlet extends HttpServlet {
-    private Map<String, Command> commands = new HashMap<>();
+    private final Map<String, Command> commands = new HashMap<>();
 
+    @Override
     public void init(ServletConfig servletConfig) {
         servletConfig.getServletContext()
                 .setAttribute("loggedUsers", new HashSet<String>());
@@ -37,7 +38,15 @@ public class Servlet extends HttpServlet {
         commands.put("index",
                 new IndexCommand());
         commands.put("user/servicetypes",
-                new ServicetypesCommand());
+                new ServicetypesCommand(new ProfessionService()));
+        commands.put("user/beautyservices/[0-9]*",
+                new BeautyservicesCommand(new BeautyservicesImpl()));
+        commands.put("user/masters/[0-9]*/[0-9]*",
+                new MastersListCommand(new ProfessionService(), new BeautyservicesImpl()));
+        commands.put("user/time/[0-9]*",
+                new TimeCommand(new MasterService(), new AppointmentService()));
+        commands.put("user/save",
+                new SaveCommand());
     }
 
     @Override
@@ -56,11 +65,11 @@ public class Servlet extends HttpServlet {
             throws ServletException, IOException {
         String path = request.getRequestURI();
         path = path.replaceAll(".*/app/", "");
-//        String match = commands.keySet().stream().filter(path::matches).findFirst().orElse("error");
+        String match = commands.keySet().stream().filter(path::matches).findFirst().orElse("error");
 //        Command command = commands.getOrDefault(match,
 //                new ErrorCommand());
 //        command.execute(request, response);
-        Command command = commands.getOrDefault(path,
+        Command command = commands.getOrDefault(match,
                 (r) -> "/WEB-INF/error.jsp");
         String page = command.execute(request);
         if (page.contains("redirect:")) {

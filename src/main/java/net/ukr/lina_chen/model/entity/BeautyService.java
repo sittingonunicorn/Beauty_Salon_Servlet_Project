@@ -60,4 +60,65 @@ public class BeautyService {
     public void setNameUkr(String nameUkr) {
         this.nameUkr = nameUkr;
     }
+
+    @Override
+    public String toString() {
+        return "BeautyService{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", profession=" + profession +
+                ", nameUkr='" + nameUkr + '\'' +
+                '}';
+    }
+
+    public static class BeautyServiceBuilder
+    {
+        private final BeautyService beautyService;
+
+        private BeautyServiceBuilder()
+        {
+            beautyService = new BeautyService();
+        }
+
+        public BeautyServiceBuilder withId(Long id)
+        {
+            beautyService.id = id;
+            return this;
+        }
+
+        public BeautyServiceBuilder withName(String name)
+        {
+            beautyService.name = name;
+            return this;
+        }
+
+        public BeautyServiceBuilder withPrice(BigDecimal price)
+        {
+            beautyService.price = price;
+            return this;
+        }
+
+        public BeautyServiceBuilder withProfession(Profession profession)
+        {
+            beautyService.profession = profession;
+            return this;
+        }
+
+        public BeautyServiceBuilder withNameUkr(String nameUkr)
+        {
+            beautyService.nameUkr = nameUkr;
+            return this;
+        }
+
+        public static BeautyServiceBuilder beautyService()
+        {
+            return new BeautyServiceBuilder();
+        }
+
+        public BeautyService build()
+        {
+            return beautyService;
+        }
+    }
 }

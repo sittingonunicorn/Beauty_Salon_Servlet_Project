@@ -13,6 +13,8 @@ public class MasterMapper implements ObjectMapper<Master> {
                 .withId(rs.getLong("master_id"))
                 .withTimeBegin(rs.getTime("time_begin").toLocalTime())
                 .withTimeEnd(rs.getTime("time_end").toLocalTime())
+                .withUser(new UserMapper().extractFromResultSet(rs))
+                .withProfession(new ProfessionMapper().extractFromResultSet(rs))
                 .build();
     }
 

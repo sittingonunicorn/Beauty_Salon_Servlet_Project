@@ -13,4 +13,8 @@ public interface PagesContainer {
     String REGISTRATION_PAGE="/WEB-INF/registration.jsp";
     String ERROR_PAGE="/WEB-INF/error.jsp";
     String SERVICETYPES_PAGE = "/WEB-INF/user/servicetypes.jsp";
+    String BEAUTYSERVICES_PAGE = "/WEB-INF/user/beautyservices.jsp";
+    String MASTERLIST_PAGE = "/WEB-INF/user/masters.jsp";
+    String TIME_PAGE = "/WEB-INF/user/time.jsp";
+    String SAVE_PAGE = "/WEB-INF/user/save.jsp";
 }
