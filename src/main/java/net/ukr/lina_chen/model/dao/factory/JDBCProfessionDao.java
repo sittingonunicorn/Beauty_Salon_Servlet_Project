@@ -3,7 +3,6 @@ package net.ukr.lina_chen.model.dao.factory;
 import net.ukr.lina_chen.model.dao.ProfessionDao;
 import net.ukr.lina_chen.model.dao.mapper.MasterMapper;
 import net.ukr.lina_chen.model.dao.mapper.ProfessionMapper;
-import net.ukr.lina_chen.model.dao.mapper.UserMapper;
 import net.ukr.lina_chen.model.entity.Master;
 import net.ukr.lina_chen.model.entity.Profession;
 import org.apache.logging.log4j.LogManager;
@@ -34,7 +33,7 @@ public class JDBCProfessionDao implements ProfessionDao {
     public Profession findById(Long id) {
         Profession profession = null;
         Map<Long, Master> masters = new HashMap<>();
-        try (PreparedStatement st = connection.prepareStatement(SQL_FIND_BY_ID)) {
+        try (PreparedStatement st = connection.prepareStatement(QUERY_FIND_BY_ID)) {
             st.setLong(1, id);
             try (ResultSet rs = st.executeQuery()) {
                 while (rs.next()) {
@@ -55,7 +54,7 @@ public class JDBCProfessionDao implements ProfessionDao {
     @Override
     public List<Profession> findAll() {
         Map<Long, Profession> professions = new HashMap<>();
-        try(PreparedStatement ps = connection.prepareStatement(SQL_FIND_ALL);
+        try(PreparedStatement ps = connection.prepareStatement(QUERY_FIND_ALL);
             ResultSet rs = ps.executeQuery()){
             while (rs.next()) {
                 Profession profession = professionMapper.extractFromResultSet(rs);
@@ -92,7 +91,7 @@ public class JDBCProfessionDao implements ProfessionDao {
     @Override
     public List<Profession> findAllServicetypes() {
         Map<Long, Profession> professions = new HashMap<>();
-        try(PreparedStatement ps = connection.prepareStatement(SQL_FIND_ALL);
+        try(PreparedStatement ps = connection.prepareStatement(QUERY_FIND_ALL);
             ResultSet rs = ps.executeQuery()){
             while (rs.next()) {
                 Profession profession = professionMapper.extractFromResultSet(rs);

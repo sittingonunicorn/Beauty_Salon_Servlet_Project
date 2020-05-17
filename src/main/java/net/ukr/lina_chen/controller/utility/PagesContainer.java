@@ -17,4 +17,9 @@ public interface PagesContainer {
     String MASTERLIST_PAGE = "/WEB-INF/user/masters.jsp";
     String TIME_PAGE = "/WEB-INF/user/time.jsp";
     String SAVE_PAGE = "/WEB-INF/user/save.jsp";
+    String ARCHIVE_APPOINTMENTS_PAGE = "/WEB-INF/user/archive.jsp";
+    String USER_COMMENT_PAGE = "/WEB-INF/user/comment.jsp";
+    String REDIRECT_ARCHIVE_APPOINTMENTS = "redirect:/user/archive";
+    String MASTER_APPOINTMENTS_PAGE="/WEB-INF/master/appointments.jsp";
+    String REDIRECT_MASTER_APPOINTMENTS="redirect:/master/appointments";
 }

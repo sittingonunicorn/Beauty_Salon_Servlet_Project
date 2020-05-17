@@ -16,4 +16,12 @@ public class MasterService {
     }
     return master;
     }
+
+    public Optional<Master> getByUserId(Long userId) {
+        Optional<Master> master;
+        try(MasterDao masterDao = factory.createMasterDao()){
+            master = Optional.ofNullable(masterDao.findByUserId(userId));
+        }
+        return master;
+    }
 }

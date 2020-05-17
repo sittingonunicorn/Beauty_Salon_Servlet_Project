@@ -12,7 +12,10 @@
     <title>User Main</title>
 </head>
 <body>
-
+<ul>
+    <li><a href="?sessionLocale=en"><fmt:message key="lang.en"/></a></li>
+    <li><a href="?sessionLocale=ua"><fmt:message key="lang.ua"/></a></li>
+</ul>
 <h1>Hello User!</h1>
 <a href="${pageContext.request.contextPath}/app/logout"><fmt:message key="button.logout"/></a>
 </body>

@@ -7,9 +7,21 @@ public class ArchiveAppointment extends Appointment{
 
     private String comment;
 
-    public ArchiveAppointment(Long id, Master master, User user, BeautyService beautyService,
-                              LocalTime time, LocalDate date, boolean provided, String comment) {
-        super(id, master, user, beautyService, time, date, provided);
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
         this.comment = comment;
     }
+
+    public ArchiveAppointment(Appointment appointment, String comment) {
+        super(appointment.getId(), appointment.getMaster(), appointment.getUser(), appointment.getBeautyService(),
+                appointment.getTime(), appointment.getDate(), appointment.isProvided());
+        this.comment = comment;
+    }
+
+    public ArchiveAppointment() {
+    }
+
 }

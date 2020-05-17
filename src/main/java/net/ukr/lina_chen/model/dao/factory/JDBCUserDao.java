@@ -21,7 +21,7 @@ public class JDBCUserDao implements UserDao {
 
     @Override
     public void create(User entity) throws SQLException {
-        try (PreparedStatement ps = connection.prepareStatement(SQL_REPLACE)) {
+        try (PreparedStatement ps = connection.prepareStatement(QUERY_REPLACE)) {
             ps.setString(1, entity.getEmail());
             ps.setString(2, entity.getName());
             ps.setString(3, entity.getNameUkr());
@@ -37,7 +37,7 @@ public class JDBCUserDao implements UserDao {
     @Override
     public User findById(Long id) {
         User user = null;
-        try (PreparedStatement st = connection.prepareStatement(SQL_FIND_BY_ID)) {
+        try (PreparedStatement st = connection.prepareStatement(QUERY_FIND_BY_ID)) {
             st.setLong(1, id);
             try (ResultSet rs = st.executeQuery()) {
                 while (rs.next()) {
@@ -62,7 +62,7 @@ public class JDBCUserDao implements UserDao {
 
     @Override
     public void delete(Long id) {
-        try (PreparedStatement statement = connection.prepareStatement(SQL_DELETE)) {
+        try (PreparedStatement statement = connection.prepareStatement(QUERY_DELETE)) {
             statement.setLong(1, id);
             statement.execute();
         } catch (SQLException e) {
@@ -82,7 +82,7 @@ public class JDBCUserDao implements UserDao {
     @Override
     public Optional<User> findUserByEmail(String email) {
         Optional<User> user = Optional.empty();
-        try (PreparedStatement ps = connection.prepareStatement(SQL_FIND_BY_EMAIL)) {
+        try (PreparedStatement ps = connection.prepareStatement(QUERY_FIND_BY_EMAIL)) {
             ps.setString(1, email);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {

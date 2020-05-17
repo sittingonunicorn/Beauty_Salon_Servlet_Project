@@ -36,6 +36,11 @@ public class JDBCDaoFactory extends DaoFactory {
         return new JDBCAppointmentDao(getConnection());
     }
 
+    @Override
+    public ArchiveDao createArchiveDao() {
+        return new JDBCArchiveDao(getConnection());
+    }
+
     private Connection getConnection(){
         try {
             return dataSource.getConnection();

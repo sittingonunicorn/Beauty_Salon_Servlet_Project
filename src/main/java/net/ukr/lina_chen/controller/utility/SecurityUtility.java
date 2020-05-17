@@ -21,6 +21,6 @@ public class SecurityUtility {
 
     public boolean isForbiddenRequest(String path, Role role) {
         Optional<String> pathDirection = Optional.ofNullable(permissions.get(role));
-        return !pathDirection.map(s -> Arrays.stream(s.split(", ")).anyMatch(path::contains)).orElse(false);
+        return pathDirection.map(s -> Arrays.stream(s.split(", ")).noneMatch(path::contains)).orElse(true);
     }
 }

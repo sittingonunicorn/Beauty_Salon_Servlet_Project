@@ -25,7 +25,7 @@ public class JDBCBeautyserviceDao implements BeautyserviceDao {
     @Override
     public List<BeautyService> findByProfessionId(Long professionId) {
         List<BeautyService> resultList = new ArrayList<>();
-        try (PreparedStatement st = connection.prepareStatement(SQL_FIND_BY_PROFESSION_ID)) {
+        try (PreparedStatement st = connection.prepareStatement(QUERY_FIND_BY_PROFESSION_ID)) {
             st.setLong(1, professionId);
             try (ResultSet rs = st.executeQuery()) {
                 while (rs.next()) {
@@ -47,7 +47,7 @@ public class JDBCBeautyserviceDao implements BeautyserviceDao {
     @Override
     public BeautyService findById(Long id) {
         BeautyService beautyService = null;
-        try (PreparedStatement st = connection.prepareStatement(SQL_FIND_BY_ID)) {
+        try (PreparedStatement st = connection.prepareStatement(QUERY_FIND_BY_ID)) {
             st.setLong(1, id);
             try (ResultSet rs = st.executeQuery()) {
                 while (rs.next()) {

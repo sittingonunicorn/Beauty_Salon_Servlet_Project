@@ -1,6 +1,7 @@
 package net.ukr.lina_chen.model.dao.factory;
 
 import net.ukr.lina_chen.model.dao.AppointmentDao;
+import net.ukr.lina_chen.model.dao.ArchiveDao;
 import net.ukr.lina_chen.model.dao.mapper.AppointmentMapper;
 import net.ukr.lina_chen.model.entity.Appointment;
 import org.apache.logging.log4j.LogManager;
@@ -24,14 +25,13 @@ public class JDBCAppointmentDao implements AppointmentDao {
     @Override
     public void create(Appointment entity) throws SQLException {
         //TODO check availability
-        try (PreparedStatement ps = connection.prepareStatement(SQL_REPLACE)) {
-            ps.setLong(1, entity.getId());
-            ps.setLong(2, entity.getMaster().getId());
-            ps.setLong(3, entity.getUser().getId());
-            ps.setLong(4, entity.getBeautyService().getId());
-            ps.setTime(5, Time.valueOf(entity.getTime()));
-            ps.setDate(6, Date.valueOf(entity.getDate()));
-            ps.setBoolean(7, entity.isProvided());
+        try (PreparedStatement ps = connection.prepareStatement(QUERY_REPLACE)) {
+            ps.setLong(1, entity.getMaster().getId());
+            ps.setLong(2, entity.getUser().getId());
+            ps.setLong(3, entity.getBeautyService().getId());
+            ps.setTime(4, Time.valueOf(entity.getTime()));
+            ps.setDate(5, Date.valueOf(entity.getDate()));
+            ps.setBoolean(6, entity.isProvided());
             ps.executeUpdate();
         } catch (SQLException e) {
             logger.error(e);
@@ -43,7 +43,7 @@ public class JDBCAppointmentDao implements AppointmentDao {
     @Override
     public Appointment findById(Long id) {
         Appointment appointment = null;
-        try (PreparedStatement ps = connection.prepareStatement(SQL_FIND_BY_ID)) {
+        try (PreparedStatement ps = connection.prepareStatement(QUERY_FIND_BY_ID)) {
             ps.setLong(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
@@ -59,7 +59,7 @@ public class JDBCAppointmentDao implements AppointmentDao {
     @Override
     public List<Appointment> findAll() {
         Map<Long, Appointment> appointments = new HashMap<>();
-        try (PreparedStatement ps = connection.prepareStatement(SQL_FIND_ALL);
+        try (PreparedStatement ps = connection.prepareStatement(QUERY_FIND_ALL);
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 Appointment appointment = appointmentMapper.extractFromResultSet(rs);
@@ -79,6 +79,12 @@ public class JDBCAppointmentDao implements AppointmentDao {
 
     @Override
     public void delete(Long id) {
+        try (PreparedStatement ps = connection.prepareStatement(QUERY_FIND_ALL)){
+            ps.setLong(1, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+        }
 
     }
 
@@ -90,7 +96,7 @@ public class JDBCAppointmentDao implements AppointmentDao {
     @Override
     public List<Appointment> getMasterAppointments(Long masterId) {
         Map<Long, Appointment> appointments = new HashMap<>();
-        try (PreparedStatement ps = connection.prepareStatement(SQL_FIND_BY_MASTER_ID)) {
+        try (PreparedStatement ps = connection.prepareStatement(QUERY_FIND_BY_MASTER_ID)) {
             ps.setLong(1, masterId);
             try(ResultSet rs = ps.executeQuery()){
                 while (rs.next()) {

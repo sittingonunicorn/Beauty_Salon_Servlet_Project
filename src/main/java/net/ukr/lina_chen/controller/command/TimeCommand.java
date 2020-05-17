@@ -1,6 +1,5 @@
 package net.ukr.lina_chen.controller.command;
 
-import net.ukr.lina_chen.model.dao.factory.JDBCProfessionDao;
 import net.ukr.lina_chen.model.entity.Appointment;
 import net.ukr.lina_chen.model.entity.Master;
 import net.ukr.lina_chen.model.service.AppointmentService;
@@ -32,6 +31,7 @@ public class TimeCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
+        //TODO refactor
         String path = request.getRequestURI();
         Long masterId = Long.parseLong(path.replaceAll(".*/app/user/time/", ""));
         Optional<Master> master = masterService.getById(masterId);

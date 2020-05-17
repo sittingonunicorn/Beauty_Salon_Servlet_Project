@@ -5,6 +5,7 @@ import net.ukr.lina_chen.model.dao.factory.DaoFactory;
 import net.ukr.lina_chen.model.entity.Appointment;
 
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class AppointmentService {
@@ -32,5 +33,11 @@ public class AppointmentService {
             appointments = appointmentDao.findAll();
         }
         return appointments;
+    }
+
+    public void saveAppointment(Appointment appointment) throws SQLException {
+        try (AppointmentDao appointmentDao = factory.createAppointmentDao()) {
+            appointmentDao.create(appointment);
+        }
     }
 }
