@@ -25,8 +25,8 @@ public class JDBCProfessionDao implements ProfessionDao {
     }
 
     @Override
-    public void create(Profession entity) throws SQLException {
-
+    public Long create(Profession entity) throws SQLException {
+        return 0L;
     }
 
     @Override
@@ -54,8 +54,8 @@ public class JDBCProfessionDao implements ProfessionDao {
     @Override
     public List<Profession> findAll() {
         Map<Long, Profession> professions = new HashMap<>();
-        try(PreparedStatement ps = connection.prepareStatement(QUERY_FIND_ALL);
-            ResultSet rs = ps.executeQuery()){
+        try (PreparedStatement ps = connection.prepareStatement(QUERY_FIND_ALL);
+             ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 Profession profession = professionMapper.extractFromResultSet(rs);
                 profession = professionMapper.makeUnique(professions, profession);
@@ -91,8 +91,8 @@ public class JDBCProfessionDao implements ProfessionDao {
     @Override
     public List<Profession> findAllServicetypes() {
         Map<Long, Profession> professions = new HashMap<>();
-        try(PreparedStatement ps = connection.prepareStatement(QUERY_FIND_ALL);
-            ResultSet rs = ps.executeQuery()){
+        try (PreparedStatement ps = connection.prepareStatement(QUERY_FIND_ALL);
+             ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 Profession profession = professionMapper.extractFromResultSet(rs);
                 professionMapper.makeUnique(professions, profession);

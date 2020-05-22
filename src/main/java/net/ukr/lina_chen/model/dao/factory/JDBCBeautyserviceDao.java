@@ -40,8 +40,8 @@ public class JDBCBeautyserviceDao implements BeautyserviceDao {
     }
 
     @Override
-    public void create(BeautyService entity) throws SQLException {
-
+    public Long create(BeautyService entity) throws SQLException {
+        return 0L;
     }
 
     @Override
@@ -77,6 +77,10 @@ public class JDBCBeautyserviceDao implements BeautyserviceDao {
 
     @Override
     public void close() {
-
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -15,11 +15,11 @@ public class ErrorCommand implements Command {
         HttpSession session = request.getSession();
         Optional<User> user = Optional.ofNullable((User) session.getAttribute("user"));
         if (user.isPresent()) {
-            if (user.get().getRole().equals(Role.ADMIN)) {
+            if (user.get().getRoles().equals(Role.ADMIN)) {
                 return REDIRECT_ADMIN;
-            } else if (user.get().getRole().equals(Role.USER)) {
+            } else if (user.get().getRoles().equals(Role.USER)) {
                 return REDIRECT_USER;
-            } else if (user.get().getRole().equals(Role.MASTER)) {
+            } else if (user.get().getRoles().equals(Role.MASTER)) {
                 return REDIRECT_MASTER;
             }
         }

@@ -1,11 +1,10 @@
 package net.ukr.lina_chen.controller.command;
 
+import net.ukr.lina_chen.model.dto.UserDTO;
 import net.ukr.lina_chen.model.entity.Appointment;
-import net.ukr.lina_chen.model.entity.Master;
-import net.ukr.lina_chen.model.entity.Profession;
-import net.ukr.lina_chen.model.entity.User;
 import net.ukr.lina_chen.model.service.BeautyservicesImpl;
-import net.ukr.lina_chen.model.service.ProfessionService;
+import net.ukr.lina_chen.model.service.MasterService;
+import net.ukr.lina_chen.model.service.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -14,16 +13,18 @@ import javax.servlet.http.HttpSession;
 
 import java.util.ArrayList;
 
-import static net.ukr.lina_chen.controller.utility.PagesContainer.MASTERLIST_PAGE;
+import static net.ukr.lina_chen.controller.utility.PagesContainer.MASTER_LIST_PAGE;
 
 public class MastersListCommand implements Command {
-    private final ProfessionService professionService;
+    private final MasterService masterService;
     private final BeautyservicesImpl beautyservices;
+    private final UserService userService;
     private static final Logger logger = LogManager.getLogger(MastersListCommand.class);
 
-    public MastersListCommand(ProfessionService professionService, BeautyservicesImpl beautyservices) {
-        this.professionService = professionService;
+    public MastersListCommand(MasterService masterService, BeautyservicesImpl beautyservices, UserService userService) {
+        this.masterService = masterService;
         this.beautyservices = beautyservices;
+        this.userService = userService;
     }
 
 
@@ -33,14 +34,14 @@ public class MastersListCommand implements Command {
         String path = request.getRequestURI();
         HttpSession session = request.getSession();
         //TODO refactor
+        //request.getParameter()
         String[] params = path.replaceAll(".*/app/user/masters/", "").split("/");
         Long professionId = Long.parseLong(params[0]);
         Long beautyserviceId = Long.parseLong(params[1]);
         appointment.setBeautyService(beautyservices.getById(beautyserviceId).get());
-        appointment.setUser((User)session.getAttribute("user"));
-        Profession profession = professionService.getById(professionId);
+        appointment.setUser(userService.getUserById(((UserDTO)session.getAttribute("user")).getId()).get());
         session.setAttribute("appointment", appointment);
-        request.setAttribute("masters", new ArrayList<Master>(profession.getMasters()));
-        return MASTERLIST_PAGE;
+        request.setAttribute("masters", masterService.findByProfessionId(professionId));
+        return MASTER_LIST_PAGE;
     }
 }

@@ -1,9 +1,7 @@
 package net.ukr.lina_chen.model.service;
 
-import net.ukr.lina_chen.model.dao.AppointmentDao;
 import net.ukr.lina_chen.model.dao.ArchiveDao;
 import net.ukr.lina_chen.model.dao.factory.DaoFactory;
-import net.ukr.lina_chen.model.entity.Appointment;
 import net.ukr.lina_chen.model.entity.ArchiveAppointment;
 
 import java.util.List;
@@ -16,6 +14,22 @@ public class ArchiveService {
         List <ArchiveAppointment> archive;
         try(ArchiveDao archiveDao = factory.createArchiveDao()){
             archive = archiveDao.getUserArchiveAppointments(userId);
+        }
+        return archive;
+    }
+
+    public List<ArchiveAppointment> getMasterComments(Long masterId){
+        List <ArchiveAppointment> archive;
+        try(ArchiveDao archiveDao = factory.createArchiveDao()){
+            archive = archiveDao.getMasterComments(masterId);
+        }
+        return archive;
+    }
+
+    public List<ArchiveAppointment> getAllComments(){
+        List <ArchiveAppointment> archive;
+        try(ArchiveDao archiveDao = factory.createArchiveDao()){
+            archive = archiveDao.getAllComments();
         }
         return archive;
     }

@@ -30,7 +30,7 @@ public class RegistrationCommand implements Command {
         }
 
         try {
-            UserDTO user = userService.extractUserFromRequest(request);
+            User user = userService.extractUserFromRequest(request);
             userService.saveNewUser(user);
             logger.info("New user {} was successfully registered", user.getEmail());
         } catch (SQLException e) {

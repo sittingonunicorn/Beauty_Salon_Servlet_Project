@@ -1,5 +1,6 @@
 package net.ukr.lina_chen.controller.command;
 
+import net.ukr.lina_chen.model.dto.UserDTO;
 import net.ukr.lina_chen.model.entity.Role;
 import net.ukr.lina_chen.model.entity.User;
 
@@ -7,14 +8,15 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashSet;
+import java.util.Set;
 
 class CommandUtility {
-    static void setUserRole(HttpServletRequest request,
-                            Role role, String email) {
+    static void setUserRoles(HttpServletRequest request,
+                             Set<Role> roles, String email) {
         HttpSession session = request.getSession();
         ServletContext context = request.getServletContext();
         context.setAttribute("email", email);
-        session.setAttribute("role", role);
+        session.setAttribute("roles", roles);
     }
 
     static boolean checkUserIsLogged(HttpServletRequest request, String email) {
@@ -29,7 +31,7 @@ class CommandUtility {
     }
 
     static void removeUserFromSession(HttpServletRequest request) {
-        User user = (User) request.getSession().getAttribute("user");
+        UserDTO user = (UserDTO) request.getSession().getAttribute("user");
         HashSet<String> loggedUsers = getLoggedUsers(request);
         loggedUsers.remove(user.getEmail());
         request.getSession().getServletContext()

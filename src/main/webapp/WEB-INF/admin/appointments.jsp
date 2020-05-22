@@ -7,14 +7,9 @@
 <fmt:setLocale value="${sessionScope.lang}"/>
 <html>
 <head>
-    <title>Appointments for Master</title>
+    <title>Appointments</title>
 </head>
 <body>
-<p><fmt:message key="message.master.schedule">
-    <jsp:useBean id="master" scope="request" type="net.ukr.lina_chen.model.entity.Master"/>
-    <fmt:param value="${master.user.name}"/>
-</fmt:message></p>
-
 <table>
     <thead>
     <tr>
@@ -48,6 +43,12 @@
         </c:forEach>
     </tbody>
 </table>
-
+<c:if test="${requestScope.pageNumbers.size() != 0}">
+            <c:forEach items = "${requestScope.pageNumbers}" var = "page">
+                    <a href="?page=${page - 1}">
+                            ${page}
+                    </a>
+            </c:forEach>
+</c:if>
 </body>
 </html>

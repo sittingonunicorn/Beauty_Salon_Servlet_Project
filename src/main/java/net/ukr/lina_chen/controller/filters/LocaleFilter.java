@@ -15,7 +15,7 @@ public class LocaleFilter implements Filter {
         if (req.getParameter("sessionLocale") != null) {
             req.getSession().setAttribute("lang", req.getParameter("sessionLocale"));
         }
-        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+        TimeZone.setDefault(TimeZone.getTimeZone("Europe/Kiev"));
         chain.doFilter(request, response);
     }
 }

@@ -7,7 +7,6 @@ import static net.ukr.lina_chen.controller.utility.PagesContainer.MASTER_MAIN;
 public class MasterCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) {
- //       String referrer = request.getHeader("referer");
         return MASTER_MAIN;
     }
 }

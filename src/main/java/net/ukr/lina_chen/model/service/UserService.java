@@ -12,7 +12,9 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 public class UserService {
     private final DaoFactory factory = DaoFactory.getInstance();
@@ -23,11 +25,17 @@ public class UserService {
 
     }
 
-    public Optional<User> getUserByEmailAndPassword(String email, String password) {
+    public Optional<UserDTO> getUserByEmailAndPassword(String email, String password, boolean isLocaleEn) {
         try (UserDao userDao = factory.createUserDao()) {
             Optional<User> user = userDao.findUserByEmail(email);
             if (user.isPresent() && BCrypt.checkpw(password,user.get().getPassword())) {
-                return user;
+                return Optional.of(UserDTO.Builder.anUserDTO()
+                        .withEmail(user.get().getEmail())
+                        .withPassword(user.get().getPassword())
+                        .withRoles(user.get().getRoles())
+                        .withName(isLocaleEn? user.get().getName(): user.get().getNameUkr())
+                        .withId(user.get().getId())
+                        .build());
             } else {
                 return Optional.empty();
             }
@@ -40,36 +48,34 @@ public class UserService {
         }
     }
 
-    public void saveNewUser(UserDTO user) throws SQLException, UserExistsException {
+    public void saveNewUser(User user) throws SQLException, UserExistsException {
         if (userExists(user.getEmail())) {
             throw new UserExistsException("User with such email already exists");
         }
         try (UserDao userDao = factory.createUserDao()) {
-            userDao.create(createUser(user));
+            userDao.create(user);
         }
     }
 
-    public UserDTO extractUserFromRequest(HttpServletRequest request) throws InvalidUserDataException {
-
+    public User extractUserFromRequest(HttpServletRequest request) throws InvalidUserDataException {
         validator.validateUser(request);
-
-        return UserDTO.Builder.anUserDTO()
+        Set<Role> roles = new HashSet<>();
+        roles.add(Role.USER);
+        return User.Builder.anUser()
                 .withEmail(request.getParameter("email"))
                 .withName(request.getParameter("name"))
                 .withNameUkr(request.getParameter("nameUkr"))
                 .withPassword(BCrypt.hashpw(request.getParameter("password"), BCrypt.gensalt(10)))
-                .withRole(Role.USER)
+                .withRoles(roles)
                 .build();
     }
 
-    public User createUser (UserDTO userDTO){
-        return User.Builder.anUser()
-                .withEmail(userDTO.getEmail())
-                .withName(userDTO.getName())
-                .withNameUkr(userDTO.getNameUkr())
-                .withPassword(userDTO.getPassword())
-                .withRole(userDTO.getRole())
-                .build();
+    public Optional<User> getUserById(Long id) {
+        Optional<User> user;
+        try (UserDao userDao = factory.createUserDao()) {
+            user = Optional.of(userDao.findById(id));
+            }
+        return user;
+        }
     }
 
-}

@@ -42,7 +42,7 @@ public class Servlet extends HttpServlet {
         commands.put("user/beautyservices/[0-9]*",
                 new BeautyservicesCommand(new BeautyservicesImpl()));
         commands.put("user/masters/[0-9]*/[0-9]*",
-                new MastersListCommand(new ProfessionService(), new BeautyservicesImpl()));
+                new MastersListCommand(new MasterService(), new BeautyservicesImpl(), new UserService()));
         commands.put("user/time/[0-9]*",
                 new TimeCommand(new MasterService(), new AppointmentService()));
         commands.put("user/save",
@@ -54,7 +54,12 @@ public class Servlet extends HttpServlet {
         commands.put("master/appointments",
                 new MasterAppointmentsCommand(new AppointmentService(), new MasterService()));
         commands.put("master/provide",
-                new MasterProvidedCommand());
+                new MasterProvidedCommand(new TransactionService(), new MailService(),
+                        new ArchiveService()));
+        commands.put("admin/appointments",
+                new AdminAppointmentsCommand(new AppointmentService()));
+        commands.put("admin/comments",
+                new AdminCommentsCommand(new ArchiveService(), new MasterService()));
     }
 
     @Override

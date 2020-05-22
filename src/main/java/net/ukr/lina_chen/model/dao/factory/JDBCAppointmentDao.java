@@ -1,7 +1,6 @@
 package net.ukr.lina_chen.model.dao.factory;
 
 import net.ukr.lina_chen.model.dao.AppointmentDao;
-import net.ukr.lina_chen.model.dao.ArchiveDao;
 import net.ukr.lina_chen.model.dao.mapper.AppointmentMapper;
 import net.ukr.lina_chen.model.entity.Appointment;
 import org.apache.logging.log4j.LogManager;
@@ -23,21 +22,34 @@ public class JDBCAppointmentDao implements AppointmentDao {
     }
 
     @Override
-    public void create(Appointment entity) throws SQLException {
+    public Long create(Appointment entity) throws SQLException {
+        Long appointmentId = 0L;
         //TODO check availability
-        try (PreparedStatement ps = connection.prepareStatement(QUERY_REPLACE)) {
+        try (PreparedStatement ps = connection.prepareStatement(QUERY_REPLACE);
+             PreparedStatement getId = connection.prepareStatement(QUERY_GET_ID)) {
             ps.setLong(1, entity.getMaster().getId());
             ps.setLong(2, entity.getUser().getId());
             ps.setLong(3, entity.getBeautyService().getId());
             ps.setTime(4, Time.valueOf(entity.getTime()));
             ps.setDate(5, Date.valueOf(entity.getDate()));
             ps.setBoolean(6, entity.isProvided());
+            connection.setAutoCommit(false);
             ps.executeUpdate();
+            try (ResultSet resultSet = getId.executeQuery()) {
+                if (resultSet.next()) {
+                    appointmentId = resultSet.getLong("appointment_id");
+                }
+            }
+            connection.commit();
         } catch (SQLException e) {
-            logger.error(e);
-            throw new SQLException();
+            logger.error(e.getMessage());
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                logger.error(ex.getMessage());
+            }
         }
-
+        return appointmentId;
     }
 
     @Override
@@ -79,7 +91,7 @@ public class JDBCAppointmentDao implements AppointmentDao {
 
     @Override
     public void delete(Long id) {
-        try (PreparedStatement ps = connection.prepareStatement(QUERY_FIND_ALL)){
+        try (PreparedStatement ps = connection.prepareStatement(QUERY_DELETE)) {
             ps.setLong(1, id);
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -90,7 +102,11 @@ public class JDBCAppointmentDao implements AppointmentDao {
 
     @Override
     public void close() {
-
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -98,7 +114,7 @@ public class JDBCAppointmentDao implements AppointmentDao {
         Map<Long, Appointment> appointments = new HashMap<>();
         try (PreparedStatement ps = connection.prepareStatement(QUERY_FIND_BY_MASTER_ID)) {
             ps.setLong(1, masterId);
-            try(ResultSet rs = ps.executeQuery()){
+            try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     Appointment appointment = appointmentMapper.extractFromResultSet(rs);
                     appointmentMapper.makeUnique(appointments, appointment);
@@ -109,4 +125,15 @@ public class JDBCAppointmentDao implements AppointmentDao {
         }
         return new ArrayList<>(appointments.values());
     }
+
+    @Override
+    public void setProvided(Long appointmentId) {
+        try (PreparedStatement ps = connection.prepareStatement(QUERY_UPDATE_SET_PROVIDED)) {
+            ps.setLong(1, appointmentId);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            logger.error(e);
+        }
+    }
 }
+

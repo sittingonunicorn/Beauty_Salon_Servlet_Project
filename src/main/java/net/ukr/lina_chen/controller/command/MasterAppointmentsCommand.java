@@ -27,7 +27,6 @@ public class MasterAppointmentsCommand implements Command {
                ((User) request.getSession().getAttribute("user")).getId());
         request.setAttribute("appointments",
                 appointmentService.getMastersAppointments(master.get().getId()));
-        System.out.println(appointmentService.getMastersAppointments(master.get().getId()));
         request.setAttribute("master", master.get());
         return MASTER_APPOINTMENTS_PAGE;
     }

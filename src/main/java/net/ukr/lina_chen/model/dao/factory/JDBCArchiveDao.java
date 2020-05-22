@@ -2,15 +2,11 @@ package net.ukr.lina_chen.model.dao.factory;
 
 import net.ukr.lina_chen.model.dao.ArchiveDao;
 import net.ukr.lina_chen.model.dao.mapper.ArchiveAppointmentMapper;
-import net.ukr.lina_chen.model.entity.Appointment;
 import net.ukr.lina_chen.model.entity.ArchiveAppointment;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,8 +24,34 @@ public class JDBCArchiveDao implements ArchiveDao {
     }
 
     @Override
-    public void create(ArchiveAppointment entity) throws SQLException {
-
+    public Long create(ArchiveAppointment entity) throws SQLException {
+        Long archiveId = 0L;
+        try (PreparedStatement replace = connection.prepareStatement(QUERY_REPLACE);
+             PreparedStatement getId = connection.prepareStatement(QUERY_GET_ID)) {
+            replace.setLong(1, entity.getMaster().getId());
+            replace.setLong(2, entity.getUser().getId());
+            replace.setLong(3, entity.getBeautyService().getId());
+            replace.setTime(4, Time.valueOf(entity.getTime()));
+            replace.setDate(5, Date.valueOf(entity.getDate()));
+            replace.setBoolean(6, entity.isProvided());
+            replace.setString(7, entity.getComment());
+            connection.setAutoCommit(false);
+            replace.executeUpdate();
+            try (ResultSet resultSet = getId.executeQuery()) {
+                if (resultSet.next()) {
+                    archiveId = resultSet.getLong("appointment_id");
+                }
+            }
+            connection.commit();
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                logger.error(ex.getMessage());
+            }
+        }
+        return archiveId;
     }
 
     @Override
@@ -50,7 +72,32 @@ public class JDBCArchiveDao implements ArchiveDao {
 
     @Override
     public List<ArchiveAppointment> findAll() {
-        return null;
+        Map<Long, ArchiveAppointment> appointments = new HashMap<>();
+        try (PreparedStatement ps = connection.prepareStatement(QUERY_FIND_ALL);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+              ArchiveAppointment appointment = archiveMapper.extractFromResultSet(rs);
+                archiveMapper.makeUnique(appointments, appointment);
+            }
+        } catch (SQLException e) {
+            logger.error(e);
+        }
+        return new ArrayList<>(appointments.values());
+    }
+
+    @Override
+    public List<ArchiveAppointment> getAllComments() {
+        Map<Long, ArchiveAppointment> appointments = new HashMap<>();
+        try (PreparedStatement ps = connection.prepareStatement(QUERY_FIND_ALL_COMMENTS);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                ArchiveAppointment appointment = archiveMapper.extractFromResultSet(rs);
+                archiveMapper.makeUnique(appointments, appointment);
+            }
+        } catch (SQLException e) {
+            logger.error(e);
+        }
+        return new ArrayList<>(appointments.values());
     }
 
     @Override
@@ -65,12 +112,28 @@ public class JDBCArchiveDao implements ArchiveDao {
 
     @Override
     public void close() {
-
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public List<ArchiveAppointment> getMasterArchiveAppointments(Long masterId) {
-        return null;
+    public List<ArchiveAppointment> getMasterComments(Long masterId) {
+        Map<Long, ArchiveAppointment> archiveAppointments = new HashMap<>();
+        try (PreparedStatement ps = connection.prepareStatement(QUERY_FIND_COMMENTS_BY_MASTER_ID)) {
+            ps.setLong(1, masterId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    ArchiveAppointment appointment = archiveMapper.extractFromResultSet(rs);
+                    archiveMapper.makeUnique(archiveAppointments, appointment);
+                }
+            }
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+        }
+        return new ArrayList<>(archiveAppointments.values());
     }
 
     @Override
@@ -81,7 +144,7 @@ public class JDBCArchiveDao implements ArchiveDao {
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     ArchiveAppointment appointment = archiveMapper.extractFromResultSet(rs);
-                    appointment = archiveMapper.makeUnique(archiveAppointments, appointment);
+                    archiveMapper.makeUnique(archiveAppointments, appointment);
                 }
             }
         } catch (SQLException e) {

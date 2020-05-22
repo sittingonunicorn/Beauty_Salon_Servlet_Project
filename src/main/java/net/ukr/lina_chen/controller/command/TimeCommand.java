@@ -17,6 +17,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static net.ukr.lina_chen.controller.utility.IConstants.ITERATE_UNIT;
+import static net.ukr.lina_chen.controller.utility.IConstants.SCHEDULE_DAYS;
 import static net.ukr.lina_chen.controller.utility.PagesContainer.TIME_PAGE;
 
 public class TimeCommand implements Command {
@@ -42,20 +44,20 @@ public class TimeCommand implements Command {
         List<LocalDateTime> busyTime = appointments.stream()
                 .map(app -> LocalDateTime.of(app.getDate(), app.getTime()))
                 .collect(Collectors.toList());
-        Map<LocalDate, List<LocalTime>> dateTime = new HashMap<>();
-        List<LocalDate> dates = Stream.iterate(LocalDate.now(), date -> date.plusDays(1))
-                .limit(ChronoUnit.DAYS.between(LocalDate.now(), LocalDate.now().plusDays(7)))
+        Map<LocalDate, List<LocalTime>> dateTime = new LinkedHashMap <>();
+        List<LocalDate> dates = Stream.iterate(LocalDate.now(), date -> date.plusDays(ITERATE_UNIT))
+                .limit(ChronoUnit.DAYS.between(LocalDate.now(), LocalDate.now().plusDays(SCHEDULE_DAYS)))
                 .collect(Collectors.toList());
-        LocalDateTime ldt = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now();
         for (LocalDate date : dates) {
-            List<LocalTime> timeList = Stream.iterate(master.get().getTimeBegin(), time -> time.plusHours(1))
+            List<LocalTime> timeList = Stream.iterate(master.get().getTimeBegin(), time -> time.plusHours(ITERATE_UNIT))
                     .limit(ChronoUnit.HOURS.between(master.get().getTimeBegin(), master.get().getTimeEnd()))
                     .filter(time -> !busyTime.contains(LocalDateTime.of(date, time)))
-                    .filter(time ->ldt.isBefore(LocalDateTime.of(date, time)))
+                    .filter(time ->now.isBefore(LocalDateTime.of(date, time)))
                     .collect(Collectors.toList());
             dateTime.put(date, timeList);
         }
-        request.setAttribute("time",
+        request.setAttribute("workingHours",
                 Stream.iterate(master.get().getTimeBegin(), curr -> curr.plusHours(1)).
                         limit(ChronoUnit.HOURS.between(master.get().getTimeBegin(), master.get().getTimeEnd())).
                         collect(Collectors.toList()));

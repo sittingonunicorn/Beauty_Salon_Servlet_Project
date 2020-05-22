@@ -2,6 +2,8 @@ package net.ukr.lina_chen.model.dao;
 
 import net.ukr.lina_chen.model.entity.Master;
 
+import java.util.List;
+
 
 public interface MasterDao extends GenericDao<Master>{
     String QUERY_FIND_ALL = "select * from professions \n" +
@@ -10,6 +12,8 @@ public interface MasterDao extends GenericDao<Master>{
     String QUERY_REPLACE = "replace into masters (user_id, time_begin, time_end, profession_id) values (?, ?, ?, ?)";
     String QUERY_DELETE = "delete from masters where masters_id = ?";
     String QUERY_FIND_BY_USER_ID = QUERY_FIND_ALL + " where user_id = ?";
+    String QUERY_FIND_BY_PROFESSION_ID = QUERY_FIND_ALL + " where profession_id = ?";
 
     Master findByUserId(Long userId);
+    List<Master> findByProfessionId(Long professionId);
 }

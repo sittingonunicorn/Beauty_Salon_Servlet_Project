@@ -26,8 +26,8 @@ public class JDBCMasterDao implements MasterDao {
     }
 
     @Override
-    public void create(Master entity) throws SQLException {
-
+    public Long create(Master entity) throws SQLException {
+        return 0L;
     }
 
     @Override
@@ -97,4 +97,23 @@ public class JDBCMasterDao implements MasterDao {
         }
         return master;
     }
+
+    @Override
+    public List<Master> findByProfessionId(Long professionId) {
+        List<Master> resultList = new ArrayList<>();
+        try (PreparedStatement ps = connection.prepareStatement(QUERY_FIND_BY_PROFESSION_ID)) {
+             ps.setLong(1, professionId);
+            try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Master master = masterMapper.extractFromResultSet(rs);
+                resultList.add(master);
+            }
+        }
+        } catch (SQLException e) {
+            logger.error(e);
+        }
+        return resultList;
+    }
+
+
 }

@@ -41,6 +41,11 @@ public class JDBCDaoFactory extends DaoFactory {
         return new JDBCArchiveDao(getConnection());
     }
 
+    @Override
+    public TransactionDao createTransactionDao() {
+        return new JDBCTransactionDao(getConnection());
+    }
+
     private Connection getConnection(){
         try {
             return dataSource.getConnection();

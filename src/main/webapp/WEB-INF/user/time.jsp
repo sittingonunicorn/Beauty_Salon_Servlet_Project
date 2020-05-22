@@ -25,8 +25,8 @@
                 <div><h6>${entry.key}</h6>
                     <details>
                         <summary></summary>
-                        <jsp:useBean id="time" scope="request" type="java.util.List"/>
-                        <c:forEach items="${time}" var="seance">
+                        <jsp:useBean id="workingHours" scope="request" type="java.util.List"/>
+                        <c:forEach items="${workingHours}" var="seance">
                             <c:if test="${entry.value.contains(seance)}">
                                 <label class="radio-label">
                                     <input class="btn btn-outline-info" type="submit" pattern="HH:mm"

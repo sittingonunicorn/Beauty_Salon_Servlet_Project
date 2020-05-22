@@ -1,10 +1,11 @@
 package net.ukr.lina_chen.model.dao.mapper;
 
-import net.ukr.lina_chen.model.entity.Role;
 import net.ukr.lina_chen.model.entity.User;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Map;
 
 
@@ -16,7 +17,7 @@ public class UserMapper implements ObjectMapper<User> {
                 .withEmail(rs.getString("email"))
                 .withName(rs.getString("name"))
                 .withPassword(rs.getString("password"))
-                .withRole(Role.valueOf(rs.getString("role")))
+                .withRoles(new HashSet<>())
                 .withNameUkr(rs.getString("name_ukr"))
                 .build();
     }

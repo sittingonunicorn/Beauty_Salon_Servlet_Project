@@ -1,10 +1,10 @@
 package net.ukr.lina_chen.model.entity;
 
-
+import java.util.Set;
 
 public class User {
     private Long id;
-    private Role role;
+    private Set<Role> roles;
     private String password;
     private String email;
     private String name;
@@ -13,9 +13,9 @@ public class User {
     public User() {
     }
 
-    public User(Long id, Role role, String password, String email, String name, String nameUkr) {
+    public User(Long id, Set<Role> roles, String password, String email, String name, String nameUkr) {
         this.id = id;
-        this.role = role;
+        this.roles = roles;
         this.password = password;
         this.email = email;
         this.name = name;
@@ -30,12 +30,12 @@ public class User {
         this.id = id;
     }
 
-    public Role getRole() {
-        return role;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     public String getPassword() {
@@ -74,7 +74,7 @@ public class User {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", role=" + role +
+                ", role=" + roles +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", name='" + name + '\'' +
@@ -82,7 +82,7 @@ public class User {
     }
     public static final class Builder {
         private Long id;
-        private Role role;
+        private Set<Role> roles;
         private String password;
         private String email;
         private String name;
@@ -100,8 +100,8 @@ public class User {
             return this;
         }
 
-        public Builder withRole(Role role) {
-            this.role = role;
+        public Builder withRoles(Set<Role> roles) {
+            this.roles = roles;
             return this;
         }
 
@@ -128,7 +128,7 @@ public class User {
         public User build() {
             User user = new User();
             user.setId(id);
-            user.setRole(role);
+            user.setRoles(roles);
             user.setPassword(password);
             user.setEmail(email);
             user.setName(name);

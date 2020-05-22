@@ -10,9 +10,14 @@
     <title>Title</title>
 </head>
 <body>
+<ul>
+<c:forEach items="${requestScope.masters}" var="master">
+<li><a href="${pageContext.request.contextPath}/app/admin/comments?masterId=${master.id}">${master.user.name}</a></li>
+<%--    <button type="button" class="btn btn-info" onclick="location.href='?masterId=${master.id}'"--%>
+<%--            >${master.user.name}</button>--%>
+</c:forEach></ul>
 <p><fmt:message key="message.user.appointments"/></p>
-<jsp:useBean id="archiveForUser" scope="request" type="java.util.List"/>
-<c:forEach items="${archiveForUser}" var="a">
+<c:forEach items="${requestScope.archive}" var="a">
     <table class="table table-hover">
         <thead>
         <tr>
@@ -34,14 +39,6 @@
             <td>${a.master.user.name}</td>
             <td>${a.provided}</td>
             <td>${a.comment}
-                <form action="${pageContext.request.contextPath}/app/user/comment" role="form"
-                method="get">
-                    <c:if test="${a.comment==null}">
-                        <div>
-                            <button type="submit" name="appointmentId" value="${a.id}">
-                                <fmt:message key="message.leave.comment"/></button>
-                        </div>
-                    </c:if></form>
             </td>
         </tr>
         </tbody>

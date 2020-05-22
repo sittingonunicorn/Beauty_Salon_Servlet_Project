@@ -2,30 +2,40 @@ package net.ukr.lina_chen.model.dto;
 
 import net.ukr.lina_chen.model.entity.Role;
 
+import java.util.Set;
+
 public class UserDTO {
-    private Role role;
+    private Long id;
+    private Set<Role> roles;
     private String password;
     private String email;
     private String name;
-    private String nameUkr;
 
     public UserDTO() {
     }
 
-    public UserDTO(Role role, String password, String email, String name, String nameUkr) {
-        this.role = role;
+    public UserDTO(Long id, Set<Role> roles, String password, String email, String name) {
+        this.id = id;
+        this.roles = roles;
         this.password = password;
         this.email = email;
         this.name = name;
-        this.nameUkr = nameUkr;
     }
 
-    public Role getRole() {
-        return role;
+    public Long getId() {
+        return id;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     public String getPassword() {
@@ -52,28 +62,20 @@ public class UserDTO {
         this.name = name;
     }
 
-    public String getNameUkr() {
-        return nameUkr;
-    }
-
-    public void setNameUkr(String nameUkr) {
-        this.nameUkr = nameUkr;
-    }
-
     @Override
     public String toString() {
-        return "UserDTO{role=" + role +
+        return "UserDTO{role=" + roles +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", name='" + name + '\'' +
                 '}';
     }
     public static final class Builder {
-        private Role role;
+        private Long id;
+        private Set<Role> roles;
         private String password;
         private String email;
         private String name;
-        private String nameUkr;
 
         private Builder() {
         }
@@ -82,8 +84,8 @@ public class UserDTO {
             return new UserDTO.Builder();
         }
         
-        public UserDTO.Builder withRole(Role role) {
-            this.role = role;
+        public UserDTO.Builder withRoles(Set<Role> roles) {
+            this.roles = roles;
             return this;
         }
 
@@ -102,18 +104,18 @@ public class UserDTO {
             return this;
         }
 
-        public UserDTO.Builder withNameUkr(String nameUkr) {
-            this.nameUkr = nameUkr;
+        public UserDTO.Builder withId(Long id) {
+            this.id = id;
             return this;
         }
 
         public UserDTO build() {
             UserDTO userDTO = new UserDTO();
-            userDTO.setRole(role);
+            userDTO.setRoles(roles);
             userDTO.setPassword(password);
             userDTO.setEmail(email);
             userDTO.setName(name);
-            userDTO.setNameUkr(nameUkr);
+            userDTO.setId(id);
             return userDTO;
         }
     }

@@ -14,8 +14,13 @@ public interface AppointmentDao extends GenericDao<Appointment> {
             "time, date, provided) values (?, ?, ?, ?, ?, ?)";
     String QUERY_DELETE = "delete from appointment where appointment_id = ?";
     String QUERY_FIND_BY_MASTER_ID = QUERY_FIND_ALL + " where master_id = ?";
+    String QUERY_UPDATE_SET_PROVIDED = "update appointment set provided = true where appointment_id = ?";
+    String QUERY_GET_ID = "select appointment_id from appointment \n" +
+            " where appointment_id = LAST_INSERT_ID()";
 
     List<Appointment> getMasterAppointments(Long masterId);
+
+    void setProvided (Long appointmentId);
 //TODO master's user mapping
 
 //    select * from beautyservices left join appointment as a using (beautyservice_id) left join masters as m using (master_id)

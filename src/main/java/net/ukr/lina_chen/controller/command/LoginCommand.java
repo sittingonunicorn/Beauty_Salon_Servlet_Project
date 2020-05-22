@@ -1,14 +1,15 @@
 package net.ukr.lina_chen.controller.command;
 
-import net.ukr.lina_chen.model.dao.MasterDao;
-import net.ukr.lina_chen.model.dao.factory.DaoFactory;
-import net.ukr.lina_chen.model.dao.factory.JDBCMasterDao;
+import net.ukr.lina_chen.model.dto.UserDTO;
 import net.ukr.lina_chen.model.entity.Role;
 import net.ukr.lina_chen.model.entity.User;
 import net.ukr.lina_chen.model.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashSet;
+import java.util.Locale;
 import java.util.Optional;
+import java.util.Set;
 
 import static net.ukr.lina_chen.controller.utility.PagesContainer.*;
 
@@ -21,7 +22,7 @@ public class LoginCommand implements Command {
     }
 
     @Override
-    public String execute(HttpServletRequest request){
+    public String execute(HttpServletRequest request) {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
@@ -29,25 +30,37 @@ public class LoginCommand implements Command {
             return LOGIN_PAGE;
         }
 
-        Optional<User> user = userService.getUserByEmailAndPassword(email, password);
+        Optional<UserDTO> user = userService.getUserByEmailAndPassword(email, password, isLocaleEn(request));
         if (user.isPresent()) {
             if (CommandUtility.checkUserIsLogged(request, email)) {
                 return ERROR_PAGE;
             }
             request.getSession().setAttribute("user", user.get());
-            if (user.get().getRole().equals(Role.ADMIN)) {
-                CommandUtility.setUserRole(request, Role.ADMIN, email);
+            if (user.get().getRoles().contains(Role.ADMIN)) {
+                CommandUtility.setUserRoles(request, user.get().getRoles(), email);
                 return REDIRECT_ADMIN;
-            } else if (user.get().getRole().equals(Role.USER)) {
-                CommandUtility.setUserRole(request, Role.USER, email);
-                return REDIRECT_USER;
-            } else if (user.get().getRole().equals(Role.MASTER)) {
-                CommandUtility.setUserRole(request, Role.MASTER, email);
+            } else if (user.get().getRoles().contains(Role.MASTER)) {
+                CommandUtility.setUserRoles(request, user.get().getRoles(), email);
                 return REDIRECT_MASTER;
+            } else if (user.get().getRoles().contains(Role.USER)) {
+                CommandUtility.setUserRoles(request, user.get().getRoles(), email);
+                return REDIRECT_USER;
+
             }
         }
-        CommandUtility.setUserRole(request, Role.GUEST, email);
+        Set<Role> roles = new HashSet<>();
+        roles.add(Role.GUEST);
+        CommandUtility.setUserRoles(request, roles, email);
         return REDIRECT_LOGIN;
     }
 
+    private boolean isLocaleEn(HttpServletRequest request) {
+        String language = (String) request.getSession().getAttribute("lang");
+        if (language!= null) {
+            return new Locale(language).equals(Locale.ENGLISH);
+        } else {
+            return true;
+        }
+    }
 }
+

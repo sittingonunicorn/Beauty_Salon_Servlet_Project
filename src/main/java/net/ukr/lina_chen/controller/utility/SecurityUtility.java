@@ -2,10 +2,7 @@ package net.ukr.lina_chen.controller.utility;
 
 import net.ukr.lina_chen.model.entity.Role;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class SecurityUtility {
 
@@ -19,8 +16,12 @@ public class SecurityUtility {
 
     }
 
-    public boolean isForbiddenRequest(String path, Role role) {
-        Optional<String> pathDirection = Optional.ofNullable(permissions.get(role));
-        return pathDirection.map(s -> Arrays.stream(s.split(", ")).noneMatch(path::contains)).orElse(true);
+    public boolean isForbiddenRequest(String path, Set<Role> roles) {
+        return permissions.entrySet()
+                .stream()
+                .filter(e -> roles.contains(e.getKey()))
+                .map(Map.Entry::getValue)
+                .flatMap(s -> Arrays.stream(s.split(", ")))
+                .noneMatch(path::contains);
     }
 }

@@ -17,6 +17,7 @@
     <li><a href="?sessionLocale=ua"><fmt:message key="lang.ua"/></a></li>
 </ul>
 <h1>Hello User!</h1>
+<p>${sessionScope.user.name}</p>
 <a href="${pageContext.request.contextPath}/app/logout"><fmt:message key="button.logout"/></a>
 </body>
 </html>
