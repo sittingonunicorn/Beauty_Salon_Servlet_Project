@@ -1,7 +1,5 @@
 package net.ukr.lina_chen.model.entity;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 
 public class ArchiveAppointment extends Appointment{
 

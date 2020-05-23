@@ -25,8 +25,8 @@ public class AdminCommentsCommand implements Command {
         long masterId = (request.getParameter("masterId") != null) ?
                 Long.parseLong(request.getParameter("masterId")) : 0;
         request.setAttribute("archive", (masterId != 0) ?
-                archiveService.getMasterComments(masterId)
-                : archiveService.getAllComments());
+                archiveService.getMasterComments(masterId, CommandUtility.isLocaleEn(request))
+                : archiveService.getAllComments(CommandUtility.isLocaleEn(request)));
         return ADMIN_COMMENTS_PAGE;
     }
 }

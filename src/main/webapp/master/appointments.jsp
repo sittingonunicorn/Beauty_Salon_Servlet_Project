@@ -27,14 +27,13 @@
     </tr>
     </thead>
     <tbody>
-    <jsp:useBean id="appointments" scope="request" type="java.util.List"/>
-    <c:forEach items="${appointments}" var="a">
+    <c:forEach items="${requestScope.appointments}" var="a">
     <tr>
-        <td>${a.beautyService.name}</td>
+        <td>${a.beautyService}</td>
         <td>${a.date}</td>
         <td>${a.time}</td>
-        <td>${a.user.name}</td>
-        <td>${a.provided}</td>
+        <td>${a.userName}</td>
+        <td><fmt:message key="bool.${a.provided}"/></td>
         <td>
             <form method="post" action="${pageContext.request.contextPath}/app/master/provide">
                 <div class="row-fluid practice" style="width: 99%; height: 100%;">

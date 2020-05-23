@@ -25,11 +25,11 @@
     </thead>
     <tbody>
     <tr>
-        <td>${appointment.beautyService.name}</td>
+        <td>${appointment.beautyService}</td>
         <td>${appointment.date}</td>
         <td>${appointment.time}</td>
-        <td>${appointment.user.name}</td>
-        <td>${appointment.master.user.name}</td>
+        <td>${appointment.userName}</td>
+        <td>${appointment.masterName}</td>
         <td>${appointment.provided}</td>
         <td>
             <form action="${pageContext.request.contextPath}/app/user/comment" role="form"

@@ -22,7 +22,7 @@ public class UserCommentCommand implements Command {
     public String execute(HttpServletRequest request) {
         Long appointmentId = Long.parseLong(request.getParameter("appointmentId"));
         request.setAttribute("appointment",
-                archiveService.getById(appointmentId));
+                archiveService.getByIdLocalized(appointmentId, CommandUtility.isLocaleEn(request)));
         if (!Optional.ofNullable(request.getParameter("newComment")).isPresent()) {
             return USER_COMMENT_PAGE;
         }

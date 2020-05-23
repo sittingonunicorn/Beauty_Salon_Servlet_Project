@@ -8,6 +8,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 class CommandUtility {
@@ -44,5 +45,14 @@ class CommandUtility {
         HashSet<String> loggedUsers =(HashSet<String>) request.getSession().getServletContext()
                 .getAttribute("loggedUsers");
         return  loggedUsers;
+    }
+
+    static boolean isLocaleEn(HttpServletRequest request) {
+        String language = (String) request.getSession().getAttribute("lang");
+        if (language!= null) {
+            return new Locale(language).equals(Locale.ENGLISH);
+        } else {
+            return true;
+        }
     }
 }

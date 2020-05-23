@@ -11,10 +11,11 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
           integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ=="
           crossorigin="anonymous">
-    <style type="text/css">
-        <%@ include file="/WEB-INF/user/styles.css" %>
-    </style>
+<%--    <style type="text/css">--%>
+<%--        <%@ include file="/WEB-INF/user/styles.css" %>--%>
+<%--    </style>--%>
     <title>Choose time</title>
+    <link href="WEB-INF/static/styles.css" rel=«stylesheet«>
 </head>
 <body>
 <jsp:useBean id="dateTime" scope="request" type="java.util.Map"/>
@@ -25,8 +26,7 @@
                 <div><h6>${entry.key}</h6>
                     <details>
                         <summary></summary>
-                        <jsp:useBean id="workingHours" scope="request" type="java.util.List"/>
-                        <c:forEach items="${workingHours}" var="seance">
+                        <c:forEach items="${requestScope.workingHours}" var="seance">
                             <c:if test="${entry.value.contains(seance)}">
                                 <label class="radio-label">
                                     <input class="btn btn-outline-info" type="submit" pattern="HH:mm"

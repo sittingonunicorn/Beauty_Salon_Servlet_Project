@@ -10,33 +10,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <link rel="stylesheet" th:href="@{/styles.css}">
-    <title>Beauty Salon Choose Service type</title>
+    <link rel="stylesheet" th:href="@{/user/styles.css}">
+    <title>Choose master</title>
 </head>
 <body>
-<header>
-    <div class="container">
-        <div class="box">
-            <div><h2>Beauty Salon</h2></div>
-        </div>
-    </div>
-</header>
 <table>
     <thead>
     <tr>
-        <th scope="col"><fmt:message key = "var.beautyservicesType"/></th>
+        <th scope="col"><fmt:message key="var.mastername"/></th>
     </tr>
     </thead>
     <tbody>
-    <c:forEach items="${requestScope.servicetypes}" var="s">
-    <tr>
-        <td>
-    <a href="${pageContext.request.contextPath}/app/user/beautyservices/${s.id}">
-        ${s.beautyservicesType}
-        <input type="hidden" value="${s.id}" name="professionId">
-    </a>
-        </td>
-    </tr>
+    <c:forEach items="${requestScope.masters}" var="m">
+        <tr>
+            <td>
+                <a href="${pageContext.request.contextPath}/app/user/time/${m.id}">
+                        ${m.user.name}
+                    <input type="hidden" value="${m.id}" name="beautyserviceId">
+                </a>
+            </td>
+        </tr>
     </c:forEach>
     </tbody>
 </table>

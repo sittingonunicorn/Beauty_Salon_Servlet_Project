@@ -83,7 +83,7 @@ public class Servlet extends HttpServlet {
 //                new ErrorCommand());
 //        command.execute(request, response);
         Command command = commands.getOrDefault(match,
-                (r) -> "/WEB-INF/error.jsp");
+                (r) -> "/error.jsp");
         String page = command.execute(request);
         if (page.contains("redirect:")) {
             response.sendRedirect(page.replace("redirect:", "/app"));

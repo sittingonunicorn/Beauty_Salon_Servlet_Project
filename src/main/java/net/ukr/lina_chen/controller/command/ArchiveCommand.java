@@ -1,6 +1,6 @@
 package net.ukr.lina_chen.controller.command;
 
-import net.ukr.lina_chen.model.entity.User;
+import net.ukr.lina_chen.model.dto.UserDTO;
 import net.ukr.lina_chen.model.service.ArchiveService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +17,8 @@ public class ArchiveCommand implements Command{
     @Override
     public String execute(HttpServletRequest request) {
         request.setAttribute("archiveForUser",
-                archiveService.getUserArchive(((User)request.getSession().getAttribute("user")).getId()));
+                archiveService.getUserArchive(((UserDTO)request.getSession().getAttribute("user")).getId(),
+                        CommandUtility.isLocaleEn(request)));
 
         return ARCHIVE_APPOINTMENTS_PAGE;
     }

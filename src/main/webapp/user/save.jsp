@@ -11,12 +11,12 @@
 </head>
 <body>
 <p><fmt:message key="message.appointment.created"/></p>
-<jsp:useBean id="appointment" scope="request" type="net.ukr.lina_chen.model.entity.Appointment"/>
+<jsp:useBean id="appointment" scope="request" type="net.ukr.lina_chen.model.dto.AppointmentDTO"/>
 <p><fmt:message key="message.master">
-    <fmt:param value="${appointment.master.user.name}"/>
+    <fmt:param value="${appointment.masterName}"/>
 </fmt:message></p>
 <p><fmt:message key="message.beautyservice">
-    <fmt:param value="${appointment.beautyService.name}"/>
+    <fmt:param value="${appointment.beautyService}"/>
 </fmt:message></p>
 <p><fmt:message key="message.date">
     <fmt:param value="${appointment.date}"/>

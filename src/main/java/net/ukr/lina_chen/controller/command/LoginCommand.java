@@ -30,7 +30,8 @@ public class LoginCommand implements Command {
             return LOGIN_PAGE;
         }
 
-        Optional<UserDTO> user = userService.getUserByEmailAndPassword(email, password, isLocaleEn(request));
+        Optional<UserDTO> user = userService.getUserByEmailAndPassword(
+                email, password, CommandUtility.isLocaleEn(request));
         if (user.isPresent()) {
             if (CommandUtility.checkUserIsLogged(request, email)) {
                 return ERROR_PAGE;
@@ -52,15 +53,6 @@ public class LoginCommand implements Command {
         roles.add(Role.GUEST);
         CommandUtility.setUserRoles(request, roles, email);
         return REDIRECT_LOGIN;
-    }
-
-    private boolean isLocaleEn(HttpServletRequest request) {
-        String language = (String) request.getSession().getAttribute("lang");
-        if (language!= null) {
-            return new Locale(language).equals(Locale.ENGLISH);
-        } else {
-            return true;
-        }
     }
 }
 

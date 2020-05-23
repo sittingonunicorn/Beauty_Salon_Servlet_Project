@@ -1,7 +1,7 @@
 package net.ukr.lina_chen.controller.command;
 
+import net.ukr.lina_chen.model.dto.UserDTO;
 import net.ukr.lina_chen.model.entity.Role;
-import net.ukr.lina_chen.model.entity.User;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -13,7 +13,7 @@ public class ErrorCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) {
         HttpSession session = request.getSession();
-        Optional<User> user = Optional.ofNullable((User) session.getAttribute("user"));
+        Optional<UserDTO> user = Optional.ofNullable((UserDTO) session.getAttribute("user"));
         if (user.isPresent()) {
             if (user.get().getRoles().equals(Role.ADMIN)) {
                 return REDIRECT_ADMIN;

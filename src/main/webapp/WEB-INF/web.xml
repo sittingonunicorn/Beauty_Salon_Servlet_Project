@@ -44,10 +44,6 @@
       net.ukr.lina_chen.controller.listener.SessionListener
     </listener-class>
   </listener>
-  <servlet-mapping>
-    <servlet-name>default</servlet-name>
-    <url-pattern>/</url-pattern>
-  </servlet-mapping>
   <servlet>
     <servlet-name>ServletName</servlet-name>
     <servlet-class>net.ukr.lina_chen.controller.Servlet</servlet-class>

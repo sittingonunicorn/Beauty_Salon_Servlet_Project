@@ -95,4 +95,66 @@ public class AppointmentDTO {
                 ", provided=" + provided +
                 '}';
     }
+
+    public static class AppointmentDTOBuilder
+    {
+        private AppointmentDTO appointmentDTO;
+
+        private AppointmentDTOBuilder()
+        {
+            appointmentDTO = new AppointmentDTO();
+        }
+
+        public AppointmentDTOBuilder withId(Long id)
+        {
+            appointmentDTO.id = id;
+            return this;
+        }
+
+        public AppointmentDTOBuilder withMasterName(String masterName)
+        {
+            appointmentDTO.masterName = masterName;
+            return this;
+        }
+
+        public AppointmentDTOBuilder withUserName(String userName)
+        {
+            appointmentDTO.userName = userName;
+            return this;
+        }
+
+        public AppointmentDTOBuilder withBeautyService(String beautyService)
+        {
+            appointmentDTO.beautyService = beautyService;
+            return this;
+        }
+
+        public AppointmentDTOBuilder withTime(LocalTime time)
+        {
+            appointmentDTO.time = time;
+            return this;
+        }
+
+        public AppointmentDTOBuilder withDate(LocalDate date)
+        {
+            appointmentDTO.date = date;
+            return this;
+        }
+
+        public AppointmentDTOBuilder withProvided(boolean provided)
+        {
+            appointmentDTO.provided = provided;
+            return this;
+        }
+
+        public static AppointmentDTOBuilder appointmentDTO()
+        {
+            return new AppointmentDTOBuilder();
+        }
+
+        public AppointmentDTO build()
+        {
+            return appointmentDTO;
+        }
+    }
 }

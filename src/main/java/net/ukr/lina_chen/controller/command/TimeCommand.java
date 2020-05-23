@@ -1,5 +1,6 @@
 package net.ukr.lina_chen.controller.command;
 
+import net.ukr.lina_chen.model.dto.AppointmentDTO;
 import net.ukr.lina_chen.model.entity.Appointment;
 import net.ukr.lina_chen.model.entity.Master;
 import net.ukr.lina_chen.model.service.AppointmentService;
@@ -40,7 +41,8 @@ public class TimeCommand implements Command {
         Appointment appointment = (Appointment) request.getSession().getAttribute("appointment");
         master.ifPresent(appointment::setMaster);
         request.setAttribute("appointment", appointment);
-        List<Appointment> appointments = appointmentService.getMastersAppointments(masterId);
+        List<AppointmentDTO> appointments = appointmentService.getMastersAppointments(
+                masterId, CommandUtility.isLocaleEn(request));
         List<LocalDateTime> busyTime = appointments.stream()
                 .map(app -> LocalDateTime.of(app.getDate(), app.getTime()))
                 .collect(Collectors.toList());

@@ -9,8 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Locale;
+import java.util.Optional;
 
 import static net.ukr.lina_chen.controller.utility.PagesContainer.SAVE_PAGE;
 
@@ -30,12 +31,15 @@ public class SaveCommand implements Command {
         appointment.setDate(date);
         appointment.setTime(time);
         appointment.setProvided(false);
-        request.setAttribute("appointment", appointment);
+        Optional<Long> appointmentId = Optional.empty();
         try {
-            appointmentService.saveAppointment(appointment);
+            appointmentId = Optional.of(appointmentService.saveAppointment(appointment));
         } catch (SQLException e) {
             logger.error(e.getMessage());
         }
+        request.setAttribute(
+                "appointment", appointmentId.map(
+                        id -> appointmentService.getById(id, CommandUtility.isLocaleEn(request))).orElse(null));
         return SAVE_PAGE;
     }
 }
