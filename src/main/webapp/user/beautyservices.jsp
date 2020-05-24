@@ -25,7 +25,9 @@
     <thead>
     <tr>
         <th scope="col"><fmt:message key="var.beautyservice"/></th>
+        <th>Price</th>
     </tr>
+
     </thead>
     <tbody>
     <c:forEach items="${requestScope.beautyservices}" var="b">
@@ -36,6 +38,7 @@
                     <input type="hidden" value="${b.id}" name="beautyserviceId">
                 </a>
             </td>
+            <td>${b.price}</td>
         </tr>
     </c:forEach>
     </tbody>

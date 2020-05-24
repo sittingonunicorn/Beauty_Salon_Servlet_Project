@@ -17,7 +17,8 @@ public class BeautyservicesCommand implements Command {
     public String execute(HttpServletRequest request) {
         String path = request.getRequestURI();
         Long professionId = Long.parseLong(path.replaceAll(".*/app/user/beautyservices/", ""));
-        request.setAttribute("beautyservices", beautyservices.getBeautyservicesByProfession(professionId));
+        request.setAttribute("beautyservices", beautyservices.getBeautyservicesByProfession(professionId,
+                CommandUtility.isLocaleEn(request)));
         request.setAttribute("professionId", professionId);
         return BEAUTYSERVICES_PAGE;
     }
