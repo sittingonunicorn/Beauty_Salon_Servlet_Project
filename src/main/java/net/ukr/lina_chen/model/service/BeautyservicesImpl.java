@@ -8,6 +8,7 @@ import net.ukr.lina_chen.model.entity.BeautyService;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,7 +22,9 @@ public class BeautyservicesImpl {
         try(BeautyserviceDao beautyserviceDao = factory.createBeautyserviceDao()){
             beautyServices=beautyserviceDao.findByProfessionId(professionId);
         }
-        return beautyServices.stream().map(b -> getLocalizedDTO(isLocaleEn, b)).collect(Collectors.toList());
+        return beautyServices.stream().map(b -> getLocalizedDTO(isLocaleEn, b))
+                .sorted(Comparator.comparing(BeautyServiceDTO::getName))
+                .collect(Collectors.toList());
     }
 
     public Optional<BeautyService> getById(Long beautyserviceId){

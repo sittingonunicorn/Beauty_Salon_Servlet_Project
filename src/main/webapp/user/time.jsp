@@ -18,13 +18,8 @@
     <link href="WEB-INF/static/styles.css" rel=«stylesheet«>
 </head>
 <body>
-<%--<p th:utext="#{message.chosen.master(${master.getUser().getName()})}">Chosen master</p>--%>
-<%--<p th:utext="#{output.master.schedule(${master.getTimeBegin()},${master.getTimeEnd()})}">Worktime</p>--%>
-<%--<fmt:message key="message.master">--%>
-<%--    <fmt:param value="${appointment.masterName}"/>--%>
-<%--</fmt:message>--%>
 <p><fmt:message key="message.chosen.master">
-    <fmt:param value="${requestScope.master.get().name}"/>
+    <fmt:param value="${requestScope.masterName}"/>
 </fmt:message> </p>
 
 <jsp:useBean id="dateTime" scope="request" type="java.util.Map"/>

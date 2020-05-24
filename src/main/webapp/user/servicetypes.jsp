@@ -31,13 +31,34 @@
     <c:forEach items="${requestScope.servicetypes}" var="s">
     <tr>
         <td>
-    <a href="${pageContext.request.contextPath}/app/user/beautyservices/${s.id}">
+    <a href="${pageContext.request.contextPath}/app/user/servicetypes?professionId=${s.id}">
         ${s.beautyservicesType}
-        <input type="hidden" value="${s.id}" name="professionId">
     </a>
         </td>
     </tr>
     </c:forEach>
+    </tbody>
+</table>
+<table>
+    <thead>
+    <tr>
+        <th scope="col"><fmt:message key="var.beautyservice"/></th>
+        <th>Price</th>
+    </tr>
+
+    </thead>
+    <tbody>
+<c:forEach items="${requestScope.beautyservices}" var="b">
+    <tr>
+        <td>
+            <a href="${pageContext.request.contextPath}/app/user/masters/${requestScope.professionId}/${b.id}">
+                    ${b.name}
+                <input type="hidden" value="${b.id}" name="beautyserviceId">
+            </a>
+        </td>
+        <td>${b.price}</td>
+    </tr>
+</c:forEach>
     </tbody>
 </table>
 </body>

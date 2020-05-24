@@ -42,7 +42,7 @@ public class TimeCommand implements Command {
         Appointment appointment = (Appointment) request.getSession().getAttribute("appointment");
         master.ifPresent(appointment::setMaster);
         request.setAttribute("appointment", appointment);
-        List<AppointmentDTO> appointments = appointmentService.getMastersAppointments(
+        List<AppointmentDTO> appointments = appointmentService.getMastersAppointmentsOrderByDateTimeAsc(
                 masterId, CommandUtility.isLocaleEn(request));
         List<LocalDateTime> busyTime = appointments.stream()
                 .map(app -> LocalDateTime.of(LocalDate.parse(app.getDate(),

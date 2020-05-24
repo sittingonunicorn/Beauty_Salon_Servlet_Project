@@ -5,22 +5,25 @@ import net.ukr.lina_chen.model.dao.factory.DaoFactory;
 import net.ukr.lina_chen.model.dto.AppointmentDTO;
 import net.ukr.lina_chen.model.entity.Appointment;
 
-
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class AppointmentService {
     private final DaoFactory factory = DaoFactory.getInstance();
 
-    public List<AppointmentDTO> getMastersAppointments(Long masterId, boolean isLocaleEn) {
+    public List<AppointmentDTO> getMastersAppointmentsOrderByDateTimeAsc(Long masterId, boolean isLocaleEn) {
         List<Appointment> appointments;
         try (AppointmentDao appointmentDao = factory.createAppointmentDao()) {
             appointments = appointmentDao.getMasterAppointments(masterId);
         }
-        return appointments.stream().map(a -> getLocalizedDto(isLocaleEn, a)).collect(Collectors.toList());
+        return appointments.stream().map(a -> getLocalizedDto(isLocaleEn, a))
+                .sorted(Comparator.comparing(AppointmentDTO::getDate)
+                        .thenComparing(AppointmentDTO::getTime))
+                .collect(Collectors.toList());
     }
 
     public AppointmentDTO getById(Long appointmentId, boolean isLocaleEn) {
@@ -31,12 +34,15 @@ public class AppointmentService {
         return getLocalizedDto(isLocaleEn, appointment);
     }
 
-    public List<AppointmentDTO> getAll(boolean isLocaleEn) {
+    public List<AppointmentDTO> getAllOrderByDateTimeAsc(boolean isLocaleEn) {
         List<Appointment> appointments;
         try (AppointmentDao appointmentDao = factory.createAppointmentDao()) {
             appointments = appointmentDao.findAll();
         }
-        return appointments.stream().map(a -> getLocalizedDto(isLocaleEn, a)).collect(Collectors.toList());
+        return appointments.stream().map(a -> getLocalizedDto(isLocaleEn, a))
+                .sorted(Comparator.comparing(AppointmentDTO::getDate)
+                        .thenComparing(AppointmentDTO::getTime))
+                .collect(Collectors.toList());
     }
 
     public Long saveAppointment(Appointment appointment) throws SQLException {
@@ -51,8 +57,9 @@ public class AppointmentService {
         return AppointmentDTO.AppointmentDTOBuilder.appointmentDTO()
                 .withBeautyService(isLocaleEn ? appointment.getBeautyService().getName()
                         : appointment.getBeautyService().getNameUkr())
-                .withMasterName(isLocaleEn ? appointment.getMaster().getUser().getName()
-                        : appointment.getMaster().getUser().getNameUkr())
+                .withMasterName(isLocaleEn ?
+                        new MasterService().getById(appointment.getMaster().getId()).get().getUser().getName()
+                        : new MasterService().getById(appointment.getMaster().getId()).get().getUser().getNameUkr())
                 .withUserName(isLocaleEn ? appointment.getUser().getName()
                         : appointment.getUser().getNameUkr())
                 .withId(appointment.getId())
@@ -63,6 +70,6 @@ public class AppointmentService {
     }
 
     private String getLocalizedDate (LocalDate date, boolean isLocaleEn){
-        return date.format(DateTimeFormatter.ofPattern(isLocaleEn? "MM.dd.YYYY":"dd.MM.YYYY"));
+        return date.format(DateTimeFormatter.ofPattern(isLocaleEn? "MM.dd.yyyy":"dd.MM.yyyy"));
     }
 }

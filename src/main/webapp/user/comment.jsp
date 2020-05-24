@@ -11,7 +11,7 @@
 </head>
 <body>
 <table>
-    <jsp:useBean id="appointment" scope="request" type="net.ukr.lina_chen.model.entity.ArchiveAppointment"/>
+    <jsp:useBean id="appointment" scope="request" type="net.ukr.lina_chen.model.dto.ArchiveAppointmentDTO"/>
     <thead>
     <tr>
         <th><fmt:message key="var.beautyservice"/></th>
@@ -30,7 +30,7 @@
         <td>${appointment.time}</td>
         <td>${appointment.userName}</td>
         <td>${appointment.masterName}</td>
-        <td>${appointment.provided}</td>
+        <td><fmt:message key="bool.${appointment.provided}"/></td>
         <td>
             <form action="${pageContext.request.contextPath}/app/user/comment" role="form"
                   method="post">

@@ -2,7 +2,6 @@ package net.ukr.lina_chen.controller.command;
 
 import net.ukr.lina_chen.controller.utility.PageRequest;
 import net.ukr.lina_chen.model.dto.AppointmentDTO;
-import net.ukr.lina_chen.model.entity.Appointment;
 import net.ukr.lina_chen.model.service.AppointmentService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +21,7 @@ public class AdminAppointmentsCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) {
         int page = Integer.parseInt(Optional.ofNullable(request.getParameter("page")).orElse("0"));
-        List<AppointmentDTO> appointments = appointmentService.getAll(CommandUtility.isLocaleEn(request));
+        List<AppointmentDTO> appointments = appointmentService.getAllOrderByDateTimeAsc(CommandUtility.isLocaleEn(request));
         PageRequest<AppointmentDTO> pageRequest = new PageRequest<>(appointments);
         appointments = pageRequest.getPage(page);
         request.setAttribute("appointments", appointments);

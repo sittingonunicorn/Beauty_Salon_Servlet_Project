@@ -2,8 +2,6 @@ package net.ukr.lina_chen.controller.command;
 
 import net.ukr.lina_chen.model.dto.MasterDTO;
 import net.ukr.lina_chen.model.dto.UserDTO;
-import net.ukr.lina_chen.model.entity.Master;
-import net.ukr.lina_chen.model.entity.User;
 import net.ukr.lina_chen.model.service.AppointmentService;
 import net.ukr.lina_chen.model.service.MasterService;
 
@@ -28,7 +26,7 @@ public class MasterAppointmentsCommand implements Command {
        Optional<MasterDTO> master = masterService.getByUserId(
                ((UserDTO) request.getSession().getAttribute("user")).getId(), CommandUtility.isLocaleEn(request));
         request.setAttribute("appointments",
-                appointmentService.getMastersAppointments(master.get().getId(), CommandUtility.isLocaleEn(request)));
+                appointmentService.getMastersAppointmentsOrderByDateTimeAsc(master.get().getId(), CommandUtility.isLocaleEn(request)));
         request.setAttribute("master", master.get());
         return MASTER_APPOINTMENTS_PAGE;
     }

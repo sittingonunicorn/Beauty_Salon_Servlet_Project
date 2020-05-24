@@ -5,6 +5,7 @@ import net.ukr.lina_chen.model.dao.factory.DaoFactory;
 import net.ukr.lina_chen.model.dto.MasterDTO;
 import net.ukr.lina_chen.model.entity.Master;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,20 +29,24 @@ public class MasterService {
         return Optional.ofNullable(getLocalizedDTO(master, isLocaleEn));
     }
 
-    public List<MasterDTO> findAll(boolean isLocaleEn){
+    public List<MasterDTO> findAllOrderByNameAsc(boolean isLocaleEn){
         List <Master> masters;
         try(MasterDao masterDao = factory.createMasterDao()){
             masters = masterDao.findAll();
         }
-        return masters.stream().map(m->getLocalizedDTO(m, isLocaleEn)).collect(Collectors.toList());
+        return masters.stream().map(m->getLocalizedDTO(m, isLocaleEn))
+                .sorted(Comparator.comparing(MasterDTO::getName))
+                .collect(Collectors.toList());
     }
 
-    public List<MasterDTO> findByProfessionId(Long professionId, boolean isLocaleEn){
+    public List<MasterDTO> findByProfessionIdOrderByNameAsc(Long professionId, boolean isLocaleEn){
         List <Master> masters;
         try(MasterDao masterDao = factory.createMasterDao()){
             masters = masterDao.findByProfessionId(professionId);
         }
-        return masters.stream().map(m->getLocalizedDTO(m, isLocaleEn)).collect(Collectors.toList());
+        return masters.stream().map(m->getLocalizedDTO(m, isLocaleEn))
+                .sorted(Comparator.comparing(MasterDTO::getName))
+                .collect(Collectors.toList());
     }
 
     private MasterDTO getLocalizedDTO (Master master, boolean isLocaleEn){

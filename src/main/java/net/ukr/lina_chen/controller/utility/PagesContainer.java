@@ -13,7 +13,6 @@ public interface PagesContainer {
     String REGISTRATION_PAGE="/registration.jsp";
     String ERROR_PAGE="/error.jsp";
     String SERVICETYPES_PAGE = "/user/servicetypes.jsp";
-    String BEAUTYSERVICES_PAGE = "/user/beautyservices.jsp";
     String MASTER_LIST_PAGE = "/user/masters.jsp";
     String TIME_PAGE = "/user/time.jsp";
     String SAVE_PAGE = "/user/save.jsp";
@@ -22,6 +21,7 @@ public interface PagesContainer {
     String REDIRECT_ARCHIVE_APPOINTMENTS = "redirect:/user/archive";
     String MASTER_APPOINTMENTS_PAGE="/master/appointments.jsp";
     String REDIRECT_MASTER_APPOINTMENTS="redirect:/master/appointments";
+    String REDIRECT_ADMIN_APPOINTMENTS="redirect:/admin/appointments";
     String ADMIN_APPOINTMENTS_PAGE = "/admin/appointments.jsp";
     String ADMIN_COMMENTS_PAGE = "/admin/comments.jsp";
 }

@@ -23,7 +23,7 @@ public class JDBCUserDao implements UserDao {
 
     @Override
     public Long create(User entity) throws SQLException {
-        Long userId = 0L;
+        long userId = 0L;
         try (PreparedStatement ps = connection.prepareStatement(QUERY_REPLACE_USER);
              PreparedStatement getId = connection.prepareStatement(QUERY_GET_ID);
              PreparedStatement setRoles = connection.prepareStatement(QUERY_REPLACE_USER_ROLE)) {
@@ -69,7 +69,9 @@ public class JDBCUserDao implements UserDao {
         } catch (SQLException e) {
             logger.error(e.getMessage());
         }
-        user.setRoles(roles);
+        if (user != null) {
+            user.setRoles(roles);
+        }
         return user;
     }
 
@@ -85,12 +87,6 @@ public class JDBCUserDao implements UserDao {
 
     @Override
     public void delete(Long id) {
-//        try (PreparedStatement statement = connection.prepareStatement(QUERY_DELETE)) {
-//            statement.setLong(1, id);
-//            statement.execute();
-//        } catch (SQLException e) {
-//            logger.error(e.getMessage());
-//        }
     }
 
     @Override
@@ -104,23 +100,23 @@ public class JDBCUserDao implements UserDao {
 
     @Override
     public Optional<User> findUserByEmail(String email) {
-        User user = null;
+        Optional<User>  user = Optional.empty();
         Map<Long, User> users = new HashMap<>();
         Set<Role> roles = new HashSet<>();
         try (PreparedStatement ps = connection.prepareStatement(QUERY_FIND_BY_EMAIL)) {
             ps.setString(1, email);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    user = mapper.extractFromResultSet(rs);
-                    user = mapper.makeUnique(users, user);
+                    user = Optional.ofNullable(mapper.extractFromResultSet(rs));
+                    user.ifPresent(value -> mapper.makeUnique(users,value));
                     roles.add(rolesMapper.extractFromResultSet(rs));
                 }
             }
         } catch (SQLException e) {
             logger.error(e);
         }
-        user.setRoles(roles);
-        return Optional.of(user);
+        user.ifPresent(value -> value.setRoles(roles));
+        return user;
     }
 
 }
