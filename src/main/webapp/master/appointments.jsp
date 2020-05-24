@@ -11,8 +11,7 @@
 </head>
 <body>
 <p><fmt:message key="message.master.schedule">
-    <jsp:useBean id="master" scope="request" type="net.ukr.lina_chen.model.entity.Master"/>
-    <fmt:param value="${master.user.name}"/>
+    <fmt:param value="${requestScope.master.name}"/>
 </fmt:message></p>
 
 <table>

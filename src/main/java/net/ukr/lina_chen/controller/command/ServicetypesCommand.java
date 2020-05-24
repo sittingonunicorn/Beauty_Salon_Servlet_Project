@@ -15,7 +15,8 @@ public class ServicetypesCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
-        request.setAttribute("servicetypes", professionService.getAllServicetypes());
+        request.setAttribute("servicetypes", professionService.getAllServicetypes(
+                CommandUtility.isLocaleEn(request)));
         return SERVICETYPES_PAGE;
     }
 }

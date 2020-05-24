@@ -25,7 +25,7 @@
         <tr>
             <td>
                 <a href="${pageContext.request.contextPath}/app/user/time/${m.id}">
-                        ${m.user.name}
+                        ${m.name}
                     <input type="hidden" value="${m.id}" name="beautyserviceId">
                 </a>
             </td>

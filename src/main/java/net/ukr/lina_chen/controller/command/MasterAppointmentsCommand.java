@@ -1,5 +1,6 @@
 package net.ukr.lina_chen.controller.command;
 
+import net.ukr.lina_chen.model.dto.MasterDTO;
 import net.ukr.lina_chen.model.dto.UserDTO;
 import net.ukr.lina_chen.model.entity.Master;
 import net.ukr.lina_chen.model.entity.User;
@@ -24,8 +25,8 @@ public class MasterAppointmentsCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
-       Optional< Master> master = masterService.getByUserId(
-               ((UserDTO) request.getSession().getAttribute("user")).getId());
+       Optional<MasterDTO> master = masterService.getByUserId(
+               ((UserDTO) request.getSession().getAttribute("user")).getId(), CommandUtility.isLocaleEn(request));
         request.setAttribute("appointments",
                 appointmentService.getMastersAppointments(master.get().getId(), CommandUtility.isLocaleEn(request)));
         request.setAttribute("master", master.get());

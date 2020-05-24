@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -44,7 +45,9 @@ public class TimeCommand implements Command {
         List<AppointmentDTO> appointments = appointmentService.getMastersAppointments(
                 masterId, CommandUtility.isLocaleEn(request));
         List<LocalDateTime> busyTime = appointments.stream()
-                .map(app -> LocalDateTime.of(app.getDate(), app.getTime()))
+                .map(app -> LocalDateTime.of(LocalDate.parse(app.getDate(),
+                        DateTimeFormatter.ofPattern(CommandUtility.isLocaleEn(request)? "MM.dd.yyyy":"dd.MM.yyyy")),
+                        app.getTime()))
                 .collect(Collectors.toList());
         Map<LocalDate, List<LocalTime>> dateTime = new LinkedHashMap <>();
         List<LocalDate> dates = Stream.iterate(LocalDate.now(), date -> date.plusDays(ITERATE_UNIT))
@@ -64,6 +67,8 @@ public class TimeCommand implements Command {
                         limit(ChronoUnit.HOURS.between(master.get().getTimeBegin(), master.get().getTimeEnd())).
                         collect(Collectors.toList()));
         request.setAttribute("dateTime", dateTime);
+        request.setAttribute("masterName", CommandUtility.isLocaleEn(request)? master.get().getUser().getName()
+                :master.get().getUser().getNameUkr());
         return TIME_PAGE;
     }
 }

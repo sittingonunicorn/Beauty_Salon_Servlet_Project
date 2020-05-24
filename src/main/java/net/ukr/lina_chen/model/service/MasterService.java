@@ -2,10 +2,12 @@ package net.ukr.lina_chen.model.service;
 
 import net.ukr.lina_chen.model.dao.MasterDao;
 import net.ukr.lina_chen.model.dao.factory.DaoFactory;
+import net.ukr.lina_chen.model.dto.MasterDTO;
 import net.ukr.lina_chen.model.entity.Master;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class MasterService {
     private final DaoFactory factory = DaoFactory.getInstance();
@@ -18,27 +20,36 @@ public class MasterService {
     return master;
     }
 
-    public Optional<Master> getByUserId(Long userId) {
-        Optional<Master> master;
+    public Optional<MasterDTO> getByUserId(Long userId, boolean isLocaleEn) {
+        Master master;
         try(MasterDao masterDao = factory.createMasterDao()){
-            master = Optional.ofNullable(masterDao.findByUserId(userId));
+            master = masterDao.findByUserId(userId);
         }
-        return master;
+        return Optional.ofNullable(getLocalizedDTO(master, isLocaleEn));
     }
 
-    public List<Master> findAll(){
+    public List<MasterDTO> findAll(boolean isLocaleEn){
         List <Master> masters;
         try(MasterDao masterDao = factory.createMasterDao()){
             masters = masterDao.findAll();
         }
-        return masters;
+        return masters.stream().map(m->getLocalizedDTO(m, isLocaleEn)).collect(Collectors.toList());
     }
 
-    public List<Master> findByProfessionId(Long professionId){
+    public List<MasterDTO> findByProfessionId(Long professionId, boolean isLocaleEn){
         List <Master> masters;
         try(MasterDao masterDao = factory.createMasterDao()){
             masters = masterDao.findByProfessionId(professionId);
         }
-        return masters;
+        return masters.stream().map(m->getLocalizedDTO(m, isLocaleEn)).collect(Collectors.toList());
+    }
+
+    private MasterDTO getLocalizedDTO (Master master, boolean isLocaleEn){
+        return MasterDTO.MasterDTOBuilder.masterDTO()
+                .withId(master.getId())
+                .withName(isLocaleEn? master.getUser().getName(): master.getUser().getNameUkr())
+                .withTimeBegin(master.getTimeBegin())
+                .withTimeEnd(master.getTimeEnd())
+                .build();
     }
 }

@@ -21,7 +21,7 @@ public class AdminCommentsCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
-        request.setAttribute("masters", masterService.findAll());
+        request.setAttribute("masters", masterService.findAll(CommandUtility.isLocaleEn(request)));
         long masterId = (request.getParameter("masterId") != null) ?
                 Long.parseLong(request.getParameter("masterId")) : 0;
         request.setAttribute("archive", (masterId != 0) ?

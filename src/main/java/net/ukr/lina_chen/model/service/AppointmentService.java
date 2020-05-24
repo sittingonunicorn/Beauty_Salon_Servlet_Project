@@ -7,6 +7,8 @@ import net.ukr.lina_chen.model.entity.Appointment;
 
 
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -54,9 +56,13 @@ public class AppointmentService {
                 .withUserName(isLocaleEn ? appointment.getUser().getName()
                         : appointment.getUser().getNameUkr())
                 .withId(appointment.getId())
-                .withDate(appointment.getDate())
+                .withDate(getLocalizedDate(appointment.getDate(), isLocaleEn))
                 .withTime(appointment.getTime())
                 .withProvided(appointment.isProvided())
                 .build();
+    }
+
+    private String getLocalizedDate (LocalDate date, boolean isLocaleEn){
+        return date.format(DateTimeFormatter.ofPattern(isLocaleEn? "MM.dd.YYYY":"dd.MM.YYYY"));
     }
 }

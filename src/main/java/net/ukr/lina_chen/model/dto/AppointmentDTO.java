@@ -1,7 +1,6 @@
 package net.ukr.lina_chen.model.dto;
 
 
-import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class AppointmentDTO {
@@ -10,11 +9,11 @@ public class AppointmentDTO {
     private String userName;
     private String beautyService;
     private LocalTime time;
-    private LocalDate date;
+    private String date;
     private boolean provided;
 
     public AppointmentDTO(Long id, String masterName, String userName,
-                          String beautyService, LocalTime time, LocalDate date, boolean provided) {
+                          String beautyService, LocalTime time, String date, boolean provided) {
         this.id = id;
         this.masterName = masterName;
         this.userName = userName;
@@ -67,11 +66,11 @@ public class AppointmentDTO {
         this.time = time;
     }
 
-    public LocalDate getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -135,7 +134,7 @@ public class AppointmentDTO {
             return this;
         }
 
-        public AppointmentDTOBuilder withDate(LocalDate date)
+        public AppointmentDTOBuilder withDate(String date)
         {
             appointmentDTO.date = date;
             return this;

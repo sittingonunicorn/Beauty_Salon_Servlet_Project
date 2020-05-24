@@ -12,9 +12,7 @@
 <body>
 <ul>
 <c:forEach items="${requestScope.masters}" var="master">
-<li><a href="${pageContext.request.contextPath}/app/admin/comments?masterId=${master.id}">${master.user.name}</a></li>
-<%--    <button type="button" class="btn btn-info" onclick="location.href='?masterId=${master.id}'"--%>
-<%--            >${master.user.name}</button>--%>
+<li><a href="${pageContext.request.contextPath}/app/admin/comments?masterId=${master.id}">${master.name}</a></li>
 </c:forEach></ul>
 <p><fmt:message key="message.user.appointments"/></p>
 <c:forEach items="${requestScope.archive}" var="a">

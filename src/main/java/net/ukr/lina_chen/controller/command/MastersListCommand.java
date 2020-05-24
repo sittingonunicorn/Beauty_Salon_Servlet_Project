@@ -41,7 +41,8 @@ public class MastersListCommand implements Command {
         appointment.setBeautyService(beautyservices.getById(beautyserviceId).get());
         appointment.setUser(userService.getUserById(((UserDTO)session.getAttribute("user")).getId()).get());
         session.setAttribute("appointment", appointment);
-        request.setAttribute("masters", masterService.findByProfessionId(professionId));
+        request.setAttribute("masters", masterService.findByProfessionId(professionId,
+                CommandUtility.isLocaleEn(request)));
         return MASTER_LIST_PAGE;
     }
 }
