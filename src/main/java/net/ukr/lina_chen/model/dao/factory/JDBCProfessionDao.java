@@ -25,11 +25,6 @@ public class JDBCProfessionDao implements ProfessionDao {
     }
 
     @Override
-    public Long create(Profession entity) throws SQLException {
-        return 0L;
-    }
-
-    @Override
     public Profession findById(Long id) {
         Profession profession = null;
         Map<Long, Master> masters = new HashMap<>();

@@ -18,16 +18,16 @@ public class ProfessionService {
             professions = professionDao.findAllServicetypes();
         }
         return professions.stream()
-                .map(p-> ProfessionDTO.ProfessionDTOBuilder.professionDTO()
-                .withId(p.getId())
-                .withBeautyservicesType(isLocaleEn? p.getBeautyservicesType():p.getBeautyservicesTypeUkr())
-                .withName(isLocaleEn? p.getName():p.getNameUkr())
-                .build())
+                .map(p -> ProfessionDTO.ProfessionDTOBuilder.professionDTO()
+                        .withId(p.getId())
+                        .withBeautyservicesType(isLocaleEn ? p.getBeautyservicesType() : p.getBeautyservicesTypeUkr())
+                        .withName(isLocaleEn ? p.getName() : p.getNameUkr())
+                        .build())
                 .sorted(Comparator.comparing(ProfessionDTO::getBeautyservicesType))
                 .collect(Collectors.toList());
     }
 
-    public Profession getById (Long professionId){
+    public Profession getById(Long professionId) {
         Profession profession;
         try (ProfessionDao professionDao = factory.createProfessionDao()) {
             profession = professionDao.findById(professionId);

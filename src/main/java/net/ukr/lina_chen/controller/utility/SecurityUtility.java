@@ -1,8 +1,14 @@
 package net.ukr.lina_chen.controller.utility;
 
+import net.ukr.lina_chen.model.dto.UserDTO;
 import net.ukr.lina_chen.model.entity.Role;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.*;
+
+import static net.ukr.lina_chen.controller.utility.PagesContainer.*;
+import static net.ukr.lina_chen.controller.utility.PagesContainer.REDIRECT_LOGIN;
 
 public class SecurityUtility {
 
@@ -12,7 +18,7 @@ public class SecurityUtility {
         permissions.put(Role.ADMIN, "logout, admin");
         permissions.put(Role.MASTER, "logout, master");
         permissions.put(Role.USER, "logout, user");
-        permissions.put(Role.GUEST, "login, registration, error, index");
+        permissions.put(Role.GUEST, "login, registration, index");
 
     }
 
@@ -23,5 +29,20 @@ public class SecurityUtility {
                 .map(Map.Entry::getValue)
                 .flatMap(s -> Arrays.stream(s.split(", ")))
                 .noneMatch(path::contains);
+    }
+
+    public String getRoleErrorRedirect(HttpServletRequest request){
+        HttpSession session = request.getSession();
+        Optional<UserDTO> user = Optional.ofNullable((UserDTO) session.getAttribute("user"));
+        if (user.isPresent()) {
+            if (user.get().getRoles().contains(Role.ADMIN)) {
+                return REDIRECT_ADMIN;
+            } else if (user.get().getRoles().contains(Role.MASTER)) {
+                return REDIRECT_MASTER;
+            }else {
+                return REDIRECT_USER;
+            }
+        }
+        return REDIRECT_LOGIN;
     }
 }

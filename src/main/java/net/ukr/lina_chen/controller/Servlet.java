@@ -41,7 +41,7 @@ public class Servlet extends HttpServlet {
                 new ServicetypesCommand(new ProfessionService(), new BeautyservicesImpl()));
         commands.put("user/masters/[0-9]*/[0-9]*",
                 new MastersListCommand(new MasterService(), new BeautyservicesImpl(), new UserService()));
-        commands.put("user/time/[0-9]*",
+        commands.put("user/time[/0-9]*",
                 new TimeCommand(new MasterService(), new AppointmentService()));
         commands.put("user/save",
                 new SaveCommand(new AppointmentService()));
@@ -61,6 +61,8 @@ public class Servlet extends HttpServlet {
                 new AdminAppointmentsCommand(new AppointmentService()));
         commands.put("admin/comments",
                 new AdminCommentsCommand(new ArchiveService(), new MasterService()));
+        commands.put("master/comments",
+                new MasterCommentsCommand(new ArchiveService(), new MasterService()));
     }
 
     @Override
@@ -79,12 +81,9 @@ public class Servlet extends HttpServlet {
             throws ServletException, IOException {
         String path = request.getRequestURI();
         path = path.replaceAll(".*/app/", "");
-        String match = commands.keySet().stream().filter(path::matches).findFirst().orElse("error");
-//        Command command = commands.getOrDefault(match,
-//                new ErrorCommand());
-//        command.execute(request, response);
+        String match = commands.keySet().stream().filter(path::matches).findFirst().orElse("index");
         Command command = commands.getOrDefault(match,
-                (r) -> "/error.jsp");
+                (r) -> "/index.jsp");
         String page = command.execute(request);
         if (page.contains("redirect:")) {
             response.sendRedirect(page.replace("redirect:", "/app"));

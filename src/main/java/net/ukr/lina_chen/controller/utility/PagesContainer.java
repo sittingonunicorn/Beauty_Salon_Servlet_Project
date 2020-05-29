@@ -3,6 +3,7 @@ package net.ukr.lina_chen.controller.utility;
 public interface PagesContainer {
     String ADMIN_MAIN = "/admin/adminmain.jsp";
     String REDIRECT_ADMIN = "redirect:/admin";
+    String REDIRECT_DIRECT_ADMIN = "redirect:/app/admin";
     String USER_MAIN = "/user/usermain.jsp";
     String REDIRECT_USER="redirect:/user";
     String MASTER_MAIN ="/master/mastermain.jsp";
@@ -13,8 +14,10 @@ public interface PagesContainer {
     String REGISTRATION_PAGE="/registration.jsp";
     String ERROR_PAGE="/error.jsp";
     String SERVICETYPES_PAGE = "/user/servicetypes.jsp";
+    String REDIRECT_SERVICETYPES = "redirect:/servicetypes";
     String MASTER_LIST_PAGE = "/user/masters.jsp";
     String TIME_PAGE = "/user/time.jsp";
+    String REDIRECT_TIME = "redirect:/user/time";
     String SAVE_PAGE = "/user/save.jsp";
     String ARCHIVE_APPOINTMENTS_PAGE = "/user/archive.jsp";
     String USER_COMMENT_PAGE = "/user/comment.jsp";
@@ -24,4 +27,5 @@ public interface PagesContainer {
     String REDIRECT_ADMIN_APPOINTMENTS="redirect:/admin/appointments";
     String ADMIN_APPOINTMENTS_PAGE = "/admin/appointments.jsp";
     String ADMIN_COMMENTS_PAGE = "/admin/comments.jsp";
+    String MASTER_COMMENTS_PAGE = "/master/comments.jsp";
 }

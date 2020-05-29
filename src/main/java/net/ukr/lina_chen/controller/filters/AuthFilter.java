@@ -24,10 +24,6 @@ public class AuthFilter implements Filter {
         final HttpServletResponse response = (HttpServletResponse) res;
         SecurityUtility securityUtility = new SecurityUtility();
         HttpSession session = request.getSession();
-        ServletContext context = request.getServletContext();
-        ResourceBundle bundle = ResourceBundle.getBundle("messages",
-                new Locale(Optional.ofNullable((String) session.getAttribute("lang"))
-                        .orElse("en")));
         @SuppressWarnings("unchecked")
         Set<Role> roles = (Set<Role>) session.getAttribute("roles");
         String path = request.getRequestURL().toString();
@@ -38,7 +34,6 @@ public class AuthFilter implements Filter {
             roles = guestRoles;
         }
         if (securityUtility.isForbiddenRequest(path, roles)) {
-            request.setAttribute("unauthorized", bundle.getString("unauthorized.request"));
             response.sendRedirect("redirect:/error");
             return;
         }
@@ -47,7 +42,7 @@ public class AuthFilter implements Filter {
 //        logger.info(session.getAttribute("roles"));
 //        logger.info(context.getAttribute("loggedUsers"));
 
-        chain.doFilter(req, res);
+        chain.doFilter(request, response);
     }
 
 }

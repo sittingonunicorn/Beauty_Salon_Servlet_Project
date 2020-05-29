@@ -40,11 +40,6 @@ public class JDBCBeautyserviceDao implements BeautyserviceDao {
     }
 
     @Override
-    public Long create(BeautyService entity) throws SQLException {
-        return 0L;
-    }
-
-    @Override
     public BeautyService findById(Long id) {
         BeautyService beautyService = null;
         try (PreparedStatement st = connection.prepareStatement(QUERY_FIND_BY_ID)) {

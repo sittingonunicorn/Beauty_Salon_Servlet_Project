@@ -35,7 +35,7 @@ public class BeautyservicesImpl {
         return beautyService;
     }
 
-    public BeautyServiceDTO getLocalizedDTO (boolean isLocaleEn, BeautyService beautyService){
+    private BeautyServiceDTO getLocalizedDTO (boolean isLocaleEn, BeautyService beautyService){
         return BeautyServiceDTO.BeautyServiceDTOBuilder.beautyServiceDTO()
                 .withId(beautyService.getId())
                 .withName(isLocaleEn? beautyService.getName():beautyService.getNameUkr())

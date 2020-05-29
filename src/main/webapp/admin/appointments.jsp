@@ -1,16 +1,10 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core_1_1" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
-<%@ page isELIgnored="false" %>
-<%@ page session="true" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<fmt:setLocale value="${sessionScope.lang}"/>
 <html>
 <head>
-    <title>Appointments</title>
+    <%@ include file="adminmenu.jsp" %>
+    <title><fmt:message key="link.appointments"/></title>
 </head>
 <body>
-<table>
+<table class="table table-hover">
     <thead>
     <tr>
         <th><fmt:message key="var.beautyservice"/></th>
@@ -23,31 +17,35 @@
     </thead>
     <tbody>
     <c:forEach items="${requestScope.appointments}" var="a">
-    <tr>
-        <td>${a.beautyService}</td>
-        <td>${a.date}</td>
-        <td>${a.time}</td>
-        <td>${a.userName}</td>
-        <td><fmt:message key="bool.${a.provided}"/></td>
-        <td>
-            <form method="post" action="${pageContext.request.contextPath}/app/admin/provide">
-                <div class="row-fluid practice" style="width: 99%; height: 100%;">
-                    <button type="submit" name="appointmentId" value="${a.id}">
-                        <fmt:message key="message.provided"/>
-                    </button>
-                </div>
-            </form>
-        </td>
-
-        </c:forEach>
+        <tr>
+            <td>${a.beautyService}</td>
+            <td>${a.date}</td>
+            <td>${a.time}</td>
+            <td>${a.userName}</td>
+            <td><fmt:message key="bool.${a.provided}"/></td>
+            <td>
+                <form method="post" action="${pageContext.request.contextPath}/app/admin/provide">
+                    <div class="row-fluid practice" style="width: 99%; height: 100%;">
+                        <button type="submit" name="appointmentId" value="${a.id}">
+                            <fmt:message key="message.provided"/>
+                        </button>
+                    </div>
+                </form>
+            </td>
+        </tr>
+    </c:forEach>
     </tbody>
 </table>
-<c:if test="${requestScope.pageNumbers.size() != 0}">
-            <c:forEach items = "${requestScope.pageNumbers}" var = "page">
-                    <a href="?page=${page - 1}">
-                            ${page}
-                    </a>
+<nav aria-label="Page navigation example">
+    <c:if test="${requestScope.pageNumbers.size() != 0}">
+        <ul class="pagination">
+            <c:forEach items="${requestScope.pageNumbers}" var="page">
+                <li class="page-item">
+                    <a  class="page-link" href="?page=${page - 1}">${page}</a>
+                </li>
             </c:forEach>
-</c:if>
+        </ul>
+    </c:if>
+</nav>
 </body>
 </html>

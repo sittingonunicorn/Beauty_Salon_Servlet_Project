@@ -1,5 +1,6 @@
 package net.ukr.lina_chen.model.dao.factory;
 
+import net.ukr.lina_chen.exceptions.UserExistsException;
 import net.ukr.lina_chen.model.dao.UserDao;
 import net.ukr.lina_chen.model.dao.mapper.RolesMapper;
 import net.ukr.lina_chen.model.dao.mapper.UserMapper;
@@ -21,18 +22,23 @@ public class JDBCUserDao implements UserDao {
         this.connection = connection;
     }
 
-    @Override
-    public Long create(User entity) throws SQLException {
+    public Long create(User entity) throws UserExistsException {
         long userId = 0L;
-        try (PreparedStatement ps = connection.prepareStatement(QUERY_REPLACE_USER);
+        try (PreparedStatement checkIfExists = connection.prepareStatement(QUERY_FIND_BY_EMAIL);
+                PreparedStatement replaceUser = connection.prepareStatement(QUERY_REPLACE_USER);
              PreparedStatement getId = connection.prepareStatement(QUERY_GET_ID);
              PreparedStatement setRoles = connection.prepareStatement(QUERY_REPLACE_USER_ROLE)) {
-            ps.setString(1, entity.getEmail());
-            ps.setString(2, entity.getName());
-            ps.setString(3, entity.getNameUkr());
-            ps.setString(4, entity.getPassword());
+            replaceUser.setString(1, entity.getEmail());
+            replaceUser.setString(2, entity.getName());
+            replaceUser.setString(3, entity.getNameUkr());
+            replaceUser.setString(4, entity.getPassword());
             connection.setAutoCommit(false);
-            ps.executeUpdate();
+            try (ResultSet rs = checkIfExists.executeQuery()) {
+                if (rs.next()) {
+                    throw new UserExistsException();
+                }
+            }
+            replaceUser.executeUpdate();
             try (ResultSet resultSet = getId.executeQuery()) {
                 while (resultSet.next()) {
                     userId = resultSet.getLong("user_id");

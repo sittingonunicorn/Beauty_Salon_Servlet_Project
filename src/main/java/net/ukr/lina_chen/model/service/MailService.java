@@ -38,6 +38,7 @@ public class MailService {
         }
         Session session = Session.getInstance(mailProperties,
                 new javax.mail.Authenticator() {
+                    @Override
                     protected PasswordAuthentication getPasswordAuthentication() {
                         return new PasswordAuthentication(username, password);
                     }

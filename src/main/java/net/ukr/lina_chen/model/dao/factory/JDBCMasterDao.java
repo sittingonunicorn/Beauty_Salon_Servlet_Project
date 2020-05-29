@@ -26,11 +26,6 @@ public class JDBCMasterDao implements MasterDao {
     }
 
     @Override
-    public Long create(Master entity) throws SQLException {
-        return 0L;
-    }
-
-    @Override
     public Master findById(Long id) {
         Master master = null;
         try (PreparedStatement st = connection.prepareStatement(QUERY_FIND_BY_ID)) {

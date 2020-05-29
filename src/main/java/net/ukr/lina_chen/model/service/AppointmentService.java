@@ -1,16 +1,19 @@
 package net.ukr.lina_chen.model.service;
 
+import net.ukr.lina_chen.exceptions.TimeIsBusyException;
 import net.ukr.lina_chen.model.dao.AppointmentDao;
 import net.ukr.lina_chen.model.dao.factory.DaoFactory;
 import net.ukr.lina_chen.model.dto.AppointmentDTO;
 import net.ukr.lina_chen.model.entity.Appointment;
+import net.ukr.lina_chen.model.entity.Master;
+import net.ukr.lina_chen.model.entity.User;
 
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
+
+import static net.ukr.lina_chen.controller.utility.IConstants.DATE_FORMAT;
 
 public class AppointmentService {
     private final DaoFactory factory = DaoFactory.getInstance();
@@ -45,7 +48,7 @@ public class AppointmentService {
                 .collect(Collectors.toList());
     }
 
-    public Long saveAppointment(Appointment appointment) throws SQLException {
+    public Long saveAppointment(Appointment appointment) throws TimeIsBusyException {
         Long id;
         try (AppointmentDao appointmentDao = factory.createAppointmentDao()) {
             id = appointmentDao.create(appointment);
@@ -54,12 +57,12 @@ public class AppointmentService {
     }
 
     public AppointmentDTO getLocalizedDto(boolean isLocaleEn, Appointment appointment) {
+        Optional<Master> masterOptional = new MasterService().getById(appointment.getMaster().getId());
+        User master = masterOptional.isPresent()? masterOptional.get().getUser(): new User();
         return AppointmentDTO.AppointmentDTOBuilder.appointmentDTO()
                 .withBeautyService(isLocaleEn ? appointment.getBeautyService().getName()
                         : appointment.getBeautyService().getNameUkr())
-                .withMasterName(isLocaleEn ?
-                        new MasterService().getById(appointment.getMaster().getId()).get().getUser().getName()
-                        : new MasterService().getById(appointment.getMaster().getId()).get().getUser().getNameUkr())
+                .withMasterName(isLocaleEn ? master.getName(): master.getNameUkr())
                 .withUserName(isLocaleEn ? appointment.getUser().getName()
                         : appointment.getUser().getNameUkr())
                 .withId(appointment.getId())
@@ -70,6 +73,8 @@ public class AppointmentService {
     }
 
     private String getLocalizedDate (LocalDate date, boolean isLocaleEn){
-        return date.format(DateTimeFormatter.ofPattern(isLocaleEn? "MM.dd.yyyy":"dd.MM.yyyy"));
+        ResourceBundle bundle = ResourceBundle.getBundle("messages",
+                isLocaleEn? Locale.US: new Locale("ua"));
+        return date.format(DateTimeFormatter.ofPattern(bundle.getString(DATE_FORMAT)));
     }
 }

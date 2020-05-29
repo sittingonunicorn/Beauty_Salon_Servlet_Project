@@ -1,5 +1,6 @@
 package net.ukr.lina_chen.model.dao.factory;
 
+import net.ukr.lina_chen.exceptions.TimeIsBusyException;
 import net.ukr.lina_chen.model.dao.AppointmentDao;
 import net.ukr.lina_chen.model.dao.mapper.AppointmentMapper;
 import net.ukr.lina_chen.model.entity.Appointment;
@@ -21,20 +22,28 @@ public class JDBCAppointmentDao implements AppointmentDao {
         this.connection = connection;
     }
 
-    @Override
-    public Long create(Appointment entity) throws SQLException {
+    public Long create(Appointment entity) throws TimeIsBusyException {
         Long appointmentId = 0L;
         //TODO check availability
-        try (PreparedStatement ps = connection.prepareStatement(QUERY_REPLACE);
+        try (PreparedStatement checkIfExists = connection.prepareStatement(QUERY_FIND_BY_MASTER_DATE_TIME);
+             PreparedStatement replace = connection.prepareStatement(QUERY_REPLACE);
              PreparedStatement getId = connection.prepareStatement(QUERY_GET_ID)) {
-            ps.setLong(1, entity.getMaster().getId());
-            ps.setLong(2, entity.getUser().getId());
-            ps.setLong(3, entity.getBeautyService().getId());
-            ps.setTime(4, Time.valueOf(entity.getTime()));
-            ps.setDate(5, Date.valueOf(entity.getDate()));
-            ps.setBoolean(6, entity.isProvided());
+            checkIfExists.setLong(1, entity.getMaster().getId());
+            checkIfExists.setDate(2, Date.valueOf(entity.getDate()));
+            checkIfExists.setTime(3, Time.valueOf(entity.getTime()));
+            replace.setLong(1, entity.getMaster().getId());
+            replace.setLong(2, entity.getUser().getId());
+            replace.setLong(3, entity.getBeautyService().getId());
+            replace.setTime(4, Time.valueOf(entity.getTime()));
+            replace.setDate(5, Date.valueOf(entity.getDate()));
+            replace.setBoolean(6, entity.isProvided());
             connection.setAutoCommit(false);
-            ps.executeUpdate();
+            try (ResultSet rs = checkIfExists.executeQuery()) {
+                if (rs.next()) {
+                    throw new TimeIsBusyException("Time is already busy");
+                }
+            }
+            replace.executeUpdate();
             try (ResultSet resultSet = getId.executeQuery()) {
                 if (resultSet.next()) {
                     appointmentId = resultSet.getLong("appointment_id");
@@ -105,7 +114,7 @@ public class JDBCAppointmentDao implements AppointmentDao {
         try {
             connection.close();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            logger.error(e.getMessage());
         }
     }
 

@@ -1,7 +1,7 @@
 package net.ukr.lina_chen.model.service;
 
 import net.ukr.lina_chen.controller.utility.NewUserDataValidator;
-import net.ukr.lina_chen.exceptions.InvalidUserDataException;
+import net.ukr.lina_chen.exceptions.InvalidDataException;
 import net.ukr.lina_chen.exceptions.UserExistsException;
 import net.ukr.lina_chen.model.dao.UserDao;
 import net.ukr.lina_chen.model.dao.factory.DaoFactory;
@@ -28,12 +28,12 @@ public class UserService {
     public Optional<UserDTO> getUserByEmailAndPassword(String email, String password, boolean isLocaleEn) {
         try (UserDao userDao = factory.createUserDao()) {
             Optional<User> user = userDao.findUserByEmail(email);
-            if (user.isPresent() && BCrypt.checkpw(password,user.get().getPassword())) {
+            if (user.isPresent() && BCrypt.checkpw(password, user.get().getPassword())) {
                 return Optional.of(UserDTO.Builder.anUserDTO()
                         .withEmail(user.get().getEmail())
                         .withPassword(user.get().getPassword())
                         .withRoles(user.get().getRoles())
-                        .withName(isLocaleEn? user.get().getName(): user.get().getNameUkr())
+                        .withName(isLocaleEn ? user.get().getName() : user.get().getNameUkr())
                         .withId(user.get().getId())
                         .build());
             } else {
@@ -50,14 +50,14 @@ public class UserService {
 
     public void saveNewUser(User user) throws SQLException, UserExistsException {
         if (userExists(user.getEmail())) {
-            throw new UserExistsException("User with such email already exists");
+            throw new UserExistsException();
         }
         try (UserDao userDao = factory.createUserDao()) {
             userDao.create(user);
         }
     }
 
-    public User extractUserFromRequest(HttpServletRequest request) throws InvalidUserDataException {
+    public User extractUserFromRequest(HttpServletRequest request) throws InvalidDataException {
         validator.validateUser(request);
         Set<Role> roles = new HashSet<>();
         roles.add(Role.USER);
@@ -74,8 +74,8 @@ public class UserService {
         Optional<User> user;
         try (UserDao userDao = factory.createUserDao()) {
             user = Optional.of(userDao.findById(id));
-            }
-        return user;
         }
+        return user;
     }
+}
 

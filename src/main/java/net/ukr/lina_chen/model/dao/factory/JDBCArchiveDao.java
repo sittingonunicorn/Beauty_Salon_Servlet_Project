@@ -23,8 +23,7 @@ public class JDBCArchiveDao implements ArchiveDao {
         this.connection = connection;
     }
 
-    @Override
-    public Long create(ArchiveAppointment entity) throws SQLException {
+    public Long create(ArchiveAppointment entity){
         Long archiveId = 0L;
         try (PreparedStatement replace = connection.prepareStatement(QUERY_REPLACE);
              PreparedStatement getId = connection.prepareStatement(QUERY_GET_ID)) {

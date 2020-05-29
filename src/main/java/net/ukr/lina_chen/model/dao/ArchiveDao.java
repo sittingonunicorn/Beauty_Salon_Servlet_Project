@@ -30,4 +30,6 @@ public interface ArchiveDao extends GenericDao<ArchiveAppointment> {
     void setComment (String comment, Long appointmentId);
 
     List<ArchiveAppointment> getAllComments();
+
+    Long create(ArchiveAppointment entity);
 }

@@ -1,5 +1,6 @@
 package net.ukr.lina_chen.controller.command;
 
+import net.ukr.lina_chen.exceptions.TimeIsBusyException;
 import net.ukr.lina_chen.model.entity.Appointment;
 import net.ukr.lina_chen.model.service.AppointmentService;
 import org.apache.logging.log4j.LogManager;
@@ -7,12 +8,11 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Optional;
 
-import static net.ukr.lina_chen.controller.utility.PagesContainer.SAVE_PAGE;
+import static net.ukr.lina_chen.controller.utility.PagesContainer.*;
 
 public class SaveCommand implements Command {
     AppointmentService appointmentService;
@@ -33,8 +33,9 @@ public class SaveCommand implements Command {
         Optional<Long> appointmentId = Optional.empty();
         try {
             appointmentId = Optional.of(appointmentService.saveAppointment(appointment));
-        } catch (SQLException e) {
+        } catch (TimeIsBusyException e) {
             logger.error(e.getMessage());
+            return REDIRECT_TIME+"/"+appointment.getMaster().getId() + "?timeBusy=true";
         }
         request.setAttribute(
                 "appointment", appointmentId.map(
