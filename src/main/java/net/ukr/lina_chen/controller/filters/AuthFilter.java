@@ -10,7 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 public class AuthFilter implements Filter {
     private static final Logger logger = LogManager.getLogger(AuthFilter.class);
@@ -22,7 +23,7 @@ public class AuthFilter implements Filter {
 
         final HttpServletRequest request = (HttpServletRequest) req;
         final HttpServletResponse response = (HttpServletResponse) res;
-        SecurityUtility securityUtility = new SecurityUtility();
+        SecurityUtility securityUtility= new SecurityUtility();
         HttpSession session = request.getSession();
         @SuppressWarnings("unchecked")
         Set<Role> roles = (Set<Role>) session.getAttribute("roles");
@@ -34,7 +35,7 @@ public class AuthFilter implements Filter {
             roles = guestRoles;
         }
         if (securityUtility.isForbiddenRequest(path, roles)) {
-            response.sendRedirect("redirect:/error");
+            response.sendRedirect(request.getContextPath() + "/app/error");
             return;
         }
 //

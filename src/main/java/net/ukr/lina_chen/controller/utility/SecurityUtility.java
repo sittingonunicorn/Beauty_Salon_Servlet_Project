@@ -12,13 +12,13 @@ import static net.ukr.lina_chen.controller.utility.PagesContainer.REDIRECT_LOGIN
 
 public class SecurityUtility {
 
-    Map<Role, String> permissions = new HashMap<>();
+    private Map<Role, String> permissions = new HashMap<>();
 
     public SecurityUtility() {
-        permissions.put(Role.ADMIN, "logout, admin");
-        permissions.put(Role.MASTER, "logout, master");
-        permissions.put(Role.USER, "logout, user");
-        permissions.put(Role.GUEST, "login, registration, index");
+        permissions.put(Role.ADMIN, "logout, admin, error, user");
+        permissions.put(Role.MASTER, "logout, master, error, user");
+        permissions.put(Role.USER, "logout, user, error");
+        permissions.put(Role.GUEST, "login, registration, index, error");
 
     }
 
