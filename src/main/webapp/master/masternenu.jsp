@@ -41,14 +41,14 @@
     </ul>
 
 </nav>
-<footer class="footer">
-    <div>
+<nav class="navbar fixed-bottom navbar-light bg-info">
+    <div class="navbar-text" style="color: white">
         <fmt:message key="footer.name"/>
     </div>
-    <div>
+    <div class="navbar-text" style="color: white">
         <fmt:message key="footer.rights.reserved"/>
     </div>
-</footer>
+</nav>
 </body>
 </html>
 

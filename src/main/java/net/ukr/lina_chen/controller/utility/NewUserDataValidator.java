@@ -28,6 +28,9 @@ public class NewUserDataValidator {
         if(!request.getParameter("password").matches(PASSWORD_REGEX)){
             validation.add("wrongPasswordFormat");
         }
+        if(!request.getParameter("password").equals(request.getParameter("confirmPassword"))){
+            validation.add("passwordsDontMatch");
+        }
 
         if (!validation.isEmpty()){
             validation.forEach(logger::info);
