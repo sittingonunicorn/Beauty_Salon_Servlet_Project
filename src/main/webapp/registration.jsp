@@ -20,6 +20,7 @@
                                 </c:if>
                             </div>
                             <form method="post" action="${pageContext.request.contextPath}/app/registration">
+                                <input id="csrfToken" name="csrfToken" type="hidden" value="${sessionScope.csrfToken}" />
                                 <div class="form-group">
                                     <c:if test="${requestScope.wrongEmailFormat}">
                                         <div class="alert alert-danger" role="alert"><fmt:message

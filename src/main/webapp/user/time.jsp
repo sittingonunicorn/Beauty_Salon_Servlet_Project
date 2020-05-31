@@ -12,6 +12,7 @@
 </c:if>
 <c:forEach items="${requestScope.dateTime}" var="entry">
     <form action="${pageContext.request.contextPath}/app/user/save" role="form">
+        <input id="csrfToken" name="csrfToken" type="hidden" value="${sessionScope.csrfToken}" />
         <div class="panel-body">
             <div class="treeHTML">
                 <div><h6>${entry.key}</h6>

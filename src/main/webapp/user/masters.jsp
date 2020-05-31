@@ -17,6 +17,7 @@
                 <a href="${pageContext.request.contextPath}/app/user/time?masterId=${m.id}">
                         ${m.name}
                     <input type="hidden" value="${m.id}" name="masterId">
+                    <input id="csrfToken" name="csrfToken" type="hidden" value="${sessionScope.csrfToken}" />
                 </a>
             </td>
             <td><fmt:message key="message.master.work.time">

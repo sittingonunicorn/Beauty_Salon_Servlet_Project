@@ -28,6 +28,7 @@
         <td>
             <form action="${pageContext.request.contextPath}/app/user/comment" role="form"
                   method="post">
+                <input id="csrfToken" name="csrfToken" type="hidden" value="${sessionScope.csrfToken}" />
                 <div class="form-group">
                 <textarea class="form-control" id="newComment"
                           name="newComment" placeholder="<fmt:message key="var.comment"/>"></textarea>

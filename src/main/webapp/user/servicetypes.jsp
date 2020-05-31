@@ -31,6 +31,7 @@
                     <a href="${pageContext.request.contextPath}/app/user/masters/${requestScope.professionId}/${b.id}">
                             ${b.name}
                         <input type="hidden" value="${b.id}" name="beautyserviceId">
+                        <input id="csrfToken" name="csrfToken" type="hidden" value="${sessionScope.csrfToken}" />
                     </a>
                 </td>
                 <td>${b.price}</td>

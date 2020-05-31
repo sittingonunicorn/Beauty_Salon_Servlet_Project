@@ -25,6 +25,7 @@
             <td><fmt:message key="bool.${a.provided}"/></td>
             <td>
                 <form method="post" action="${pageContext.request.contextPath}/app/admin/provide">
+                    <input id="csrfToken" name="csrfToken" type="hidden" value="${sessionScope.csrfToken}" />
                     <div class="row-fluid practice" style="width: 99%; height: 100%;">
                         <button type="submit" name="appointmentId" value="${a.id}">
                             <fmt:message key="message.provided"/>

@@ -1,17 +1,16 @@
 package net.ukr.lina_chen.controller.utility;
 
-import net.ukr.lina_chen.model.dto.UserDTO;
 import net.ukr.lina_chen.model.entity.Role;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.util.*;
-
-import static net.ukr.lina_chen.controller.utility.PagesContainer.*;
-import static net.ukr.lina_chen.controller.utility.PagesContainer.REDIRECT_LOGIN;
+import javax.xml.bind.DatatypeConverter;
+import java.security.SecureRandom;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 public class SecurityUtility {
-
+    private final SecureRandom secureRandom = new SecureRandom();
     private Map<Role, String> permissions = new HashMap<>();
 
     public SecurityUtility() {
@@ -31,18 +30,9 @@ public class SecurityUtility {
                 .noneMatch(path::contains);
     }
 
-    public String getRoleErrorRedirect(HttpServletRequest request){
-        HttpSession session = request.getSession();
-        Optional<UserDTO> user = Optional.ofNullable((UserDTO) session.getAttribute("user"));
-        if (user.isPresent()) {
-            if (user.get().getRoles().contains(Role.ADMIN)) {
-                return REDIRECT_ADMIN;
-            } else if (user.get().getRoles().contains(Role.MASTER)) {
-                return REDIRECT_MASTER;
-            }else {
-                return REDIRECT_USER;
-            }
-        }
-        return REDIRECT_LOGIN;
+    public String generateCSRFToken() {
+        byte[] bytes = new byte[50];
+        secureRandom.nextBytes(bytes);
+        return DatatypeConverter.printHexBinary(bytes);
     }
 }
