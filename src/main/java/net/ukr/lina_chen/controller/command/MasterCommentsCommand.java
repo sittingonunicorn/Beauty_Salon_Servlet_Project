@@ -1,6 +1,7 @@
 package net.ukr.lina_chen.controller.command;
 
 import net.ukr.lina_chen.controller.utility.PageRequest;
+import net.ukr.lina_chen.exceptions.MasterNotFoundException;
 import net.ukr.lina_chen.model.dto.ArchiveAppointmentDTO;
 import net.ukr.lina_chen.model.dto.MasterDTO;
 import net.ukr.lina_chen.model.dto.UserDTO;
@@ -13,6 +14,7 @@ import java.util.Locale;
 import java.util.Optional;
 
 import static net.ukr.lina_chen.controller.utility.PagesContainer.MASTER_COMMENTS_PAGE;
+import static net.ukr.lina_chen.controller.utility.PagesContainer.REDIRECT_MASTER;
 
 public class MasterCommentsCommand implements Command{
     private final ArchiveService archiveService;
@@ -27,10 +29,16 @@ public class MasterCommentsCommand implements Command{
     public String execute(HttpServletRequest request) {
         Locale locale = CommandUtility.geLocale(request);
         int page = Integer.parseInt(Optional.ofNullable(request.getParameter("page")).orElse("0"));
-        Optional<MasterDTO> master = masterService.getByUserId(
-                ((UserDTO) request.getSession().getAttribute("user")).getId(), locale);
+        MasterDTO master;
+        try {
+            master = masterService.getByUserId(
+                    ((UserDTO) request.getSession().getAttribute("user")).getId(), locale)
+                    .orElseThrow(() -> new MasterNotFoundException("master not found"));
+        } catch (MasterNotFoundException e) {
+            return REDIRECT_MASTER;
+        }
         List<ArchiveAppointmentDTO> archive = archiveService.getMasterCommentsOrderByDateTimeDesc(
-                master.get().getId(), locale);
+                master.getId(), locale);
         PageRequest<ArchiveAppointmentDTO> pageRequest = new PageRequest<>(archive);
         archive = pageRequest.getPage(page);
         request.setAttribute("archive", archive);

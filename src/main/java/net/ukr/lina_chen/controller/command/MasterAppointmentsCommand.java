@@ -1,6 +1,7 @@
 package net.ukr.lina_chen.controller.command;
 
 import net.ukr.lina_chen.controller.utility.PageRequest;
+import net.ukr.lina_chen.exceptions.MasterNotFoundException;
 import net.ukr.lina_chen.model.dto.AppointmentDTO;
 import net.ukr.lina_chen.model.dto.MasterDTO;
 import net.ukr.lina_chen.model.dto.UserDTO;
@@ -13,6 +14,7 @@ import java.util.Locale;
 import java.util.Optional;
 
 import static net.ukr.lina_chen.controller.utility.PagesContainer.MASTER_APPOINTMENTS_PAGE;
+import static net.ukr.lina_chen.controller.utility.PagesContainer.REDIRECT_MASTER;
 
 public class MasterAppointmentsCommand implements Command {
     private final AppointmentService appointmentService;
@@ -28,14 +30,20 @@ public class MasterAppointmentsCommand implements Command {
     public String execute(HttpServletRequest request) {
         Locale locale = CommandUtility.geLocale(request);
         int page = Integer.parseInt(Optional.ofNullable(request.getParameter("page")).orElse("0"));
-        Optional<MasterDTO> master = masterService.getByUserId(
-                ((UserDTO) request.getSession().getAttribute("user")).getId(), locale);
+        MasterDTO master;
+        try {
+            master = masterService.getByUserId(
+                    ((UserDTO) request.getSession().getAttribute("user")).getId(), locale)
+                    .orElseThrow(() -> new MasterNotFoundException("master not found"));
+        } catch (MasterNotFoundException e) {
+            return REDIRECT_MASTER;
+        }
         List<AppointmentDTO> appointments = appointmentService.getMastersAppointmentsOrderByDateTimeAsc(
-                master.get().getId(), locale);
+                master.getId(), locale);
         PageRequest<AppointmentDTO> pageRequest = new PageRequest<>(appointments);
         appointments = pageRequest.getPage(page);
         request.setAttribute("appointments", appointments);
-        request.setAttribute("master", master.get());
+        request.setAttribute("master", master);
         request.setAttribute("pageNumbers", pageRequest.getPageNumbers());
         return MASTER_APPOINTMENTS_PAGE;
     }

@@ -22,16 +22,15 @@
     </tbody>
 </table>
 <c:if test="${requestScope.beautyservices!=null}">
-    <table  class="table table-hover">
+    <table class="table table-hover">
         <tbody>
         <c:forEach items="${requestScope.beautyservices}" var="b">
             <tr>
                 <td></td>
                 <td>
-                    <a href="${pageContext.request.contextPath}/app/user/masters/${requestScope.professionId}/${b.id}">
+                    <a href="${pageContext.request.contextPath}/app/user/masters?professionId=${requestScope.professionId}&beautyserviceId=${b.id}">
                             ${b.name}
-                        <input type="hidden" value="${b.id}" name="beautyserviceId">
-                        <input id="csrfToken" name="csrfToken" type="hidden" value="${sessionScope.csrfToken}" />
+                        <input id="csrfToken" name="csrfToken" type="hidden" value="${sessionScope.csrfToken}"/>
                     </a>
                 </td>
                 <td>${b.price}</td>

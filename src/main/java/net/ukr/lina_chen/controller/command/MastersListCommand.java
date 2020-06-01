@@ -1,5 +1,6 @@
 package net.ukr.lina_chen.controller.command;
 
+import net.ukr.lina_chen.exceptions.InvalidDataException;
 import net.ukr.lina_chen.model.dto.UserDTO;
 import net.ukr.lina_chen.model.entity.Appointment;
 import net.ukr.lina_chen.model.service.BeautyservicesImpl;
@@ -12,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Locale;
 
-import static net.ukr.lina_chen.controller.utility.PagesContainer.MASTER_LIST_PAGE;
+import static net.ukr.lina_chen.controller.utility.PagesContainer.*;
 
 public class MastersListCommand implements Command {
     private final MasterService masterService;
@@ -31,15 +32,23 @@ public class MastersListCommand implements Command {
     public String execute(HttpServletRequest request) {
         Locale locale = CommandUtility.geLocale(request);
         Appointment appointment = new Appointment();
-        String path = request.getRequestURI();
         HttpSession session = request.getSession();
-        //TODO refactor
-        //request.getParameter()
-        String[] params = path.replaceAll(".*/app/user/masters/", "").split("/");
-        Long professionId = Long.parseLong(params[0]);
-        Long beautyserviceId = Long.parseLong(params[1]);
-        appointment.setBeautyService(beautyservices.getById(beautyserviceId, locale).get());
-        appointment.setUser(userService.getUserById(((UserDTO)session.getAttribute("user")).getId(), locale).get());
+        Long professionId = Long.parseLong(request.getParameter("professionId"));
+        Long beautyserviceId = Long.parseLong(request.getParameter("beautyserviceId"));
+        try {
+            appointment.setBeautyService(beautyservices.getById(beautyserviceId, locale)
+                    .orElseThrow(InvalidDataException::new));
+        } catch (InvalidDataException e) {
+            logger.error(e.getMessage());
+            return REDIRECT_SERVICETYPES;
+        }
+        try {
+            appointment.setUser(userService.getUserById(((UserDTO)session.getAttribute("user")).getId(), locale)
+                    .orElseThrow(InvalidDataException::new));
+        } catch (InvalidDataException e) {
+            logger.error(e.getMessage());
+            return REDIRECT_LOGIN;
+        }
         session.setAttribute("appointment", appointment);
         request.setAttribute("masters", masterService.findByProfessionIdOrderByNameAsc(professionId, locale));
         return MASTER_LIST_PAGE;
