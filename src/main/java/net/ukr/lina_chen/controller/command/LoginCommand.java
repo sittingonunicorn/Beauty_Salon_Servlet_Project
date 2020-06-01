@@ -2,14 +2,10 @@ package net.ukr.lina_chen.controller.command;
 
 import net.ukr.lina_chen.model.dto.UserDTO;
 import net.ukr.lina_chen.model.entity.Role;
-import net.ukr.lina_chen.model.entity.User;
 import net.ukr.lina_chen.model.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import static net.ukr.lina_chen.controller.utility.PagesContainer.*;
 
@@ -23,15 +19,15 @@ public class LoginCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
+        Locale locale = CommandUtility.geLocale(request);
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
         if (email == null || email.equals("") || password == null || password.equals("")) {
             return LOGIN_PAGE;
         }
-
         Optional<UserDTO> user = userService.getUserByEmailAndPassword(
-                email, password, CommandUtility.isLocaleEn(request));
+                email, password, locale);
         if (user.isPresent()) {
             if (CommandUtility.checkUserIsLogged(request, email)) {
                 return ERROR_PAGE;
@@ -49,9 +45,6 @@ public class LoginCommand implements Command {
 
             }
         }
-        Set<Role> roles = new HashSet<>();
-        roles.add(Role.GUEST);
-        CommandUtility.setUserRoles(request, roles, email);
         return REDIRECT_LOGIN;
     }
 }

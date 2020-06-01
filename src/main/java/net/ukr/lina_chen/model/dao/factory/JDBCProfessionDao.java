@@ -19,16 +19,18 @@ public class JDBCProfessionDao implements ProfessionDao {
     private final Connection connection;
     private final MasterMapper masterMapper = new MasterMapper();
     private final ProfessionMapper professionMapper = new ProfessionMapper();
+    private final ResourceBundle bundle;
 
-    public JDBCProfessionDao(Connection connection) {
+    public JDBCProfessionDao(Connection connection, ResourceBundle bundle) {
         this.connection = connection;
+        this.bundle = bundle;
     }
 
     @Override
     public Profession findById(Long id) {
         Profession profession = null;
         Map<Long, Master> masters = new HashMap<>();
-        try (PreparedStatement st = connection.prepareStatement(QUERY_FIND_BY_ID)) {
+        try (PreparedStatement st = connection.prepareStatement(bundle.getString("query.find.profession.by.id"))) {
             st.setLong(1, id);
             try (ResultSet rs = st.executeQuery()) {
                 while (rs.next()) {
@@ -49,7 +51,7 @@ public class JDBCProfessionDao implements ProfessionDao {
     @Override
     public List<Profession> findAll() {
         Map<Long, Profession> professions = new HashMap<>();
-        try (PreparedStatement ps = connection.prepareStatement(QUERY_FIND_ALL);
+        try (PreparedStatement ps = connection.prepareStatement(bundle.getString("query.find.all.professions"));
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 Profession profession = professionMapper.extractFromResultSet(rs);
@@ -86,7 +88,7 @@ public class JDBCProfessionDao implements ProfessionDao {
     @Override
     public List<Profession> findAllServicetypes() {
         Map<Long, Profession> professions = new HashMap<>();
-        try (PreparedStatement ps = connection.prepareStatement(QUERY_FIND_ALL);
+        try (PreparedStatement ps = connection.prepareStatement(bundle.getString("query.find.all.professions"));
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 Profession profession = professionMapper.extractFromResultSet(rs);

@@ -2,16 +2,18 @@ package net.ukr.lina_chen.controller.command;
 
 import net.ukr.lina_chen.model.dto.UserDTO;
 import net.ukr.lina_chen.model.entity.Role;
-import net.ukr.lina_chen.model.entity.User;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
+
+import static net.ukr.lina_chen.controller.utility.IConstants.LOGGED_USERS;
 
 class CommandUtility {
+    private CommandUtility() {
+    }
+
     static void setUserRoles(HttpServletRequest request,
                              Set<Role> roles, String email) {
         HttpSession session = request.getSession();
@@ -27,7 +29,7 @@ class CommandUtility {
         }
         loggedUsers.add(email);
         request.getSession().getServletContext()
-                .setAttribute("loggedUsers", loggedUsers);
+                .setAttribute(LOGGED_USERS, loggedUsers);
         return false;
     }
 
@@ -36,23 +38,26 @@ class CommandUtility {
         HashSet<String> loggedUsers = getLoggedUsers(request);
         loggedUsers.remove(user.getEmail());
         request.getSession().getServletContext()
-                .setAttribute("loggedUsers", loggedUsers);
+                .setAttribute(LOGGED_USERS, loggedUsers);
 
     }
 
     private static HashSet<String> getLoggedUsers(HttpServletRequest request) {
         @SuppressWarnings("unchecked")
         HashSet<String> loggedUsers =(HashSet<String>) request.getSession().getServletContext()
-                .getAttribute("loggedUsers");
+                .getAttribute(LOGGED_USERS);
         return  loggedUsers;
     }
 
-    static boolean isLocaleEn(HttpServletRequest request) {
-        String language = (String) request.getSession().getAttribute("lang");
-        if (language!= null) {
-            return new Locale(language).equals(Locale.ENGLISH);
-        } else {
-            return true;
-        }
+    static ResourceBundle getQueryBundle (Locale locale){
+        return ResourceBundle.getBundle("queries", locale);
+    }
+
+    static ResourceBundle getMessageBundle (Locale locale){
+        return ResourceBundle.getBundle("messages", locale);
+    }
+
+    static Locale geLocale(HttpServletRequest request){
+        return new Locale(Optional.ofNullable((String) request.getSession().getAttribute("lang")).orElse("en"));
     }
 }

@@ -24,8 +24,8 @@ import static net.ukr.lina_chen.controller.utility.IConstants.*;
 import static net.ukr.lina_chen.controller.utility.PagesContainer.*;
 
 public class TimeCommand implements Command {
-    MasterService masterService;
-    AppointmentService appointmentService;
+    private MasterService masterService;
+    private AppointmentService appointmentService;
     private static final Logger logger = LogManager.getLogger(TimeCommand.class);
 
     public TimeCommand(MasterService masterService, AppointmentService appointmentService) {
@@ -35,30 +35,31 @@ public class TimeCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
-
+        Locale locale = CommandUtility.geLocale(request);
         String masterId = request.getParameter("masterId");
-        Optional<Master> master = masterService.getById(Long.parseLong(masterId));
+        Optional<Master> master = masterService.getById(Long.parseLong(masterId), locale);
         Appointment appointment = (Appointment) request.getSession().getAttribute("appointment");
         if (!master.isPresent()) {
             return REDIRECT_SERVICETYPES;
         }
         appointment.setMaster(master.get());
         request.setAttribute("appointment", appointment);
-        Map<LocalDate, List<LocalTime>> dateTime = getDateTime(request, master.get());
+
+        Map<LocalDate, List<LocalTime>> dateTime = getDateTime(master.get(), locale);
         request.setAttribute("workingHours",
                 Stream.iterate(master.get().getTimeBegin(), curr -> curr.plusHours(1)).
                         limit(ChronoUnit.HOURS.between(master.get().getTimeBegin(), master.get().getTimeEnd())).
                         collect(Collectors.toList()));
         request.setAttribute("dateTime", dateTime);
-        request.setAttribute("master", masterService.getByUserId(master.get().getUser().getId(),
-                CommandUtility.isLocaleEn(request)).orElse(null));
+        request.setAttribute("master", masterService.getByUserId(master.get().getUser().getId(), locale)
+                .orElse(null));
         return TIME_PAGE;
     }
 
-    private Map<LocalDate, List<LocalTime>> getDateTime(HttpServletRequest request, Master master) {
+    private Map<LocalDate, List<LocalTime>> getDateTime(Master master, Locale locale) {
         Long masterId = master.getId();
         List<LocalDate> dates = getDates(master);
-        List<LocalDateTime> busyTime = getMastersBusySchedule(request, masterId);
+        List<LocalDateTime> busyTime = getMastersBusySchedule(masterId, locale);
         return getScheduleMap(master, dates, busyTime);
     }
 
@@ -85,14 +86,13 @@ public class TimeCommand implements Command {
                 .collect(Collectors.toList());
     }
 
-    private List<LocalDateTime> getMastersBusySchedule(HttpServletRequest request, Long masterId) {
-        ResourceBundle bundle = ResourceBundle.getBundle("messages",
-                new Locale(Optional.ofNullable((String) request.getSession().getAttribute("lang")).orElse("en")));
+    private List<LocalDateTime> getMastersBusySchedule(Long masterId, Locale locale) {
         List<AppointmentDTO> appointments = appointmentService.getMastersAppointmentsOrderByDateTimeAsc(
-                masterId, CommandUtility.isLocaleEn(request));
+                masterId, locale);
         return appointments.stream()
                 .map(app -> LocalDateTime.of(LocalDate.parse(app.getDate(),
-                        DateTimeFormatter.ofPattern(bundle.getString(DATE_FORMAT))),
+                        DateTimeFormatter.ofPattern(ResourceBundle.getBundle("messages", locale)
+                                .getString(DATE_FORMAT))),
                         app.getTime()))
                 .collect(Collectors.toList());
     }

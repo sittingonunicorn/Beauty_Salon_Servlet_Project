@@ -8,38 +8,38 @@ import net.ukr.lina_chen.model.entity.BeautyService;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class BeautyservicesImpl {
     private final DaoFactory factory = DaoFactory.getInstance();
 
 
-    public List<BeautyServiceDTO> getBeautyservicesByProfession(Long professionId, boolean isLocaleEn){
+    public List<BeautyServiceDTO> getBeautyservicesByProfession(Long professionId, Locale locale){
         List<BeautyService> beautyServices;
-        try(BeautyserviceDao beautyserviceDao = factory.createBeautyserviceDao()){
+        try(BeautyserviceDao beautyserviceDao = factory.createBeautyserviceDao(
+                ResourceBundle.getBundle("queries", locale))){
             beautyServices=beautyserviceDao.findByProfessionId(professionId);
         }
-        return beautyServices.stream().map(b -> getLocalizedDTO(isLocaleEn, b))
-                .sorted(Comparator.comparing(BeautyServiceDTO::getName))
+        return beautyServices.stream().map(b -> getLocalizedDTO(b, locale))
                 .collect(Collectors.toList());
     }
 
-    public Optional<BeautyService> getById(Long beautyserviceId){
+    public Optional<BeautyService> getById(Long beautyserviceId, Locale locale){
         Optional<BeautyService> beautyService;
-        try(BeautyserviceDao beautyserviceDao = factory.createBeautyserviceDao()){
+        try(BeautyserviceDao beautyserviceDao = factory.createBeautyserviceDao(
+                ResourceBundle.getBundle("queries", locale))){
             beautyService=Optional.of(beautyserviceDao.findById(beautyserviceId));
         }
         return beautyService;
     }
 
-    private BeautyServiceDTO getLocalizedDTO (boolean isLocaleEn, BeautyService beautyService){
+    private BeautyServiceDTO getLocalizedDTO (BeautyService beautyService, Locale locale){
         return BeautyServiceDTO.BeautyServiceDTOBuilder.beautyServiceDTO()
                 .withId(beautyService.getId())
-                .withName(isLocaleEn? beautyService.getName():beautyService.getNameUkr())
-                .withPrice(isLocaleEn? getPriceEn(beautyService.getPrice()):getPriceUa(beautyService.getPrice()))
+                .withName(beautyService.getName())
+                .withPrice(locale.equals(Locale.ENGLISH)? getPriceEn(beautyService.getPrice())
+                        :getPriceUa(beautyService.getPrice()))
                 .withProfessionId(beautyService.getProfession().getId())
                 .build();
     }

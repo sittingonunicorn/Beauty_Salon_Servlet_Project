@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.Set;
 
 public class AuthFilter implements Filter {
@@ -23,26 +22,24 @@ public class AuthFilter implements Filter {
 
         final HttpServletRequest request = (HttpServletRequest) req;
         final HttpServletResponse response = (HttpServletResponse) res;
-        SecurityUtility securityUtility= new SecurityUtility();
+        SecurityUtility securityUtility = new SecurityUtility();
         HttpSession session = request.getSession();
         @SuppressWarnings("unchecked")
         Set<Role> roles = (Set<Role>) session.getAttribute("roles");
         String path = request.getRequestURL().toString();
         if (roles == null) {
-            Set<Role> guestRoles = new HashSet<>();
-            guestRoles.add(Role.GUEST);
-            session.setAttribute("roles", guestRoles);
-            roles = guestRoles;
+            roles = securityUtility.setGuestRoles(session);
         }
         if (securityUtility.isForbiddenRequest(path, roles)) {
-            response.sendRedirect(request.getContextPath() + "/app/error");
-            return;
+            logger.warn("unauthorized access attempt");
+            if (roles.contains(Role.GUEST)) {
+                response.sendRedirect(request.getContextPath() + "/app/login");
+                return;
+            } else {
+                response.sendRedirect(request.getContextPath() + "/app/error");
+                return;
+            }
         }
-//
-//        logger.info(session);
-//        logger.info(session.getAttribute("roles"));
-//        logger.info(context.getAttribute("loggedUsers"));
-
         chain.doFilter(request, response);
     }
 

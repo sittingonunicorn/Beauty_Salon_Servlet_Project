@@ -13,9 +13,9 @@ public class ProfessionMapper implements  ObjectMapper<Profession> {
         return Profession.ProfessionBuilder.profession()
                 .withId(rs.getLong("profession_id"))
                 .withBeautyservicesType(rs.getString("beautyservices_type"))
-                .withBeautyservicesTypeUkr(rs.getString("beautyservices_type_ukr"))
+                //.withBeautyservicesTypeUkr(rs.getString("beautyservices_type_ukr"))
                 .withName(rs.getString("profession_name"))
-                .withNameUkr(rs.getString("profession_name_ukr"))
+                //.withNameUkr(rs.getString("profession_name_ukr"))
                 .withMasters(new HashSet<>())
                 .build();
     }

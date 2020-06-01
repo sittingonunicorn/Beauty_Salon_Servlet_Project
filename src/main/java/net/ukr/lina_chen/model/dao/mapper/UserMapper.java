@@ -4,7 +4,6 @@ import net.ukr.lina_chen.model.entity.User;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Map;
 
@@ -18,7 +17,6 @@ public class UserMapper implements ObjectMapper<User> {
                 .withName(rs.getString("name"))
                 .withPassword(rs.getString("password"))
                 .withRoles(new HashSet<>())
-                .withNameUkr(rs.getString("name_ukr"))
                 .build();
     }
 

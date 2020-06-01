@@ -4,6 +4,7 @@ import net.ukr.lina_chen.model.service.BeautyservicesImpl;
 import net.ukr.lina_chen.model.service.ProfessionService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Locale;
 
 import static net.ukr.lina_chen.controller.utility.PagesContainer.SERVICETYPES_PAGE;
 
@@ -18,14 +19,13 @@ public class ServicetypesCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
+        Locale locale = CommandUtility.geLocale(request);
         if(request.getParameter("professionId")!=null){
             Long professionId = Long.parseLong(request.getParameter("professionId"));
-            request.setAttribute("beautyservices", beautyservices.getBeautyservicesByProfession(professionId,
-                    CommandUtility.isLocaleEn(request)));
+            request.setAttribute("beautyservices", beautyservices.getBeautyservicesByProfession(professionId, locale));
             request.setAttribute("professionId", professionId);
         }
-        request.setAttribute("servicetypes", professionService.getAllServicetypes(
-                CommandUtility.isLocaleEn(request)));
+        request.setAttribute("servicetypes", professionService.getAllServicetypes(locale));
         return SERVICETYPES_PAGE;
     }
 }

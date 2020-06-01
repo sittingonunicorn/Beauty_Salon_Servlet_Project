@@ -1,6 +1,7 @@
 package net.ukr.lina_chen.controller.utility;
 
 public interface IConstants {
+    String LOGGED_USERS = "loggedUsers";
     String USERNAME = "username";
     String PASSWORD = "password";
     String SUBJECT = "subject";

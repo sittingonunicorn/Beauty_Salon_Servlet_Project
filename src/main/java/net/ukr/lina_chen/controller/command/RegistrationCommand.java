@@ -9,9 +9,11 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
+import java.util.Locale;
 import java.util.Optional;
 
-import static net.ukr.lina_chen.controller.utility.PagesContainer.*;
+import static net.ukr.lina_chen.controller.utility.PagesContainer.REDIRECT_LOGIN;
+import static net.ukr.lina_chen.controller.utility.PagesContainer.REGISTRATION_PAGE;
 
 
 public class RegistrationCommand implements Command {
@@ -24,12 +26,13 @@ public class RegistrationCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
+        Locale locale = CommandUtility.geLocale(request);
         if (!Optional.ofNullable(request.getParameter("email")).isPresent()) {
             return REGISTRATION_PAGE;
         }
         try {
             User user = userService.extractUserFromRequest(request);
-            userService.saveNewUser(user);
+            userService.saveNewUser(user, locale);
             logger.info("New user {} was successfully registered", user.getEmail());
         } catch (UserExistsException e) {
             logger.error(e);

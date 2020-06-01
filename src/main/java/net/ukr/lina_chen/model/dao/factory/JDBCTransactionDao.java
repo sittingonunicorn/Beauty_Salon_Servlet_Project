@@ -10,13 +10,16 @@ import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ResourceBundle;
 
 public class JDBCTransactionDao implements TransactionDao {
     private final Connection connection;
     private static final Logger logger = LogManager.getLogger(JDBCTransactionDao.class);
+    private final ResourceBundle bundle;
 
-    public JDBCTransactionDao(Connection connection) {
+    public JDBCTransactionDao(Connection connection, ResourceBundle bundle) {
         this.connection = connection;
+        this.bundle = bundle;
     }
 
     @Override

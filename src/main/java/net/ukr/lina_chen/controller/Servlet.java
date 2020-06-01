@@ -46,16 +46,16 @@ public class Servlet extends HttpServlet {
         commands.put("user/save",
                 new SaveCommand(new AppointmentService()));
         commands.put("user/archive",
-                new ArchiveCommand(new ArchiveService()));
+                new UserArchiveCommand(new ArchiveService()));
         commands.put("user/comment",
                 new UserCommentCommand(new ArchiveService()));
         commands.put("master/appointments",
                 new MasterAppointmentsCommand(new AppointmentService(), new MasterService()));
         commands.put("master/provide",
-                new MasterProvidedCommand(new TransactionService(), new MailService(),
+                new ProvidedCommand(new TransactionService(), new MailService(),
                         new ArchiveService()));
         commands.put("admin/provide",
-                new AdminProvidedCommand(new TransactionService(), new MailService(),
+                new ProvidedCommand(new TransactionService(), new MailService(),
                         new ArchiveService()));
         commands.put("admin/appointments",
                 new AdminAppointmentsCommand(new AppointmentService()));

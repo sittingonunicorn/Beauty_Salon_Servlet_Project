@@ -5,12 +5,12 @@ import net.ukr.lina_chen.model.dao.AppointmentDao;
 import net.ukr.lina_chen.model.dao.factory.DaoFactory;
 import net.ukr.lina_chen.model.dto.AppointmentDTO;
 import net.ukr.lina_chen.model.entity.Appointment;
-import net.ukr.lina_chen.model.entity.Master;
-import net.ukr.lina_chen.model.entity.User;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 import static net.ukr.lina_chen.controller.utility.IConstants.DATE_FORMAT;
@@ -18,63 +18,58 @@ import static net.ukr.lina_chen.controller.utility.IConstants.DATE_FORMAT;
 public class AppointmentService {
     private final DaoFactory factory = DaoFactory.getInstance();
 
-    public List<AppointmentDTO> getMastersAppointmentsOrderByDateTimeAsc(Long masterId, boolean isLocaleEn) {
+    public List<AppointmentDTO> getMastersAppointmentsOrderByDateTimeAsc(Long masterId, Locale locale) {
         List<Appointment> appointments;
-        try (AppointmentDao appointmentDao = factory.createAppointmentDao()) {
+        try (AppointmentDao appointmentDao = factory.createAppointmentDao(
+                ResourceBundle.getBundle("queries", locale))) {
             appointments = appointmentDao.getMasterAppointments(masterId);
         }
-        return appointments.stream().map(a -> getLocalizedDto(isLocaleEn, a))
-                .sorted(Comparator.comparing(AppointmentDTO::getDate)
-                        .thenComparing(AppointmentDTO::getTime))
+        return appointments.stream().map(a -> getLocalizedDto(a, locale))
                 .collect(Collectors.toList());
     }
 
-    public AppointmentDTO getById(Long appointmentId, boolean isLocaleEn) {
+    public AppointmentDTO getById(Long appointmentId, Locale locale) {
         Appointment appointment;
-        try (AppointmentDao appointmentDao = factory.createAppointmentDao()) {
+        try (AppointmentDao appointmentDao = factory.createAppointmentDao(
+                ResourceBundle.getBundle("queries", locale))) {
             appointment = appointmentDao.findById(appointmentId);
         }
-        return getLocalizedDto(isLocaleEn, appointment);
+        return getLocalizedDto(appointment, locale);
     }
 
-    public List<AppointmentDTO> getAllOrderByDateTimeAsc(boolean isLocaleEn) {
+    public List<AppointmentDTO> getAllOrderByDateTimeAsc(Locale locale) {
         List<Appointment> appointments;
-        try (AppointmentDao appointmentDao = factory.createAppointmentDao()) {
+        try (AppointmentDao appointmentDao = factory.createAppointmentDao(
+                ResourceBundle.getBundle("queries", locale))) {
             appointments = appointmentDao.findAll();
         }
-        return appointments.stream().map(a -> getLocalizedDto(isLocaleEn, a))
-                .sorted(Comparator.comparing(AppointmentDTO::getDate)
-                        .thenComparing(AppointmentDTO::getTime))
+        return appointments.stream().map(a -> getLocalizedDto(a, locale))
                 .collect(Collectors.toList());
     }
 
-    public Long saveAppointment(Appointment appointment) throws TimeIsBusyException {
+    public Long saveAppointment(Appointment appointment, Locale locale) throws TimeIsBusyException {
         Long id;
-        try (AppointmentDao appointmentDao = factory.createAppointmentDao()) {
+        try (AppointmentDao appointmentDao = factory.createAppointmentDao(
+                ResourceBundle.getBundle("queries", locale))) {
             id = appointmentDao.create(appointment);
         }
         return id;
     }
 
-    public AppointmentDTO getLocalizedDto(boolean isLocaleEn, Appointment appointment) {
-        Optional<Master> masterOptional = new MasterService().getById(appointment.getMaster().getId());
-        User master = masterOptional.isPresent()? masterOptional.get().getUser(): new User();
+    public AppointmentDTO getLocalizedDto(Appointment appointment, Locale locale) {
         return AppointmentDTO.AppointmentDTOBuilder.appointmentDTO()
-                .withBeautyService(isLocaleEn ? appointment.getBeautyService().getName()
-                        : appointment.getBeautyService().getNameUkr())
-                .withMasterName(isLocaleEn ? master.getName(): master.getNameUkr())
-                .withUserName(isLocaleEn ? appointment.getUser().getName()
-                        : appointment.getUser().getNameUkr())
+                .withBeautyService(appointment.getBeautyService().getName())
+                .withMasterName(appointment.getMaster().getUser().getName())
+                .withUserName(appointment.getUser().getName())
                 .withId(appointment.getId())
-                .withDate(getLocalizedDate(appointment.getDate(), isLocaleEn))
+                .withDate(getLocalizedDate(appointment.getDate(), locale))
                 .withTime(appointment.getTime())
                 .withProvided(appointment.isProvided())
                 .build();
     }
 
-    private String getLocalizedDate (LocalDate date, boolean isLocaleEn){
-        ResourceBundle bundle = ResourceBundle.getBundle("messages",
-                isLocaleEn? Locale.US: new Locale("ua"));
-        return date.format(DateTimeFormatter.ofPattern(bundle.getString(DATE_FORMAT)));
+    private String getLocalizedDate (LocalDate date, Locale locale){
+        return date.format(DateTimeFormatter.ofPattern(
+                ResourceBundle.getBundle("messages", locale).getString(DATE_FORMAT)));
     }
 }

@@ -11,6 +11,7 @@
         <th><fmt:message key="var.date"/></th>
         <th><fmt:message key="var.time"/></th>
         <th><fmt:message key="var.username"/></th>
+        <th><fmt:message key="var.mastername"/></th>
         <th><fmt:message key="var.provided"/></th>
         <th>Set Provided</th>
     </tr>
@@ -22,12 +23,13 @@
             <td>${a.date}</td>
             <td>${a.time}</td>
             <td>${a.userName}</td>
+            <td>${a.masterName}</td>
             <td><fmt:message key="bool.${a.provided}"/></td>
             <td>
                 <form method="post" action="${pageContext.request.contextPath}/app/admin/provide">
                     <input id="csrfToken" name="csrfToken" type="hidden" value="${sessionScope.csrfToken}" />
                     <div class="row-fluid practice" style="width: 99%; height: 100%;">
-                        <button type="submit" name="appointmentId" value="${a.id}">
+                        <button type="submit" class="btn btn-default" name="appointmentId" value="${a.id}">
                             <fmt:message key="message.provided"/>
                         </button>
                     </div>

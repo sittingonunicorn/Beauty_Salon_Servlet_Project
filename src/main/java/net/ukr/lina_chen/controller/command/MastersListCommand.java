@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Locale;
 
 import static net.ukr.lina_chen.controller.utility.PagesContainer.MASTER_LIST_PAGE;
 
@@ -28,6 +29,7 @@ public class MastersListCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
+        Locale locale = CommandUtility.geLocale(request);
         Appointment appointment = new Appointment();
         String path = request.getRequestURI();
         HttpSession session = request.getSession();
@@ -36,11 +38,10 @@ public class MastersListCommand implements Command {
         String[] params = path.replaceAll(".*/app/user/masters/", "").split("/");
         Long professionId = Long.parseLong(params[0]);
         Long beautyserviceId = Long.parseLong(params[1]);
-        appointment.setBeautyService(beautyservices.getById(beautyserviceId).get());
-        appointment.setUser(userService.getUserById(((UserDTO)session.getAttribute("user")).getId()).get());
+        appointment.setBeautyService(beautyservices.getById(beautyserviceId, locale).get());
+        appointment.setUser(userService.getUserById(((UserDTO)session.getAttribute("user")).getId(), locale).get());
         session.setAttribute("appointment", appointment);
-        request.setAttribute("masters", masterService.findByProfessionIdOrderByNameAsc(professionId,
-                CommandUtility.isLocaleEn(request)));
+        request.setAttribute("masters", masterService.findByProfessionIdOrderByNameAsc(professionId, locale));
         return MASTER_LIST_PAGE;
     }
 }

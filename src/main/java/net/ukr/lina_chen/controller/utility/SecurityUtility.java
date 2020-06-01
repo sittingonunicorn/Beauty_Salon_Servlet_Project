@@ -2,12 +2,10 @@ package net.ukr.lina_chen.controller.utility;
 
 import net.ukr.lina_chen.model.entity.Role;
 
+import javax.servlet.http.HttpSession;
 import javax.xml.bind.DatatypeConverter;
 import java.security.SecureRandom;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class SecurityUtility {
     private final SecureRandom secureRandom = new SecureRandom();
@@ -34,5 +32,12 @@ public class SecurityUtility {
         byte[] bytes = new byte[50];
         secureRandom.nextBytes(bytes);
         return DatatypeConverter.printHexBinary(bytes);
+    }
+
+    public Set<Role> setGuestRoles(HttpSession session) {
+        Set<Role> guestRoles = new HashSet<>();
+        guestRoles.add(Role.GUEST);
+        session.setAttribute("roles", guestRoles);
+        return guestRoles;
     }
 }

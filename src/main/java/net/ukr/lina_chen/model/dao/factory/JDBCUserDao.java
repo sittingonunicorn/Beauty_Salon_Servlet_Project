@@ -17,17 +17,19 @@ public class JDBCUserDao implements UserDao {
     private final Connection connection;
     private final UserMapper mapper = new UserMapper();
     private final RolesMapper rolesMapper = new RolesMapper();
+    private final ResourceBundle bundle;
 
-    public JDBCUserDao(Connection connection) {
+    public JDBCUserDao(Connection connection, ResourceBundle bundle) {
         this.connection = connection;
+        this.bundle = bundle;
     }
 
     public Long create(User entity) throws UserExistsException {
         long userId = 0L;
-        try (PreparedStatement checkIfExists = connection.prepareStatement(QUERY_FIND_BY_EMAIL);
-                PreparedStatement replaceUser = connection.prepareStatement(QUERY_REPLACE_USER);
-             PreparedStatement getId = connection.prepareStatement(QUERY_GET_ID);
-             PreparedStatement setRoles = connection.prepareStatement(QUERY_REPLACE_USER_ROLE)) {
+        try (PreparedStatement checkIfExists = connection.prepareStatement(bundle.getString("query.find.user.by.email"));
+             PreparedStatement replaceUser = connection.prepareStatement(bundle.getString("query.replace.user"));
+             PreparedStatement getId = connection.prepareStatement(bundle.getString("query.get.user.id"));
+             PreparedStatement setRoles = connection.prepareStatement(bundle.getString("query.replace.user.role"))) {
             replaceUser.setString(1, entity.getEmail());
             replaceUser.setString(2, entity.getName());
             replaceUser.setString(3, entity.getNameUkr());
@@ -63,7 +65,7 @@ public class JDBCUserDao implements UserDao {
         User user = null;
         Map<Long, User> users = new HashMap<>();
         Set<Role> roles = new HashSet<>();
-        try (PreparedStatement st = connection.prepareStatement(QUERY_FIND_BY_ID)) {
+        try (PreparedStatement st = connection.prepareStatement(bundle.getString("query.find.user.by.id"))) {
             st.setLong(1, id);
             try (ResultSet rs = st.executeQuery()) {
                 while (rs.next()) {
@@ -106,15 +108,15 @@ public class JDBCUserDao implements UserDao {
 
     @Override
     public Optional<User> findUserByEmail(String email) {
-        Optional<User>  user = Optional.empty();
+        Optional<User> user = Optional.empty();
         Map<Long, User> users = new HashMap<>();
         Set<Role> roles = new HashSet<>();
-        try (PreparedStatement ps = connection.prepareStatement(QUERY_FIND_BY_EMAIL)) {
+        try (PreparedStatement ps = connection.prepareStatement(bundle.getString("query.find.user.by.email"))) {
             ps.setString(1, email);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     user = Optional.ofNullable(mapper.extractFromResultSet(rs));
-                    user.ifPresent(value -> mapper.makeUnique(users,value));
+                    user.ifPresent(value -> mapper.makeUnique(users, value));
                     roles.add(rolesMapper.extractFromResultSet(rs));
                 }
             }

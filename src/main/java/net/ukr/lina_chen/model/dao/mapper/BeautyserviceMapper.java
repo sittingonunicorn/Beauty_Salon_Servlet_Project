@@ -12,7 +12,7 @@ public class BeautyserviceMapper implements ObjectMapper<BeautyService> {
         return BeautyService.BeautyServiceBuilder.beautyService()
                 .withId(rs.getLong("beautyservice_id"))
                 .withName(rs.getString("beautyservice_name"))
-                .withNameUkr(rs.getString("beautyservice_name_ukr"))
+                //.withNameUkr(rs.getString("beautyservice_name_ukr"))
                 .withPrice(rs.getBigDecimal("price"))
                 .withProfession(new ProfessionMapper().extractFromResultSet(rs))
                 .build();

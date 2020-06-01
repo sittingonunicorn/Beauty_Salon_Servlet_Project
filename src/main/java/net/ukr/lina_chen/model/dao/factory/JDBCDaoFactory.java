@@ -6,44 +6,45 @@ import net.ukr.lina_chen.model.dao.*;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ResourceBundle;
 
 public class JDBCDaoFactory extends DaoFactory {
 
     private final DataSource dataSource = ConnectionPoolHolder.getDataSource();
 
     @Override
-    public UserDao createUserDao() {
-        return new JDBCUserDao(getConnection());
+    public UserDao createUserDao(ResourceBundle bundle) {
+        return new JDBCUserDao(getConnection(), bundle);
     }
 
     @Override
-    public MasterDao createMasterDao() {
-        return new JDBCMasterDao(getConnection());
+    public MasterDao createMasterDao(ResourceBundle bundle) {
+        return new JDBCMasterDao(getConnection(), bundle);
     }
 
     @Override
-    public ProfessionDao createProfessionDao() {
-        return new JDBCProfessionDao(getConnection());
+    public ProfessionDao createProfessionDao(ResourceBundle bundle) {
+        return new JDBCProfessionDao(getConnection(), bundle);
     }
 
     @Override
-    public BeautyserviceDao createBeautyserviceDao() {
-        return new JDBCBeautyserviceDao(getConnection());
+    public BeautyserviceDao createBeautyserviceDao(ResourceBundle bundle) {
+        return new JDBCBeautyserviceDao(getConnection(), bundle);
     }
 
     @Override
-    public AppointmentDao createAppointmentDao(){
-        return new JDBCAppointmentDao(getConnection());
+    public AppointmentDao createAppointmentDao(ResourceBundle bundle){
+        return new JDBCAppointmentDao(getConnection(), bundle);
     }
 
     @Override
-    public ArchiveDao createArchiveDao() {
-        return new JDBCArchiveDao(getConnection());
+    public ArchiveDao createArchiveDao(ResourceBundle bundle) {
+        return new JDBCArchiveDao(getConnection(), bundle);
     }
 
     @Override
-    public TransactionDao createTransactionDao() {
-        return new JDBCTransactionDao(getConnection());
+    public TransactionDao createTransactionDao(ResourceBundle bundle) {
+        return new JDBCTransactionDao(getConnection(), bundle);
     }
 
     private Connection getConnection(){

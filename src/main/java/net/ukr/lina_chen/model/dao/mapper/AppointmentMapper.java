@@ -1,6 +1,7 @@
 package net.ukr.lina_chen.model.dao.mapper;
 
 import net.ukr.lina_chen.model.entity.Appointment;
+import net.ukr.lina_chen.model.entity.User;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,7 +17,12 @@ public class AppointmentMapper implements ObjectMapper<Appointment> {
                 .withProvided(rs.getBoolean("provided"))
                 .withBeautyService(new BeautyserviceMapper().extractFromResultSet(rs))
                 .withMaster(new MasterMapper().extractFromResultSet(rs))
-                .withUser(new UserMapper().extractFromResultSet(rs))
+                //.withUser(new UserMapper().extractFromResultSet(rs))
+                .withUser(User.Builder.anUser()
+                        .withId(rs.getLong("master_user_id"))
+                        .withEmail(rs.getString("user_email"))
+                        .withName(rs.getString("user_name"))
+                        .build())
                 .build();
     }
 

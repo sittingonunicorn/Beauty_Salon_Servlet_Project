@@ -12,9 +12,7 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 public class UserService {
     private final DaoFactory factory = DaoFactory.getInstance();
@@ -25,15 +23,15 @@ public class UserService {
 
     }
 
-    public Optional<UserDTO> getUserByEmailAndPassword(String email, String password, boolean isLocaleEn) {
-        try (UserDao userDao = factory.createUserDao()) {
+    public Optional<UserDTO> getUserByEmailAndPassword(String email, String password, Locale locale) {
+        try (UserDao userDao = factory.createUserDao(ResourceBundle.getBundle("queries", locale))) {
             Optional<User> user = userDao.findUserByEmail(email);
             if (user.isPresent() && BCrypt.checkpw(password, user.get().getPassword())) {
                 return Optional.of(UserDTO.Builder.anUserDTO()
                         .withEmail(user.get().getEmail())
                         .withPassword(user.get().getPassword())
                         .withRoles(user.get().getRoles())
-                        .withName(isLocaleEn ? user.get().getName() : user.get().getNameUkr())
+                        .withName(user.get().getName())
                         .withId(user.get().getId())
                         .build());
             } else {
@@ -42,17 +40,17 @@ public class UserService {
         }
     }
 
-    public boolean userExists(String email) {
-        try (UserDao userDao = factory.createUserDao()) {
+    public boolean userExists(String email, Locale locale) {
+        try (UserDao userDao = factory.createUserDao(ResourceBundle.getBundle("queries", locale))) {
             return userDao.findUserByEmail(email).isPresent();
         }
     }
 
-    public void saveNewUser(User user) throws SQLException, UserExistsException {
-        if (userExists(user.getEmail())) {
+    public void saveNewUser(User user, Locale locale) throws SQLException, UserExistsException {
+        if (userExists(user.getEmail(), locale)) {
             throw new UserExistsException();
         }
-        try (UserDao userDao = factory.createUserDao()) {
+        try (UserDao userDao = factory.createUserDao(ResourceBundle.getBundle("queries", locale))) {
             userDao.create(user);
         }
     }
@@ -70,9 +68,9 @@ public class UserService {
                 .build();
     }
 
-    public Optional<User> getUserById(Long id) {
+    public Optional<User> getUserById(Long id, Locale locale) {
         Optional<User> user;
-        try (UserDao userDao = factory.createUserDao()) {
+        try (UserDao userDao = factory.createUserDao(ResourceBundle.getBundle("queries", locale))) {
             user = Optional.of(userDao.findById(id));
         }
         return user;

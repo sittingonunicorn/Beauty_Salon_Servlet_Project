@@ -8,8 +8,8 @@ import net.ukr.lina_chen.model.service.AppointmentService;
 import net.ukr.lina_chen.model.service.MasterService;
 
 import javax.servlet.http.HttpServletRequest;
-
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 import static net.ukr.lina_chen.controller.utility.PagesContainer.MASTER_APPOINTMENTS_PAGE;
@@ -26,11 +26,12 @@ public class MasterAppointmentsCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
+        Locale locale = CommandUtility.geLocale(request);
         int page = Integer.parseInt(Optional.ofNullable(request.getParameter("page")).orElse("0"));
-       Optional<MasterDTO> master = masterService.getByUserId(
-               ((UserDTO) request.getSession().getAttribute("user")).getId(), CommandUtility.isLocaleEn(request));
-        List<AppointmentDTO> appointments =appointmentService.getMastersAppointmentsOrderByDateTimeAsc(
-                master.get().getId(), CommandUtility.isLocaleEn(request));
+        Optional<MasterDTO> master = masterService.getByUserId(
+                ((UserDTO) request.getSession().getAttribute("user")).getId(), locale);
+        List<AppointmentDTO> appointments = appointmentService.getMastersAppointmentsOrderByDateTimeAsc(
+                master.get().getId(), locale);
         PageRequest<AppointmentDTO> pageRequest = new PageRequest<>(appointments);
         appointments = pageRequest.getPage(page);
         request.setAttribute("appointments", appointments);
