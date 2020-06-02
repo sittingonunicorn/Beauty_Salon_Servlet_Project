@@ -4,11 +4,12 @@ import net.ukr.lina_chen.model.entity.Role;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Locale;
 import java.util.Map;
 
 public class RolesMapper implements ObjectMapper<Role>{
     @Override
-    public Role extractFromResultSet(ResultSet rs) throws SQLException {
+    public Role extractFromResultSet(ResultSet rs, Locale locale) throws SQLException {
         return Role.valueOf(rs.getString("role_name"));
     }
 

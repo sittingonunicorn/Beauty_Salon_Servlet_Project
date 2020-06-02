@@ -5,17 +5,16 @@ import net.ukr.lina_chen.model.entity.Profession;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Map;
 
 public class ProfessionMapper implements  ObjectMapper<Profession> {
     @Override
-    public Profession extractFromResultSet(ResultSet rs) throws SQLException {
+    public Profession extractFromResultSet(ResultSet rs, Locale locale) throws SQLException {
         return Profession.ProfessionBuilder.profession()
                 .withId(rs.getLong("profession_id"))
-                .withBeautyservicesType(rs.getString("beautyservices_type"))
-                //.withBeautyservicesTypeUkr(rs.getString("beautyservices_type_ukr"))
-                .withName(rs.getString("profession_name"))
-                //.withNameUkr(rs.getString("profession_name_ukr"))
+                .withBeautyservicesType(rs.getString("beautyservices_type_"+locale.getLanguage()))
+                .withName(rs.getString("profession_name_"+locale.getLanguage()))
                 .withMasters(new HashSet<>())
                 .build();
     }

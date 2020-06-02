@@ -4,17 +4,17 @@ import net.ukr.lina_chen.model.entity.BeautyService;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Locale;
 import java.util.Map;
 
 public class BeautyserviceMapper implements ObjectMapper<BeautyService> {
     @Override
-    public BeautyService extractFromResultSet(ResultSet rs) throws SQLException {
+    public BeautyService extractFromResultSet(ResultSet rs, Locale locale) throws SQLException {
         return BeautyService.BeautyServiceBuilder.beautyService()
                 .withId(rs.getLong("beautyservice_id"))
-                .withName(rs.getString("beautyservice_name"))
-                //.withNameUkr(rs.getString("beautyservice_name_ukr"))
+                .withName(rs.getString("beautyservice_name_"+locale.getLanguage()))
                 .withPrice(rs.getBigDecimal("price"))
-                .withProfession(new ProfessionMapper().extractFromResultSet(rs))
+                .withProfession(new ProfessionMapper().extractFromResultSet(rs, locale))
                 .build();
     }
 

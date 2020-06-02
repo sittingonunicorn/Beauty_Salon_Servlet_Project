@@ -7,7 +7,6 @@ import net.ukr.lina_chen.model.entity.ArchiveAppointment;
 
 import java.util.List;
 import java.util.Locale;
-import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 public class ArchiveService {
@@ -16,7 +15,7 @@ public class ArchiveService {
 
     public List<ArchiveAppointmentDTO> getUserArchive(Long userId, Locale locale) {
         List<ArchiveAppointment> archive;
-        try (ArchiveDao archiveDao = factory.createArchiveDao(ResourceBundle.getBundle("queries", locale))) {
+        try (ArchiveDao archiveDao = factory.createArchiveDao(locale)) {
             archive = archiveDao.getUserArchiveAppointments(userId);
         }
         return archive.stream()
@@ -26,7 +25,7 @@ public class ArchiveService {
 
     public List<ArchiveAppointmentDTO> getMasterCommentsOrderByDateTimeDesc(Long masterId, Locale locale) {
         List<ArchiveAppointment> archive;
-        try (ArchiveDao archiveDao = factory.createArchiveDao(ResourceBundle.getBundle("queries", locale))) {
+        try (ArchiveDao archiveDao = factory.createArchiveDao(locale)) {
             archive = archiveDao.getMasterComments(masterId);
         }
         return archive.stream()
@@ -36,7 +35,7 @@ public class ArchiveService {
 
     public List<ArchiveAppointmentDTO> getAllCommentsOrderByDateTimeDesc(Locale locale) {
         List<ArchiveAppointment> archive;
-        try (ArchiveDao archiveDao = factory.createArchiveDao(ResourceBundle.getBundle("queries", locale))) {
+        try (ArchiveDao archiveDao = factory.createArchiveDao(locale)) {
             archive = archiveDao.getAllComments();
         }
         return archive.stream()
@@ -45,14 +44,14 @@ public class ArchiveService {
     }
 
     public void setComment(String comment, Long appointmentId, Locale locale) {
-        try (ArchiveDao archiveDao = factory.createArchiveDao(ResourceBundle.getBundle("queries", locale))) {
+        try (ArchiveDao archiveDao = factory.createArchiveDao(locale)) {
             archiveDao.setComment(comment, appointmentId);
         }
     }
 
     public ArchiveAppointment getById(Long appointmentId, Locale locale) {
         ArchiveAppointment appointment;
-        try (ArchiveDao archiveDao = factory.createArchiveDao(ResourceBundle.getBundle("queries", locale))) {
+        try (ArchiveDao archiveDao = factory.createArchiveDao(locale)) {
             appointment = archiveDao.findById(appointmentId);
         }
         return appointment;

@@ -2,18 +2,18 @@ package net.ukr.lina_chen.model.dao.factory;
 
 import net.ukr.lina_chen.model.dao.*;
 
-import java.util.ResourceBundle;
+import java.util.Locale;
 
 public abstract class DaoFactory {
     private static DaoFactory daoFactory;
 
-    public abstract UserDao createUserDao(ResourceBundle bundle);
-    public abstract MasterDao createMasterDao(ResourceBundle bundle);
-    public abstract ProfessionDao createProfessionDao(ResourceBundle bundle);
-    public abstract BeautyserviceDao createBeautyserviceDao(ResourceBundle bundle);
-    public abstract AppointmentDao createAppointmentDao(ResourceBundle bundle);
-    public abstract ArchiveDao createArchiveDao(ResourceBundle bundle);
-    public abstract TransactionDao createTransactionDao(ResourceBundle bundle);
+    public abstract UserDao createUserDao(Locale locale);
+    public abstract MasterDao createMasterDao(Locale locale);
+    public abstract ProfessionDao createProfessionDao(Locale locale);
+    public abstract BeautyserviceDao createBeautyserviceDao(Locale locale);
+    public abstract AppointmentDao createAppointmentDao(Locale locale);
+    public abstract ArchiveDao createArchiveDao(Locale locale);
+    public abstract TransactionDao createTransactionDao(Locale locale);
 
     public static DaoFactory getInstance(){
         if( daoFactory == null ){

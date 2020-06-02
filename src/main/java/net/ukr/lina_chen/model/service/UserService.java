@@ -24,7 +24,7 @@ public class UserService {
     }
 
     public Optional<UserDTO> getUserByEmailAndPassword(String email, String password, Locale locale) {
-        try (UserDao userDao = factory.createUserDao(ResourceBundle.getBundle("queries", locale))) {
+        try (UserDao userDao = factory.createUserDao(locale)) {
             Optional<User> user = userDao.findUserByEmail(email);
             if (user.isPresent() && BCrypt.checkpw(password, user.get().getPassword())) {
                 return Optional.of(UserDTO.Builder.anUserDTO()
@@ -41,7 +41,7 @@ public class UserService {
     }
 
     public boolean userExists(String email, Locale locale) {
-        try (UserDao userDao = factory.createUserDao(ResourceBundle.getBundle("queries", locale))) {
+        try (UserDao userDao = factory.createUserDao(locale)) {
             return userDao.findUserByEmail(email).isPresent();
         }
     }
@@ -50,7 +50,7 @@ public class UserService {
         if (userExists(user.getEmail(), locale)) {
             throw new UserExistsException();
         }
-        try (UserDao userDao = factory.createUserDao(ResourceBundle.getBundle("queries", locale))) {
+        try (UserDao userDao = factory.createUserDao(locale)) {
             userDao.create(user);
         }
     }
@@ -70,7 +70,7 @@ public class UserService {
 
     public Optional<User> getUserById(Long id, Locale locale) {
         Optional<User> user;
-        try (UserDao userDao = factory.createUserDao(ResourceBundle.getBundle("queries", locale))) {
+        try (UserDao userDao = factory.createUserDao(locale)) {
             user = Optional.of(userDao.findById(id));
         }
         return user;

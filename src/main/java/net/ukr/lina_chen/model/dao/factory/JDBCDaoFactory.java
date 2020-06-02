@@ -6,45 +6,45 @@ import net.ukr.lina_chen.model.dao.*;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ResourceBundle;
+import java.util.Locale;
 
 public class JDBCDaoFactory extends DaoFactory {
 
     private final DataSource dataSource = ConnectionPoolHolder.getDataSource();
 
     @Override
-    public UserDao createUserDao(ResourceBundle bundle) {
-        return new JDBCUserDao(getConnection(), bundle);
+    public UserDao createUserDao(Locale locale) {
+        return new JDBCUserDao(getConnection(), locale);
     }
 
     @Override
-    public MasterDao createMasterDao(ResourceBundle bundle) {
-        return new JDBCMasterDao(getConnection(), bundle);
+    public MasterDao createMasterDao(Locale locale) {
+        return new JDBCMasterDao(getConnection(), locale);
     }
 
     @Override
-    public ProfessionDao createProfessionDao(ResourceBundle bundle) {
-        return new JDBCProfessionDao(getConnection(), bundle);
+    public ProfessionDao createProfessionDao(Locale locale) {
+        return new JDBCProfessionDao(getConnection(), locale);
     }
 
     @Override
-    public BeautyserviceDao createBeautyserviceDao(ResourceBundle bundle) {
-        return new JDBCBeautyserviceDao(getConnection(), bundle);
+    public BeautyserviceDao createBeautyserviceDao(Locale locale) {
+        return new JDBCBeautyserviceDao(getConnection(), locale);
     }
 
     @Override
-    public AppointmentDao createAppointmentDao(ResourceBundle bundle){
-        return new JDBCAppointmentDao(getConnection(), bundle);
+    public AppointmentDao createAppointmentDao(Locale locale){
+        return new JDBCAppointmentDao(getConnection(), locale);
     }
 
     @Override
-    public ArchiveDao createArchiveDao(ResourceBundle bundle) {
-        return new JDBCArchiveDao(getConnection(), bundle);
+    public ArchiveDao createArchiveDao(Locale locale) {
+        return new JDBCArchiveDao(getConnection(), locale);
     }
 
     @Override
-    public TransactionDao createTransactionDao(ResourceBundle bundle) {
-        return new JDBCTransactionDao(getConnection(), bundle);
+    public TransactionDao createTransactionDao(Locale locale) {
+        return new JDBCTransactionDao(getConnection(), locale);
     }
 
     private Connection getConnection(){

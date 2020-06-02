@@ -4,12 +4,13 @@ import net.ukr.lina_chen.model.entity.ArchiveAppointment;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Locale;
 import java.util.Map;
 
 public class ArchiveAppointmentMapper implements ObjectMapper<ArchiveAppointment> {
     @Override
-    public ArchiveAppointment extractFromResultSet(ResultSet rs) throws SQLException {
-        return new ArchiveAppointment(new AppointmentMapper().extractFromResultSet(rs),
+    public ArchiveAppointment extractFromResultSet(ResultSet rs, Locale locale) throws SQLException {
+        return new ArchiveAppointment(new AppointmentMapper().extractFromResultSet(rs, locale),
                 rs.getString("comment"));
     }
 

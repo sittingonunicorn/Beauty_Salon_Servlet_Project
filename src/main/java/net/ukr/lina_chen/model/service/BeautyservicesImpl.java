@@ -17,8 +17,7 @@ public class BeautyservicesImpl {
 
     public List<BeautyServiceDTO> getBeautyservicesByProfession(Long professionId, Locale locale){
         List<BeautyService> beautyServices;
-        try(BeautyserviceDao beautyserviceDao = factory.createBeautyserviceDao(
-                ResourceBundle.getBundle("queries", locale))){
+        try(BeautyserviceDao beautyserviceDao = factory.createBeautyserviceDao(locale)){
             beautyServices=beautyserviceDao.findByProfessionId(professionId);
         }
         return beautyServices.stream().map(b -> getLocalizedDTO(b, locale))
@@ -27,8 +26,7 @@ public class BeautyservicesImpl {
 
     public Optional<BeautyService> getById(Long beautyserviceId, Locale locale){
         Optional<BeautyService> beautyService;
-        try(BeautyserviceDao beautyserviceDao = factory.createBeautyserviceDao(
-                ResourceBundle.getBundle("queries", locale))){
+        try(BeautyserviceDao beautyserviceDao = factory.createBeautyserviceDao(locale)){
             beautyService=Optional.of(beautyserviceDao.findById(beautyserviceId));
         }
         return beautyService;

@@ -5,11 +5,12 @@ import net.ukr.lina_chen.model.entity.User;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Locale;
 import java.util.Map;
 
 public class MasterMapper implements ObjectMapper<Master> {
     @Override
-    public Master extractFromResultSet(ResultSet rs) throws SQLException {
+    public Master extractFromResultSet(ResultSet rs, Locale locale) throws SQLException {
         return Master.MasterBuilder.master()
                 .withId(rs.getLong("master_id"))
                 .withTimeBegin(rs.getTime("time_begin").toLocalTime())
@@ -19,7 +20,7 @@ public class MasterMapper implements ObjectMapper<Master> {
                         .withName(rs.getString("master_name"))
                         .withEmail(rs.getString("master_email"))
                         .build())
-                .withProfession(new ProfessionMapper().extractFromResultSet(rs))
+                .withProfession(new ProfessionMapper().extractFromResultSet(rs, locale))
                 .build();
     }
 

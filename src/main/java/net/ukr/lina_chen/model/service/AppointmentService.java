@@ -20,8 +20,7 @@ public class AppointmentService {
 
     public List<AppointmentDTO> getMastersAppointmentsOrderByDateTimeAsc(Long masterId, Locale locale) {
         List<Appointment> appointments;
-        try (AppointmentDao appointmentDao = factory.createAppointmentDao(
-                ResourceBundle.getBundle("queries", locale))) {
+        try (AppointmentDao appointmentDao = factory.createAppointmentDao(locale)) {
             appointments = appointmentDao.getMasterAppointments(masterId);
         }
         return appointments.stream().map(a -> getLocalizedDto(a, locale))
@@ -30,8 +29,7 @@ public class AppointmentService {
 
     public AppointmentDTO getById(Long appointmentId, Locale locale) {
         Appointment appointment;
-        try (AppointmentDao appointmentDao = factory.createAppointmentDao(
-                ResourceBundle.getBundle("queries", locale))) {
+        try (AppointmentDao appointmentDao = factory.createAppointmentDao(locale)) {
             appointment = appointmentDao.findById(appointmentId);
         }
         return getLocalizedDto(appointment, locale);
@@ -39,8 +37,7 @@ public class AppointmentService {
 
     public List<AppointmentDTO> getAllOrderByDateTimeAsc(Locale locale) {
         List<Appointment> appointments;
-        try (AppointmentDao appointmentDao = factory.createAppointmentDao(
-                ResourceBundle.getBundle("queries", locale))) {
+        try (AppointmentDao appointmentDao = factory.createAppointmentDao(locale)) {
             appointments = appointmentDao.findAll();
         }
         return appointments.stream().map(a -> getLocalizedDto(a, locale))
@@ -49,8 +46,7 @@ public class AppointmentService {
 
     public Long saveAppointment(Appointment appointment, Locale locale) throws TimeIsBusyException {
         Long id;
-        try (AppointmentDao appointmentDao = factory.createAppointmentDao(
-                ResourceBundle.getBundle("queries", locale))) {
+        try (AppointmentDao appointmentDao = factory.createAppointmentDao(locale)) {
             id = appointmentDao.create(appointment);
         }
         return id;

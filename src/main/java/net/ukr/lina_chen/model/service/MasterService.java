@@ -13,7 +13,7 @@ public class MasterService {
 
     public Optional<Master> getById(Long masterId, Locale locale) {
         Optional<Master> master;
-        try (MasterDao masterDao = factory.createMasterDao(ResourceBundle.getBundle("queries", locale))) {
+        try (MasterDao masterDao = factory.createMasterDao(locale)) {
             master = Optional.ofNullable(masterDao.findById(masterId));
         }
         return master;
@@ -21,7 +21,7 @@ public class MasterService {
 
     public Optional<MasterDTO> getByUserId(Long userId, Locale locale) {
         Master master;
-        try (MasterDao masterDao = factory.createMasterDao(ResourceBundle.getBundle("queries", locale))) {
+        try (MasterDao masterDao = factory.createMasterDao(locale)) {
             master = masterDao.findByUserId(userId);
         }
         return Optional.ofNullable(getDTO(master));
@@ -29,7 +29,7 @@ public class MasterService {
 
     public List<MasterDTO> findAllOrderByNameAsc(Locale locale) {
         List<Master> masters;
-        try (MasterDao masterDao = factory.createMasterDao(ResourceBundle.getBundle("queries", locale))) {
+        try (MasterDao masterDao = factory.createMasterDao(locale)) {
             masters = masterDao.findAll();
         }
         return masters.stream().map(this::getDTO)
@@ -38,7 +38,7 @@ public class MasterService {
 
     public List<MasterDTO> findByProfessionIdOrderByNameAsc(Long professionId, Locale locale) {
         List<Master> masters;
-        try (MasterDao masterDao = factory.createMasterDao(ResourceBundle.getBundle("queries", locale))) {
+        try (MasterDao masterDao = factory.createMasterDao(locale)) {
             masters = masterDao.findByProfessionId(professionId);
         }
         return masters.stream().map(this::getDTO)

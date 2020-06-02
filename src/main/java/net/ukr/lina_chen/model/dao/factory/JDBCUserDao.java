@@ -17,19 +17,23 @@ public class JDBCUserDao implements UserDao {
     private final Connection connection;
     private final UserMapper mapper = new UserMapper();
     private final RolesMapper rolesMapper = new RolesMapper();
-    private final ResourceBundle bundle;
+    private final Locale locale;
 
-    public JDBCUserDao(Connection connection, ResourceBundle bundle) {
+    public JDBCUserDao(Connection connection, Locale locale) {
         this.connection = connection;
-        this.bundle = bundle;
+        this.locale = locale;
     }
 
     public Long create(User entity) throws UserExistsException {
         long userId = 0L;
-        try (PreparedStatement checkIfExists = connection.prepareStatement(bundle.getString("query.find.user.by.email"));
-             PreparedStatement replaceUser = connection.prepareStatement(bundle.getString("query.replace.user"));
-             PreparedStatement getId = connection.prepareStatement(bundle.getString("query.get.user.id"));
-             PreparedStatement setRoles = connection.prepareStatement(bundle.getString("query.replace.user.role"))) {
+        try (PreparedStatement checkIfExists = connection.prepareStatement(
+                getLocalizedQuery(queryBundle.getString("query.find.user.by.email"), locale));
+             PreparedStatement replaceUser = connection.prepareStatement(
+                     getLocalizedQuery(queryBundle.getString("query.replace.user"), locale));
+             PreparedStatement getId = connection.prepareStatement(
+                     getLocalizedQuery(queryBundle.getString("query.get.user.id"), locale));
+             PreparedStatement setRoles = connection.prepareStatement(
+                     getLocalizedQuery(queryBundle.getString("query.replace.user.role"), locale))) {
             replaceUser.setString(1, entity.getEmail());
             replaceUser.setString(2, entity.getName());
             replaceUser.setString(3, entity.getNameUkr());
@@ -65,13 +69,14 @@ public class JDBCUserDao implements UserDao {
         User user = null;
         Map<Long, User> users = new HashMap<>();
         Set<Role> roles = new HashSet<>();
-        try (PreparedStatement st = connection.prepareStatement(bundle.getString("query.find.user.by.id"))) {
+        try (PreparedStatement st = connection.prepareStatement(
+                getLocalizedQuery(queryBundle.getString("query.find.user.by.id"), locale))) {
             st.setLong(1, id);
             try (ResultSet rs = st.executeQuery()) {
                 while (rs.next()) {
-                    user = mapper.extractFromResultSet(rs);
+                    user = mapper.extractFromResultSet(rs, locale);
                     user = mapper.makeUnique(users, user);
-                    roles.add(rolesMapper.extractFromResultSet(rs));
+                    roles.add(rolesMapper.extractFromResultSet(rs, locale));
                 }
             }
         } catch (SQLException e) {
@@ -111,13 +116,14 @@ public class JDBCUserDao implements UserDao {
         Optional<User> user = Optional.empty();
         Map<Long, User> users = new HashMap<>();
         Set<Role> roles = new HashSet<>();
-        try (PreparedStatement ps = connection.prepareStatement(bundle.getString("query.find.user.by.email"))) {
+        try (PreparedStatement ps = connection.prepareStatement(
+                getLocalizedQuery(queryBundle.getString("query.find.user.by.email"), locale))) {
             ps.setString(1, email);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    user = Optional.ofNullable(mapper.extractFromResultSet(rs));
+                    user = Optional.ofNullable(mapper.extractFromResultSet(rs, locale));
                     user.ifPresent(value -> mapper.makeUnique(users, value));
-                    roles.add(rolesMapper.extractFromResultSet(rs));
+                    roles.add(rolesMapper.extractFromResultSet(rs, locale));
                 }
             }
         } catch (SQLException e) {

@@ -19,7 +19,7 @@ public class ProvidedCommand implements Command {
     private final MailService mailService;
     private final ArchiveService archiveService;
 
-    Logger logger = LogManager.getLogger(ProvidedCommand.class);
+    private Logger logger = LogManager.getLogger(ProvidedCommand.class);
 
     public ProvidedCommand(TransactionService transactionService, MailService mailService, ArchiveService archiveService) {
         this.transactionService = transactionService;

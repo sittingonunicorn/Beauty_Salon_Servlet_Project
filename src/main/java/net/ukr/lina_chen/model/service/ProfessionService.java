@@ -7,7 +7,6 @@ import net.ukr.lina_chen.model.entity.Profession;
 
 import java.util.List;
 import java.util.Locale;
-import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 public class ProfessionService {
@@ -15,7 +14,7 @@ public class ProfessionService {
 
     public List<ProfessionDTO> getAllServicetypes(Locale locale) {
         List<Profession> professions;
-        try (ProfessionDao professionDao = factory.createProfessionDao(ResourceBundle.getBundle("queries", locale))) {
+        try (ProfessionDao professionDao = factory.createProfessionDao(locale)) {
             professions = professionDao.findAllServicetypes();
         }
         return professions.stream()
@@ -29,7 +28,7 @@ public class ProfessionService {
 
     public Profession getById(Long professionId, Locale locale) {
         Profession profession;
-        try (ProfessionDao professionDao = factory.createProfessionDao(ResourceBundle.getBundle("queries", locale))) {
+        try (ProfessionDao professionDao = factory.createProfessionDao(locale)) {
             profession = professionDao.findById(professionId);
         }
         return profession;

@@ -19,23 +19,24 @@ public class JDBCProfessionDao implements ProfessionDao {
     private final Connection connection;
     private final MasterMapper masterMapper = new MasterMapper();
     private final ProfessionMapper professionMapper = new ProfessionMapper();
-    private final ResourceBundle bundle;
+    private final Locale locale;
 
-    public JDBCProfessionDao(Connection connection, ResourceBundle bundle) {
+    public JDBCProfessionDao(Connection connection, Locale locale) {
         this.connection = connection;
-        this.bundle = bundle;
+        this.locale = locale;
     }
 
     @Override
     public Profession findById(Long id) {
         Profession profession = null;
         Map<Long, Master> masters = new HashMap<>();
-        try (PreparedStatement st = connection.prepareStatement(bundle.getString("query.find.profession.by.id"))) {
+        try (PreparedStatement st = connection.prepareStatement(
+                getLocalizedQuery(queryBundle.getString("query.find.profession.by.id"), locale))) {
             st.setLong(1, id);
             try (ResultSet rs = st.executeQuery()) {
                 while (rs.next()) {
-                    profession = professionMapper.extractFromResultSet(rs);
-                    Master master = masterMapper.extractFromResultSet(rs);
+                    profession = professionMapper.extractFromResultSet(rs, locale);
+                    Master master = masterMapper.extractFromResultSet(rs, locale);
                     master = masterMapper.makeUnique(masters, master);
                     master.setProfession(profession);
                 }
@@ -51,12 +52,13 @@ public class JDBCProfessionDao implements ProfessionDao {
     @Override
     public List<Profession> findAll() {
         Map<Long, Profession> professions = new HashMap<>();
-        try (PreparedStatement ps = connection.prepareStatement(bundle.getString("query.find.all.professions"));
+        try (PreparedStatement ps = connection.prepareStatement(
+                getLocalizedQuery(queryBundle.getString("query.find.all.professions"), locale));
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
-                Profession profession = professionMapper.extractFromResultSet(rs);
+                Profession profession = professionMapper.extractFromResultSet(rs, locale);
                 profession = professionMapper.makeUnique(professions, profession);
-                Master master = masterMapper.extractFromResultSet(rs);
+                Master master = masterMapper.extractFromResultSet(rs, locale);
                 master.setProfession(profession);
                 profession.getMasters().add(master);
             }
@@ -88,10 +90,11 @@ public class JDBCProfessionDao implements ProfessionDao {
     @Override
     public List<Profession> findAllServicetypes() {
         Map<Long, Profession> professions = new HashMap<>();
-        try (PreparedStatement ps = connection.prepareStatement(bundle.getString("query.find.all.professions"));
+        try (PreparedStatement ps = connection.prepareStatement(
+                getLocalizedQuery(queryBundle.getString("query.find.all.professions"), locale));
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
-                Profession profession = professionMapper.extractFromResultSet(rs);
+                Profession profession = professionMapper.extractFromResultSet(rs, locale);
                 professionMapper.makeUnique(professions, profession);
             }
         } catch (SQLException e) {
