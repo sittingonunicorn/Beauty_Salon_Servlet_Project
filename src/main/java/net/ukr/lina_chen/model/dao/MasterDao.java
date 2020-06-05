@@ -6,6 +6,9 @@ import java.util.List;
 
 
 public interface MasterDao extends GenericDao<Master>{
+
     Master findByUserId(Long userId);
+
     List<Master> findByProfessionId(Long professionId);
+
 }

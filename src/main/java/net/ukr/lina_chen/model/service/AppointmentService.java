@@ -6,6 +6,7 @@ import net.ukr.lina_chen.model.dao.factory.DaoFactory;
 import net.ukr.lina_chen.model.dto.AppointmentDTO;
 import net.ukr.lina_chen.model.entity.Appointment;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -50,6 +51,23 @@ public class AppointmentService {
             id = appointmentDao.create(appointment);
         }
         return id;
+    }
+
+    public List<LocalDate> getMastersAppointmentDates(Long masterId, Locale locale){
+        List<Date> dates;
+        try (AppointmentDao appointmentDao = factory.createAppointmentDao(locale)) {
+            dates = appointmentDao.findMastersAppointmentDates(masterId);
+        }
+        return dates.stream().map(Date::toLocalDate).collect(Collectors.toList());
+    }
+
+    public List<AppointmentDTO> getMastersDailyAppointments(Long masterId, LocalDate date, Locale locale){
+        List<Appointment> appointments;
+        try (AppointmentDao appointmentDao = factory.createAppointmentDao(locale)) {
+            appointments = appointmentDao.findMastersDailyAppointments(masterId, Date.valueOf(date));
+        }
+        return appointments.stream().map(a -> getLocalizedDto(a, locale))
+                .collect(Collectors.toList());
     }
 
     public AppointmentDTO getLocalizedDto(Appointment appointment, Locale locale) {

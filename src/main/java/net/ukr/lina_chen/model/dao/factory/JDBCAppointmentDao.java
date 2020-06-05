@@ -64,6 +64,44 @@ public class JDBCAppointmentDao implements AppointmentDao {
     }
 
     @Override
+    public List<Appointment> findMastersDailyAppointments(Long masterId, Date date) {
+        List<Appointment> appointments = new ArrayList<>();
+        try (PreparedStatement ps = connection.prepareStatement(
+                getLocalizedQuery(queryBundle.getString("query.find.appointments.by.master.date"), locale))) {
+            ps.setLong(1, masterId);
+            ps.setDate(2, date);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Appointment appointment = appointmentMapper.extractFromResultSet(rs, locale);
+                    appointments.add(appointment);
+                }
+            }
+        } catch (SQLException e) {
+            logger.error(e);
+        }
+        return appointments;
+    }
+
+    @Override
+    public List<Date> findMastersAppointmentDates(Long masterId) {
+        List<Date> dates = new ArrayList<>();
+        try (PreparedStatement ps = connection.prepareStatement(
+                getLocalizedQuery(queryBundle.getString("query.find.all.masters.appointment.dates"), locale))){
+            ps.setLong(1, masterId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Date date = rs.getDate("date");
+                    dates.add(date);
+                }
+            }
+        } catch (SQLException e) {
+            logger.error(e);
+        }
+        return dates;
+
+    }
+
+    @Override
     public Appointment findById(Long id) {
         Appointment appointment = null;
         try (PreparedStatement ps = connection.prepareStatement(
@@ -82,7 +120,7 @@ public class JDBCAppointmentDao implements AppointmentDao {
 
     @Override
     public List<Appointment> findAll() {
-        List <Appointment> appointments = new ArrayList<>();
+        List<Appointment> appointments = new ArrayList<>();
         try (PreparedStatement ps = connection.prepareStatement(
                 getLocalizedQuery(queryBundle.getString("query.find.all.appointments"), locale));
              ResultSet rs = ps.executeQuery()) {

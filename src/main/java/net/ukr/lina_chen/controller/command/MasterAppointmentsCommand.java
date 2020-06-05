@@ -9,6 +9,7 @@ import net.ukr.lina_chen.model.service.AppointmentService;
 import net.ukr.lina_chen.model.service.MasterService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -38,12 +39,16 @@ public class MasterAppointmentsCommand implements Command {
         } catch (MasterNotFoundException e) {
             return REDIRECT_MASTER;
         }
-        List<AppointmentDTO> appointments = appointmentService.getMastersAppointmentsOrderByDateTimeAsc(
-                master.getId(), locale);
+        List<LocalDate> dates = appointmentService.getMastersAppointmentDates(master.getId(), locale);
+        Optional<String> dateString = Optional.ofNullable(request.getParameter("date"));
+        List<AppointmentDTO> appointments = dateString.isPresent() ? appointmentService.getMastersDailyAppointments(
+                master.getId(), LocalDate.parse(dateString.get()), locale)
+                : appointmentService.getMastersAppointmentsOrderByDateTimeAsc(master.getId(), locale);
         PageRequest<AppointmentDTO> pageRequest = new PageRequest<>(appointments);
         appointments = pageRequest.getPage(page);
         request.setAttribute("appointments", appointments);
         request.setAttribute("master", master);
+        request.setAttribute("dates", dates);
         request.setAttribute("pageNumbers", pageRequest.getPageNumbers());
         return MASTER_APPOINTMENTS_PAGE;
     }
