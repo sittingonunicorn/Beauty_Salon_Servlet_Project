@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Master Main</title>
-    <%@ include file="masternenu.jsp"%>
+    <%@ include file="../parts/menu.jsp" %>
 </head>
 <body>
 </body>

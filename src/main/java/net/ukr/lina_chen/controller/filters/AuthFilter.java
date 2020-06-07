@@ -31,7 +31,6 @@ public class AuthFilter implements Filter {
             roles = securityUtility.setGuestRoles(session);
         }
         if (securityUtility.isForbiddenRequest(path, roles)) {
-            logger.warn("unauthorized access attempt");
             if (roles.contains(Role.GUEST)) {
                 response.sendRedirect(request.getContextPath() + "/app/login");
                 return;

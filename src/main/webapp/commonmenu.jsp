@@ -34,7 +34,6 @@
         <h2 class="h2">Beauty Salon</h2>
     </div>
 </header>
-
 <nav class="navbar fixed-bottom navbar-light bg-info">
     <div class="navbar-text" style="color: white">
         <fmt:message key="footer.name"/>

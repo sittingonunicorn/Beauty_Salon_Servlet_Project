@@ -1,6 +1,6 @@
 <html>
 <head>
-    <%@ include file="usermenu.jsp" %>
+    <%@ include file="../parts/menu.jsp" %>
     <title>Choose time</title>
 </head>
 <body>

@@ -1,6 +1,6 @@
 <html>
 <head>
-    <%@ include file="adminmenu.jsp" %>
+    <%@ include file="../parts/menu.jsp" %>
     <title><fmt:message key="link.comments"/></title>
 </head>
 <body>

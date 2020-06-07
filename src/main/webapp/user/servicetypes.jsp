@@ -1,5 +1,5 @@
 <head>
-    <%@ include file="usermenu.jsp" %>
+    <%@ include file="../parts/menu.jsp" %>
     <title>Beauty Salon Choose Service type</title>
 </head>
 <body>

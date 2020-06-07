@@ -1,6 +1,6 @@
 <html>
 <head>
-    <%@ include file="masternenu.jsp" %>
+    <%@ include file="../parts/menu.jsp" %>
     <title>Comments for Master</title>
 </head>
 <body>

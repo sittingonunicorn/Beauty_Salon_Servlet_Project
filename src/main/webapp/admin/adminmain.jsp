@@ -1,6 +1,6 @@
 <html>
 <head>
-    <%@ include file="adminmenu.jsp" %>
+    <%@ include file="../parts/menu.jsp" %>
     <title>Admin Main</title>
 </head>
 <body>
