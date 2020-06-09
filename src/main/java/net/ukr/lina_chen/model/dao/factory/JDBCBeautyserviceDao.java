@@ -62,17 +62,17 @@ public class JDBCBeautyserviceDao implements BeautyserviceDao {
 
     @Override
     public List<BeautyService> findAll() {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void update(BeautyService entity) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void delete(Long id) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override

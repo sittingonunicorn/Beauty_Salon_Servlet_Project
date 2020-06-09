@@ -137,7 +137,7 @@ public class JDBCAppointmentDao implements AppointmentDao {
 
     @Override
     public void update(Appointment entity) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override

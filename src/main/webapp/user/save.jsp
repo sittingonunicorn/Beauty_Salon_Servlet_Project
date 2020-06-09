@@ -18,6 +18,6 @@
 <p><fmt:message key="message.time">
     <fmt:param value="${appointment.time}"/>
 </fmt:message></p>
-
+<p><fmt:message key="message.waiting.for.you"/></p>
 </body>
 </html>

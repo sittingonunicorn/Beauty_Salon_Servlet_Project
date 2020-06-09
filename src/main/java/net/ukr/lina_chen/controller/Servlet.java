@@ -82,8 +82,7 @@ public class Servlet extends HttpServlet {
         String path = request.getRequestURI();
         path = path.replaceAll(".*/app/", "");
         String match = commands.keySet().stream().filter(path::matches).findFirst().orElse("index");
-        Command command = commands.getOrDefault(match,
-                (r) -> "/index.jsp");
+        Command command = commands.getOrDefault(match, r -> "/index.jsp");
         String page = command.execute(request);
         if (page.contains("redirect:")) {
             response.sendRedirect(page.replace("redirect:", "/app"));

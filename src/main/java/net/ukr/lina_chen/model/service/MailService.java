@@ -20,7 +20,7 @@ public class MailService {
     private String subject;
     private String text;
 
-    Logger logger = LogManager.getLogger(MailService.class);
+    private static Logger logger = LogManager.getLogger(MailService.class);
 
     public void sendEmail(String userEmail, Long appointmentId) {
         Properties mailProperties = new Properties();

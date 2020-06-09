@@ -90,16 +90,17 @@ public class JDBCUserDao implements UserDao {
 
     @Override
     public List<User> findAll() {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void update(User entity) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void delete(Long id) {
+        throw new UnsupportedOperationException();
     }
 
     @Override

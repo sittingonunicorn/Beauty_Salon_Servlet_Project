@@ -106,12 +106,12 @@ public class JDBCArchiveDao implements ArchiveDao {
 
     @Override
     public void update(ArchiveAppointment entity) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void delete(Long id) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override

@@ -20,8 +20,9 @@ public class ServicetypesCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) {
         Locale locale = CommandUtility.geLocale(request);
-        if(request.getParameter("professionId")!=null){
-            Long professionId = Long.parseLong(request.getParameter("professionId"));
+        String professionIdString = request.getParameter("professionId");
+        if(professionIdString!=null){
+            Long professionId = Long.parseLong(professionIdString);
             request.setAttribute("beautyservices", beautyservices.getBeautyservicesByProfession(professionId, locale));
             request.setAttribute("professionId", professionId);
         }

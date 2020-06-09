@@ -9,7 +9,7 @@ import static net.ukr.lina_chen.controller.utility.IConstants.MIN_QUANTITY_PAGES
 import static net.ukr.lina_chen.controller.utility.IConstants.PAGE_SIZE;
 
 public class PageRequest<T> {
-    private final int size = PAGE_SIZE;
+    private static final int SIZE = PAGE_SIZE;
     private final List<T> list;
 
 
@@ -18,7 +18,7 @@ public class PageRequest<T> {
     }
 
     private int getTotalPages() {
-        return (int) Math.ceil(((double) list.size()) / size);
+        return (int) Math.ceil(((double) list.size()) / SIZE);
     }
 
     public List<Integer> getPageNumbers() {
@@ -28,8 +28,8 @@ public class PageRequest<T> {
     }
 
     public List<T> getPage(int pageNumber) {
-        int start = pageNumber * size;
-        int end = Math.min((start + size), list.size());
+        int start = pageNumber * SIZE;
+        int end = Math.min((start + SIZE), list.size());
         if (start > list.size()) {
             return new ArrayList<>();
         }

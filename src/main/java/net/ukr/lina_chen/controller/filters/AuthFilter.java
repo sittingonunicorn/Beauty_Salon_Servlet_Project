@@ -2,8 +2,6 @@ package net.ukr.lina_chen.controller.filters;
 
 import net.ukr.lina_chen.controller.utility.SecurityUtility;
 import net.ukr.lina_chen.model.entity.Role;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -13,7 +11,6 @@ import java.io.IOException;
 import java.util.Set;
 
 public class AuthFilter implements Filter {
-    private static final Logger logger = LogManager.getLogger(AuthFilter.class);
 
     @Override
     public void doFilter(ServletRequest req,

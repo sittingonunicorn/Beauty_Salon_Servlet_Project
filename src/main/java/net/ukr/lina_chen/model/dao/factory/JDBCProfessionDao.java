@@ -28,7 +28,7 @@ public class JDBCProfessionDao implements ProfessionDao {
 
     @Override
     public Profession findById(Long id) {
-        Profession profession = null;
+        Profession profession = new Profession();
         Map<Long, Master> masters = new HashMap<>();
         try (PreparedStatement st = connection.prepareStatement(
                 getLocalizedQuery(queryBundle.getString("query.find.profession.by.id"), locale))) {
@@ -70,12 +70,12 @@ public class JDBCProfessionDao implements ProfessionDao {
 
     @Override
     public void update(Profession entity) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void delete(Long id) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override

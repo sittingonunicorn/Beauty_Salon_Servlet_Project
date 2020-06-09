@@ -6,11 +6,7 @@ import net.ukr.lina_chen.model.entity.Master;
 import net.ukr.lina_chen.model.service.AppointmentService;
 import net.ukr.lina_chen.model.service.MasterService;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import javax.servlet.http.HttpServletRequest;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -21,12 +17,12 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static net.ukr.lina_chen.controller.utility.IConstants.*;
-import static net.ukr.lina_chen.controller.utility.PagesContainer.*;
+import static net.ukr.lina_chen.controller.utility.PagesContainer.REDIRECT_SERVICETYPES;
+import static net.ukr.lina_chen.controller.utility.PagesContainer.TIME_PAGE;
 
 public class TimeCommand implements Command {
     private MasterService masterService;
     private AppointmentService appointmentService;
-    private static final Logger logger = LogManager.getLogger(TimeCommand.class);
 
     public TimeCommand(MasterService masterService, AppointmentService appointmentService) {
         this.masterService = masterService;

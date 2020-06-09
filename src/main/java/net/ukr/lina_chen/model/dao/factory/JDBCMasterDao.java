@@ -59,12 +59,12 @@ public class JDBCMasterDao implements MasterDao {
 
     @Override
     public void update(Master entity) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void delete(Long id) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
