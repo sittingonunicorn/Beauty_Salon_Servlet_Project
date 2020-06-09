@@ -1,16 +1,17 @@
 <html>
 <head>
-    <%@ include file="/parts/menu.jsp" %>
+    <%@ include file="/commonmenu.jsp" %>
     <title>Login Page</title>
 </head>
 <body>
 <div class="container">
     <div class="row">
-        <div class="panel panel-default" style="margin-top:45px">
-            <div class="panel-heading">
-                <h3 class="panel-title"><fmt:message key="authentification"/></h3>
+        <div class="card bg-light mb-3" style="margin-left: auto;
+        margin-right: auto; align-items: center">
+            <div class="card-header">
+                <h3><fmt:message key="authentification"/></h3>
             </div>
-            <div class="panel-body">
+            <div class="card-body">
                 <div class="info">
                     <c:if test="${param.logout}">
                         <div class="alert alert-info" role="alert"><fmt:message key="message.logged.out"/></div>

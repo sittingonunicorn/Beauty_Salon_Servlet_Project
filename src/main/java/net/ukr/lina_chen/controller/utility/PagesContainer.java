@@ -26,6 +26,7 @@ public interface PagesContainer {
     String REDIRECT_MASTER_APPOINTMENTS="redirect:/master/appointments";
     String REDIRECT_ADMIN_APPOINTMENTS="redirect:/admin/appointments";
     String ADMIN_APPOINTMENTS_PAGE = "/admin/appointments.jsp";
+    String USER_APPOINTMENTS_PAGE = "/user/appointments.jsp";
     String ADMIN_COMMENTS_PAGE = "/admin/comments.jsp";
     String MASTER_COMMENTS_PAGE = "/master/comments.jsp";
 }

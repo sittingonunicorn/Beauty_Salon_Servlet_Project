@@ -25,7 +25,8 @@
             <button type="submit" class="btn btn-info" onclick="location.href='${pageContext.request.contextPath}/app/login'">
                 <fmt:message key="button.login"/>
             </button>
-            <button type="submit" class="btn btn-info" onclick="location.href='${pageContext.request.contextPath}/app/registration'">
+            <button type="submit" class="btn btn-info"
+                    onclick="location.href='${pageContext.request.contextPath}/app/registration'">
                 <fmt:message key="button.registration"/>
             </button>
         </nav>

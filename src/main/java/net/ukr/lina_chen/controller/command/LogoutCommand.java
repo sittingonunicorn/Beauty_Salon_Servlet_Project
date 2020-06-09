@@ -18,6 +18,6 @@ public class LogoutCommand implements Command {
                         .orElse("en")));
         session.invalidate();
         request.setAttribute("logout", bundle.getString("message.logged.out"));
-        return REDIRECT_LOGIN;
+        return REDIRECT_LOGIN + "?logout=true";
     }
 }

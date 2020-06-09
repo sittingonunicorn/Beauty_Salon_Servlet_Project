@@ -70,6 +70,15 @@ public class AppointmentService {
                 .collect(Collectors.toList());
     }
 
+    public List<AppointmentDTO> getUsersAppointments(Long userId, Locale locale){
+        List<Appointment> appointments;
+        try (AppointmentDao appointmentDao = factory.createAppointmentDao(locale)) {
+            appointments = appointmentDao.findUsersAppointments(userId);
+        }
+        return appointments.stream().map(a -> getLocalizedDto(a, locale))
+                .collect(Collectors.toList());
+    }
+
     public AppointmentDTO getLocalizedDto(Appointment appointment, Locale locale) {
         return AppointmentDTO.AppointmentDTOBuilder.appointmentDTO()
                 .withBeautyService(appointment.getBeautyService().getName())

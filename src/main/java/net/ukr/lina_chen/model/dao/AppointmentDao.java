@@ -18,4 +18,6 @@ public interface AppointmentDao extends GenericDao<Appointment> {
 
     List<Date> findMastersAppointmentDates (Long masterId);
 
+    List<Appointment> findUsersAppointments (Long userId);
+
 }

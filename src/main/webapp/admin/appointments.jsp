@@ -1,7 +1,7 @@
 <html>
 <head>
     <%@ include file="../parts/menu.jsp" %>
-    <title><fmt:message key="link.appointments"/></title>
+    <title><fmt:message key="link.master.appointments"/></title>
 </head>
 <body>
 <table class="table table-hover">

@@ -4,7 +4,7 @@
 <%@ page isELIgnored="false" %>
 <fmt:setLocale value="${sessionScope.lang}"/>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<html lang="en">
 <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
@@ -40,19 +40,21 @@
                     <li style="float: left"><a href="${pageContext.request.contextPath}/app/admin/comments"><fmt:message
                             key="link.comments"/></a></li>
                     <li style="float: left"><a href="${pageContext.request.contextPath}/app/admin/appointments"><fmt:message
-                            key="link.appointments"/></a></li>
+                            key="link.master.appointments"/></a></li>
                 </c:when>
                 <c:when test="${role eq 'MASTER'}">
                     <li style="float: left"><a href="${pageContext.request.contextPath}/app/master/comments"><fmt:message
                             key="link.comments"/></a></li>
                     <li style="float: left"><a href="${pageContext.request.contextPath}/app/master/appointments"><fmt:message
-                            key="link.appointments"/></a></li>
+                            key="link.master.appointments"/></a></li>
                 </c:when>
                 <c:when test="${role eq 'USER'}">
                     <li style="float: left"><a href="${pageContext.request.contextPath}/app/user/servicetypes"><fmt:message
                             key="link.create.new.appointment"/></a></li>
                     <li style="float: left"><a href="${pageContext.request.contextPath}/app/user/archive"><fmt:message
                             key="link.archive.appointments"/></a></li>
+                    <li style="float: left"><a href="${pageContext.request.contextPath}/app/user/appointments"><fmt:message
+                            key="link.user.appointments"/></a></li>
                 </c:when>
             </c:choose>
         </ul>

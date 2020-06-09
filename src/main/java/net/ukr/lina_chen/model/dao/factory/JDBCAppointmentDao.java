@@ -102,6 +102,24 @@ public class JDBCAppointmentDao implements AppointmentDao {
     }
 
     @Override
+    public List<Appointment> findUsersAppointments(Long userId) {
+        List<Appointment> appointments = new ArrayList<>();
+        try (PreparedStatement ps = connection.prepareStatement(
+                getLocalizedQuery(queryBundle.getString("query.find.appointments.by.user"), locale))) {
+            ps.setLong(1, userId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Appointment appointment = appointmentMapper.extractFromResultSet(rs, locale);
+                    appointments.add(appointment);
+                }
+            }
+        } catch (SQLException e) {
+            logger.error(e);
+        }
+        return appointments;
+    }
+
+    @Override
     public Appointment findById(Long id) {
         Appointment appointment = null;
         try (PreparedStatement ps = connection.prepareStatement(

@@ -23,8 +23,11 @@ public class LoginCommand implements Command {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
-        if (email == null || email.equals("") || password == null || password.equals("")) {
+        if (email == null || password == null) {
             return LOGIN_PAGE;
+        }
+        if (email.equals("") || password.equals("")) {
+            return LOGIN_PAGE + "?error=true";
         }
         Optional<UserDTO> user = userService.getUserByEmailAndPassword(
                 email, password, locale);
@@ -45,7 +48,7 @@ public class LoginCommand implements Command {
 
             }
         }
-        return REDIRECT_LOGIN;
+        return REDIRECT_LOGIN + "?error=true";
     }
 }
 
