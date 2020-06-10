@@ -108,7 +108,7 @@ public class JDBCUserDao implements UserDao {
         try {
             connection.close();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            logger.error(e.getMessage());
         }
     }
 

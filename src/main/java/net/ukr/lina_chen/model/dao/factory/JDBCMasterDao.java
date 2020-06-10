@@ -72,7 +72,7 @@ public class JDBCMasterDao implements MasterDao {
         try {
             connection.close();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            logger.error(e.getMessage());
         }
     }
 

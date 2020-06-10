@@ -1,9 +1,10 @@
 package net.ukr.lina_chen.model.entity;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class Appointment {
+public class Appointment implements Serializable {
     private Long id;
     private Master master;
     private User user;

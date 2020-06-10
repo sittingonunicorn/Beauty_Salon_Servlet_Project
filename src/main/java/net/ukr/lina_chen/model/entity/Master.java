@@ -1,8 +1,9 @@
 package net.ukr.lina_chen.model.entity;
 
+import java.io.Serializable;
 import java.time.LocalTime;
 
-public class Master {
+public class Master implements Serializable {
     private Long id;
     private User user;
     private Profession profession;

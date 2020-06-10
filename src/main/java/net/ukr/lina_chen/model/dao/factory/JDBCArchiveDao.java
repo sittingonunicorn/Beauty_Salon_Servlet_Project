@@ -119,7 +119,7 @@ public class JDBCArchiveDao implements ArchiveDao {
         try {
             connection.close();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            logger.error(e.getMessage());
         }
     }
 

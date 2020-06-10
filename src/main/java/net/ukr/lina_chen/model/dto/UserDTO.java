@@ -2,9 +2,10 @@ package net.ukr.lina_chen.model.dto;
 
 import net.ukr.lina_chen.model.entity.Role;
 
+import java.io.Serializable;
 import java.util.Set;
 
-public class UserDTO {
+public class UserDTO implements Serializable {
     private Long id;
     private Set<Role> roles;
     private String password;

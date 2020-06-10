@@ -1,8 +1,9 @@
 package net.ukr.lina_chen.model.entity;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class BeautyService {
+public class BeautyService implements Serializable {
 
     private Long id;
     private String name;

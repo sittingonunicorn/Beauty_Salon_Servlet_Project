@@ -1,8 +1,9 @@
 package net.ukr.lina_chen.model.entity;
 
+import java.io.Serializable;
 import java.util.Set;
 
-public class User {
+public class User implements Serializable {
     private Long id;
     private Set<Role> roles;
     private String password;

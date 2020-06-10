@@ -1,11 +1,12 @@
 package net.ukr.lina_chen.model.entity;
 
+import java.io.Serializable;
 import java.util.Set;
 
-public class Profession {
+public class Profession implements Serializable {
     private Long id;
     private String name;
-    private Set<Master> masters;
+    private transient Set<Master> masters;
     private String beautyservicesType;
     private String nameUkr;
     private String beautyservicesTypeUkr;

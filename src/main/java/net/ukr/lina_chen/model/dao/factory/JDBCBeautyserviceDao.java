@@ -80,7 +80,7 @@ public class JDBCBeautyserviceDao implements BeautyserviceDao {
         try {
             connection.close();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            logger.error(e.getMessage());
         }
     }
 }
