@@ -16,7 +16,7 @@ import static net.ukr.lina_chen.controller.utility.PagesContainer.REDIRECT_TIME;
 import static net.ukr.lina_chen.controller.utility.PagesContainer.SAVE_PAGE;
 
 public class SaveCommand implements Command {
-    AppointmentService appointmentService;
+    private final AppointmentService appointmentService;
     private static final Logger logger = LogManager.getLogger(SaveCommand.class);
 
     public SaveCommand(AppointmentService appointmentService) {
@@ -32,7 +32,7 @@ public class SaveCommand implements Command {
         appointment.setDate(date);
         appointment.setTime(time);
         appointment.setProvided(false);
-        Optional<Long> appointmentId = Optional.empty();
+        Optional<Long> appointmentId;
         try {
             appointmentId = Optional.of(appointmentService.saveAppointment(appointment, locale));
         } catch (TimeIsBusyException e) {

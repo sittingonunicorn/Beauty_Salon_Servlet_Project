@@ -1,7 +1,7 @@
 package net.ukr.lina_chen.controller.command;
 
 import net.ukr.lina_chen.model.service.BeautyservicesImpl;
-import net.ukr.lina_chen.model.service.ProfessionService;
+import net.ukr.lina_chen.model.service.ServiceTypeService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Locale;
@@ -9,11 +9,11 @@ import java.util.Locale;
 import static net.ukr.lina_chen.controller.utility.PagesContainer.SERVICETYPES_PAGE;
 
 public class ServicetypesCommand implements Command {
-    private final ProfessionService professionService;
+    private final ServiceTypeService serviceTypeService;
     private final BeautyservicesImpl beautyservices;
 
-    public ServicetypesCommand(ProfessionService professionService, BeautyservicesImpl beautyservices) {
-        this.professionService = professionService;
+    public ServicetypesCommand(ServiceTypeService serviceTypeService, BeautyservicesImpl beautyservices) {
+        this.serviceTypeService = serviceTypeService;
         this.beautyservices = beautyservices;
     }
 
@@ -26,7 +26,7 @@ public class ServicetypesCommand implements Command {
             request.setAttribute("beautyservices", beautyservices.getBeautyservicesByProfession(professionId, locale));
             request.setAttribute("professionId", professionId);
         }
-        request.setAttribute("servicetypes", professionService.getAllServicetypes(locale));
+        request.setAttribute("servicetypes", serviceTypeService.getAllServicetypes(locale));
         return SERVICETYPES_PAGE;
     }
 }

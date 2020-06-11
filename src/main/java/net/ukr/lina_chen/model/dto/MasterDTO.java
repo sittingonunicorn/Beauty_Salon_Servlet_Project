@@ -60,46 +60,38 @@ public class MasterDTO {
                 '}';
     }
 
-    public static class MasterDTOBuilder
-    {
+    public static class MasterDTOBuilder {
         private MasterDTO masterDTO;
 
-        private MasterDTOBuilder()
-        {
+        private MasterDTOBuilder() {
             masterDTO = new MasterDTO();
         }
 
-        public MasterDTOBuilder withId(Long id)
-        {
+        public MasterDTOBuilder withId(Long id) {
             masterDTO.id = id;
             return this;
         }
 
-        public MasterDTOBuilder withName(String name)
-        {
+        public MasterDTOBuilder withName(String name) {
             masterDTO.name = name;
             return this;
         }
 
-        public MasterDTOBuilder withTimeBegin(LocalTime timeBegin)
-        {
+        public MasterDTOBuilder withTimeBegin(LocalTime timeBegin) {
             masterDTO.timeBegin = timeBegin;
             return this;
         }
 
-        public MasterDTOBuilder withTimeEnd(LocalTime timeEnd)
-        {
+        public MasterDTOBuilder withTimeEnd(LocalTime timeEnd) {
             masterDTO.timeEnd = timeEnd;
             return this;
         }
 
-        public static MasterDTOBuilder masterDTO()
-        {
+        public static MasterDTOBuilder masterDTO() {
             return new MasterDTOBuilder();
         }
 
-        public MasterDTO build()
-        {
+        public MasterDTO build() {
             return masterDTO;
         }
     }

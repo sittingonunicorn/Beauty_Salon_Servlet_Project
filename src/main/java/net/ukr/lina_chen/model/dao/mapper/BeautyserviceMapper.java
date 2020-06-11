@@ -14,7 +14,15 @@ public class BeautyserviceMapper implements ObjectMapper<BeautyService> {
                 .withId(rs.getLong("beautyservice_id"))
                 .withName(rs.getString("beautyservice_name_"+locale.getLanguage()))
                 .withPrice(rs.getBigDecimal("price"))
-                .withProfession(new ProfessionMapper().extractFromResultSet(rs, locale))
+                .build();
+    }
+
+    public BeautyService completeExtractFromResultSet(ResultSet rs, Locale locale) throws SQLException {
+        return BeautyService.BeautyServiceBuilder.beautyService()
+                .withId(rs.getLong("beautyservice_id"))
+                .withName(rs.getString("beautyservice_name_"+locale.getLanguage()))
+                .withPrice(rs.getBigDecimal("price"))
+                .withServiceType(new ServiceTypeMapper().extractFromResultSet(rs, locale))
                 .build();
     }
 

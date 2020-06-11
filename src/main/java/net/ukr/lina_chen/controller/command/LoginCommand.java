@@ -36,14 +36,14 @@ public class LoginCommand implements Command {
                 return ERROR_PAGE;
             }
             request.getSession().setAttribute("user", user.get());
-            if (user.get().getRoles().contains(Role.ADMIN)) {
-                CommandUtility.setUserRoles(request, user.get().getRoles(), email);
+            if (user.get().getRole().equals(Role.ADMIN)) {
+                CommandUtility.setUserRole(request, user.get().getRole(), email);
                 return REDIRECT_ADMIN;
-            } else if (user.get().getRoles().contains(Role.MASTER)) {
-                CommandUtility.setUserRoles(request, user.get().getRoles(), email);
+            } else if (user.get().getRole().equals(Role.MASTER)) {
+                CommandUtility.setUserRole(request, user.get().getRole(), email);
                 return REDIRECT_MASTER;
-            } else if (user.get().getRoles().contains(Role.USER)) {
-                CommandUtility.setUserRoles(request, user.get().getRoles(), email);
+            } else if (user.get().getRole().equals(Role.USER)) {
+                CommandUtility.setUserRole(request, user.get().getRole(), email);
                 return REDIRECT_USER;
 
             }

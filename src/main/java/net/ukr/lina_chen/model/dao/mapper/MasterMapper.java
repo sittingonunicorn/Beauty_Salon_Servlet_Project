@@ -20,7 +20,6 @@ public class MasterMapper implements ObjectMapper<Master> {
                         .withName(rs.getString("master_name"))
                         .withEmail(rs.getString("master_email"))
                         .build())
-                .withProfession(new ProfessionMapper().extractFromResultSet(rs, locale))
                 .build();
     }
 

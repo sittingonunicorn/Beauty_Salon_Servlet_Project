@@ -19,13 +19,16 @@ public class SecurityUtility {
 
     }
 
-    public boolean isForbiddenRequest(String path, Set<Role> roles) {
-        return permissions.entrySet()
-                .stream()
-                .filter(e -> roles.contains(e.getKey()))
-                .map(Map.Entry::getValue)
-                .flatMap(s -> Arrays.stream(s.split(", ")))
-                .noneMatch(path::contains);
+    public boolean isForbiddenRequest(String path, Role role) {
+        return Optional.ofNullable(permissions.get(role))
+                .map(s -> Arrays.stream(s.split(", "))
+                        .noneMatch(path::contains)).orElse(true);
+//        return permissions.entrySet()
+//                .stream()
+//                .filter(e -> roles.contains(e.getKey()))
+//                .map(Map.Entry::getValue)
+//                .flatMap(s -> Arrays.stream(s.split(", ")))
+//                .noneMatch(path::contains);
     }
 
     public String generateCSRFToken() {
@@ -34,10 +37,8 @@ public class SecurityUtility {
         return DatatypeConverter.printHexBinary(bytes);
     }
 
-    public Set<Role> setGuestRoles(HttpSession session) {
-        Set<Role> guestRoles = new HashSet<>();
-        guestRoles.add(Role.GUEST);
-        session.setAttribute("roles", guestRoles);
-        return guestRoles;
+    public Role setGuestRole(HttpSession session) {
+        session.setAttribute("roles", Role.GUEST);
+        return Role.GUEST;
     }
 }

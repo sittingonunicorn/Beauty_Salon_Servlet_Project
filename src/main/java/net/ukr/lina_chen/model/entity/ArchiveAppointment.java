@@ -1,7 +1,7 @@
 package net.ukr.lina_chen.model.entity;
 
 
-public class ArchiveAppointment extends Appointment{
+public class ArchiveAppointment extends Appointment {
 
     private String comment;
 

@@ -9,7 +9,7 @@ public abstract class DaoFactory {
 
     public abstract UserDao createUserDao(Locale locale);
     public abstract MasterDao createMasterDao(Locale locale);
-    public abstract ProfessionDao createProfessionDao(Locale locale);
+    public abstract ServiceTypeDao createServiceTypeDao(Locale locale);
     public abstract BeautyserviceDao createBeautyserviceDao(Locale locale);
     public abstract AppointmentDao createAppointmentDao(Locale locale);
     public abstract ArchiveDao createArchiveDao(Locale locale);

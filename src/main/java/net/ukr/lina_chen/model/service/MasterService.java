@@ -39,7 +39,7 @@ public class MasterService {
     public List<MasterDTO> findByProfessionIdOrderByNameAsc(Long professionId, Locale locale) {
         List<Master> masters;
         try (MasterDao masterDao = factory.createMasterDao(locale)) {
-            masters = masterDao.findByProfessionId(professionId);
+            masters = masterDao.findByServiceTypeId(professionId);
         }
         return masters.stream().map(this::getDTO)
                 .collect(Collectors.toList());

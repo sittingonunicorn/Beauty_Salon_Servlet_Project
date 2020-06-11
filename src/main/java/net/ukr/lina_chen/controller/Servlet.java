@@ -38,7 +38,7 @@ public class Servlet extends HttpServlet {
         commands.put("index",
                 new IndexCommand());
         commands.put("user/servicetypes",
-                new ServicetypesCommand(new ProfessionService(), new BeautyservicesImpl()));
+                new ServicetypesCommand(new ServiceTypeService(), new BeautyservicesImpl()));
         commands.put("user/masters",
                 new MastersListCommand(new MasterService(), new BeautyservicesImpl(), new UserService()));
         commands.put("user/time[/0-9]*",

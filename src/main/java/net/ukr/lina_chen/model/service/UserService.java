@@ -30,7 +30,7 @@ public class UserService {
                 return Optional.of(UserDTO.Builder.anUserDTO()
                         .withEmail(user.get().getEmail())
                         .withPassword(user.get().getPassword())
-                        .withRoles(user.get().getRoles())
+                        .withRoles(user.get().getRole())
                         .withName(user.get().getName())
                         .withId(user.get().getId())
                         .build());
@@ -57,14 +57,12 @@ public class UserService {
 
     public User extractUserFromRequest(HttpServletRequest request) throws InvalidDataException {
         validator.validateUser(request);
-        Set<Role> roles = new HashSet<>();
-        roles.add(Role.USER);
         return User.Builder.anUser()
                 .withEmail(request.getParameter("email"))
                 .withName(request.getParameter("name"))
                 .withNameUkr(request.getParameter("nameUkr"))
                 .withPassword(BCrypt.hashpw(request.getParameter("password"), BCrypt.gensalt(10)))
-                .withRoles(roles)
+                .withRole(Role.USER)
                 .build();
     }
 

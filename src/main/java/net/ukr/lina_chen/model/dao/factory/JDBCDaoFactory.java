@@ -23,8 +23,8 @@ public class JDBCDaoFactory extends DaoFactory {
     }
 
     @Override
-    public ProfessionDao createProfessionDao(Locale locale) {
-        return new JDBCProfessionDao(getConnection(), locale);
+    public ServiceTypeDao createServiceTypeDao(Locale locale) {
+        return new JDBCServiceTypeDao(getConnection(), locale);
     }
 
     @Override

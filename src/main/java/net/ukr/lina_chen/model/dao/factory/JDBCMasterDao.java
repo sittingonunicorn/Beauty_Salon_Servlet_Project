@@ -85,6 +85,7 @@ public class JDBCMasterDao implements MasterDao {
             try (ResultSet rs = st.executeQuery()) {
                 while (rs.next()) {
                     master = masterMapper.extractFromResultSet(rs, locale);
+
                 }
             }
         } catch (SQLException e) {
@@ -94,11 +95,11 @@ public class JDBCMasterDao implements MasterDao {
     }
 
     @Override
-    public List<Master> findByProfessionId(Long professionId) {
+    public List<Master> findByServiceTypeId(Long serviceTypeId) {
         List<Master> resultList = new ArrayList<>();
         try (PreparedStatement ps = connection.prepareStatement(
-                getLocalizedQuery(queryBundle.getString("query.find.master.by.profession.id"), locale))) {
-            ps.setLong(1, professionId);
+                getLocalizedQuery(queryBundle.getString("query.find.master.by.serviceType.id"), locale))) {
+            ps.setLong(1, serviceTypeId);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     Master master = masterMapper.extractFromResultSet(rs, locale);

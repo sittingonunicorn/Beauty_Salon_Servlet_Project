@@ -4,12 +4,14 @@ import net.ukr.lina_chen.exceptions.UserExistsException;
 import net.ukr.lina_chen.model.dao.UserDao;
 import net.ukr.lina_chen.model.dao.mapper.RolesMapper;
 import net.ukr.lina_chen.model.dao.mapper.UserMapper;
-import net.ukr.lina_chen.model.entity.Role;
 import net.ukr.lina_chen.model.entity.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 
 public class JDBCUserDao implements UserDao {
@@ -67,23 +69,16 @@ public class JDBCUserDao implements UserDao {
     @Override
     public User findById(Long id) {
         User user = null;
-        Map<Long, User> users = new HashMap<>();
-        Set<Role> roles = new HashSet<>();
         try (PreparedStatement st = connection.prepareStatement(
                 getLocalizedQuery(queryBundle.getString("query.find.user.by.id"), locale))) {
             st.setLong(1, id);
             try (ResultSet rs = st.executeQuery()) {
                 while (rs.next()) {
                     user = mapper.extractFromResultSet(rs, locale);
-                    user = mapper.makeUnique(users, user);
-                    roles.add(rolesMapper.extractFromResultSet(rs, locale));
                 }
             }
         } catch (SQLException e) {
             logger.error(e.getMessage());
-        }
-        if (user != null) {
-            user.setRoles(roles);
         }
         return user;
     }
@@ -116,7 +111,6 @@ public class JDBCUserDao implements UserDao {
     public Optional<User> findUserByEmail(String email) {
         Optional<User> user = Optional.empty();
         Map<Long, User> users = new HashMap<>();
-        Set<Role> roles = new HashSet<>();
         try (PreparedStatement ps = connection.prepareStatement(
                 getLocalizedQuery(queryBundle.getString("query.find.user.by.email"), locale))) {
             ps.setString(1, email);
@@ -124,13 +118,11 @@ public class JDBCUserDao implements UserDao {
                 while (rs.next()) {
                     user = Optional.ofNullable(mapper.extractFromResultSet(rs, locale));
                     user.ifPresent(value -> mapper.makeUnique(users, value));
-                    roles.add(rolesMapper.extractFromResultSet(rs, locale));
                 }
             }
         } catch (SQLException e) {
             logger.error(e);
         }
-        user.ifPresent(value -> value.setRoles(roles));
         return user;
     }
 

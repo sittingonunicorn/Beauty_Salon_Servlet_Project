@@ -38,7 +38,7 @@ public class BeautyservicesImpl {
                 .withName(beautyService.getName())
                 .withPrice(locale.equals(Locale.ENGLISH)? getPriceEn(beautyService.getPrice())
                         :getPriceUa(beautyService.getPrice()))
-                .withProfessionId(beautyService.getProfession().getId())
+                .withProfessionId(beautyService.getServiceType().getId())
                 .build();
     }
 

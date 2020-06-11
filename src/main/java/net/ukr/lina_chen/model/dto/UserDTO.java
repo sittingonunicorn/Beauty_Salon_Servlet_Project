@@ -3,11 +3,10 @@ package net.ukr.lina_chen.model.dto;
 import net.ukr.lina_chen.model.entity.Role;
 
 import java.io.Serializable;
-import java.util.Set;
 
 public class UserDTO implements Serializable {
     private Long id;
-    private Set<Role> roles;
+    private Role role;
     private String password;
     private String email;
     private String name;
@@ -15,9 +14,9 @@ public class UserDTO implements Serializable {
     public UserDTO() {
     }
 
-    public UserDTO(Long id, Set<Role> roles, String password, String email, String name) {
+    public UserDTO(Long id, Role role, String password, String email, String name) {
         this.id = id;
-        this.roles = roles;
+        this.role = role;
         this.password = password;
         this.email = email;
         this.name = name;
@@ -31,12 +30,12 @@ public class UserDTO implements Serializable {
         this.id = id;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
+    public Role getRole() {
+        return role;
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public String getPassword() {
@@ -65,15 +64,17 @@ public class UserDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "UserDTO{role=" + roles +
-                ", password='" + password + '\'' +
+        return "UserDTO{" +
+                "id=" + id +
+                ", role=" + role +
                 ", email='" + email + '\'' +
                 ", name='" + name + '\'' +
                 '}';
     }
+
     public static final class Builder {
         private Long id;
-        private Set<Role> roles;
+        private Role role;
         private String password;
         private String email;
         private String name;
@@ -84,9 +85,9 @@ public class UserDTO implements Serializable {
         public static UserDTO.Builder anUserDTO() {
             return new UserDTO.Builder();
         }
-        
-        public UserDTO.Builder withRoles(Set<Role> roles) {
-            this.roles = roles;
+
+        public UserDTO.Builder withRoles(Role roles) {
+            this.role = roles;
             return this;
         }
 
@@ -112,7 +113,7 @@ public class UserDTO implements Serializable {
 
         public UserDTO build() {
             UserDTO userDTO = new UserDTO();
-            userDTO.setRoles(roles);
+            userDTO.setRole(role);
             userDTO.setPassword(password);
             userDTO.setEmail(email);
             userDTO.setName(name);

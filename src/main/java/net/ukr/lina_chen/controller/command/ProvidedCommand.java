@@ -9,7 +9,6 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Locale;
-import java.util.Set;
 
 import static net.ukr.lina_chen.controller.utility.PagesContainer.REDIRECT_ADMIN_APPOINTMENTS;
 import static net.ukr.lina_chen.controller.utility.PagesContainer.REDIRECT_MASTER_APPOINTMENTS;
@@ -38,8 +37,7 @@ public class ProvidedCommand implements Command {
         }
         String email = archiveService.getById(archiveAppointmentId, locale).getUser().getEmail();
         mailService.sendEmail(email, archiveAppointmentId);
-        @SuppressWarnings("unchecked")
-        Set<Role> roles = (Set<Role>) request.getSession().getAttribute("roles");
-        return roles.contains(Role.ADMIN)? REDIRECT_ADMIN_APPOINTMENTS: REDIRECT_MASTER_APPOINTMENTS;
+        Role roles = (Role) request.getSession().getAttribute("role");
+        return roles.equals(Role.ADMIN)? REDIRECT_ADMIN_APPOINTMENTS: REDIRECT_MASTER_APPOINTMENTS;
     }
 }

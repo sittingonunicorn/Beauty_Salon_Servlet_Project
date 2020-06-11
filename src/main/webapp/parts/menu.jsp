@@ -33,32 +33,43 @@
     </div>
 </header>
 <nav class="menu">
-    <c:forEach items="${sessionScope.roles}" var="role">
-        <ul class="hr">
-            <c:choose>
-                <c:when test="${role eq 'ADMIN'}">
-                    <li style="float: left"><a href="${pageContext.request.contextPath}/app/admin/comments"><fmt:message
-                            key="link.comments"/></a></li>
-                    <li style="float: left"><a href="${pageContext.request.contextPath}/app/admin/appointments"><fmt:message
-                            key="link.master.appointments"/></a></li>
-                </c:when>
-                <c:when test="${role eq 'MASTER'}">
-                    <li style="float: left"><a href="${pageContext.request.contextPath}/app/master/comments"><fmt:message
-                            key="link.comments"/></a></li>
-                    <li style="float: left"><a href="${pageContext.request.contextPath}/app/master/appointments"><fmt:message
-                            key="link.master.appointments"/></a></li>
-                </c:when>
-                <c:when test="${role eq 'USER'}">
-                    <li style="float: left"><a href="${pageContext.request.contextPath}/app/user/servicetypes"><fmt:message
-                            key="link.create.new.appointment"/></a></li>
-                    <li style="float: left"><a href="${pageContext.request.contextPath}/app/user/archive"><fmt:message
-                            key="link.archive.appointments"/></a></li>
-                    <li style="float: left"><a href="${pageContext.request.contextPath}/app/user/appointments"><fmt:message
-                            key="link.user.appointments"/></a></li>
-                </c:when>
-            </c:choose>
-        </ul>
-    </c:forEach>
+    <ul class="hr">
+        <c:choose>
+            <c:when test="${sessionScope.role eq 'ADMIN'}">
+                <li style="float: left"><a href="${pageContext.request.contextPath}/app/admin/comments"><fmt:message
+                        key="link.comments"/></a></li>
+                <li style="float: left"><a href="${pageContext.request.contextPath}/app/admin/appointments"><fmt:message
+                        key="link.master.appointments"/></a></li>
+                <li style="float: left"><a href="${pageContext.request.contextPath}/app/user/servicetypes"><fmt:message
+                        key="link.create.new.appointment"/></a></li>
+                <li style="float: left"><a href="${pageContext.request.contextPath}/app/user/archive"><fmt:message
+                        key="link.archive.appointments"/></a></li>
+                <li style="float: left"><a href="${pageContext.request.contextPath}/app/user/appointments"><fmt:message
+                        key="link.user.appointments"/></a></li>
+            </c:when>
+            <c:when test="${sessionScope.role eq 'MASTER'}">
+                <li style="float: left"><a href="${pageContext.request.contextPath}/app/master/comments"><fmt:message
+                        key="link.comments"/></a></li>
+                <li style="float: left"><a
+                        href="${pageContext.request.contextPath}/app/master/appointments"><fmt:message
+                        key="link.master.appointments"/></a></li>
+                <li style="float: left"><a href="${pageContext.request.contextPath}/app/user/servicetypes"><fmt:message
+                        key="link.create.new.appointment"/></a></li>
+                <li style="float: left"><a href="${pageContext.request.contextPath}/app/user/archive"><fmt:message
+                        key="link.archive.appointments"/></a></li>
+                <li style="float: left"><a href="${pageContext.request.contextPath}/app/user/appointments"><fmt:message
+                        key="link.user.appointments"/></a></li>
+            </c:when>
+            <c:when test="${sessionScope.role eq 'USER'}">
+                <li style="float: left"><a href="${pageContext.request.contextPath}/app/user/servicetypes"><fmt:message
+                        key="link.create.new.appointment"/></a></li>
+                <li style="float: left"><a href="${pageContext.request.contextPath}/app/user/archive"><fmt:message
+                        key="link.archive.appointments"/></a></li>
+                <li style="float: left"><a href="${pageContext.request.contextPath}/app/user/appointments"><fmt:message
+                        key="link.user.appointments"/></a></li>
+            </c:when>
+        </c:choose>
+    </ul>
     <br><br>
 </nav>
 <nav class="navbar fixed-bottom navbar-light bg-info">

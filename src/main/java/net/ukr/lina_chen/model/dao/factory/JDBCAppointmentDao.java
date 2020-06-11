@@ -46,6 +46,7 @@ public class JDBCAppointmentDao implements AppointmentDao {
                 }
             }
             replace.executeUpdate();
+            logger.info("Appointment is added to schedule of master {}", entity.getMaster().getId());
             try (ResultSet resultSet = getId.executeQuery()) {
                 if (resultSet.next()) {
                     appointmentId = resultSet.getLong("appointment_id");

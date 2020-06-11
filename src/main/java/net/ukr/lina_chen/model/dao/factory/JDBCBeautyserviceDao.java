@@ -29,11 +29,11 @@ public class JDBCBeautyserviceDao implements BeautyserviceDao {
     public List<BeautyService> findByProfessionId(Long professionId) {
         List<BeautyService> resultList = new ArrayList<>();
         try (PreparedStatement st = connection.prepareStatement(
-                getLocalizedQuery(queryBundle.getString("query.find.beautyservice.by.profession.id"), locale))) {
+                getLocalizedQuery(queryBundle.getString("query.find.beautyservice.by.serviceType.id"), locale))) {
             st.setLong(1, professionId);
             try (ResultSet rs = st.executeQuery()) {
                 while (rs.next()) {
-                    BeautyService beautyService = beautyserviceMapper.extractFromResultSet(rs, locale);
+                    BeautyService beautyService = beautyserviceMapper.completeExtractFromResultSet(rs, locale);
                     resultList.add(beautyService);
                 }
             }
@@ -51,7 +51,7 @@ public class JDBCBeautyserviceDao implements BeautyserviceDao {
             st.setLong(1, id);
             try (ResultSet rs = st.executeQuery()) {
                 while (rs.next()) {
-                    beautyService = beautyserviceMapper.extractFromResultSet(rs, locale);
+                    beautyService = beautyserviceMapper.completeExtractFromResultSet(rs, locale);
                 }
             }
         } catch (SQLException e) {

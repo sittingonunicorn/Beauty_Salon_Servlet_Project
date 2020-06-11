@@ -58,46 +58,38 @@ public class BeautyServiceDTO {
                 '}';
     }
 
-    public static class BeautyServiceDTOBuilder
-    {
+    public static class BeautyServiceDTOBuilder {
         private BeautyServiceDTO beautyServiceDTO;
 
-        private BeautyServiceDTOBuilder()
-        {
+        private BeautyServiceDTOBuilder() {
             beautyServiceDTO = new BeautyServiceDTO();
         }
 
-        public BeautyServiceDTOBuilder withId(Long id)
-        {
+        public BeautyServiceDTOBuilder withId(Long id) {
             beautyServiceDTO.id = id;
             return this;
         }
 
-        public BeautyServiceDTOBuilder withName(String name)
-        {
+        public BeautyServiceDTOBuilder withName(String name) {
             beautyServiceDTO.name = name;
             return this;
         }
 
-        public BeautyServiceDTOBuilder withPrice(String price)
-        {
+        public BeautyServiceDTOBuilder withPrice(String price) {
             beautyServiceDTO.price = price;
             return this;
         }
 
-        public BeautyServiceDTOBuilder withProfessionId(Long professionId)
-        {
+        public BeautyServiceDTOBuilder withProfessionId(Long professionId) {
             beautyServiceDTO.professionId = professionId;
             return this;
         }
 
-        public static BeautyServiceDTOBuilder beautyServiceDTO()
-        {
+        public static BeautyServiceDTOBuilder beautyServiceDTO() {
             return new BeautyServiceDTOBuilder();
         }
 
-        public BeautyServiceDTO build()
-        {
+        public BeautyServiceDTO build() {
             return beautyServiceDTO;
         }
     }

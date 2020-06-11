@@ -14,12 +14,12 @@ class CommandUtility {
     private CommandUtility() {
     }
 
-    static void setUserRoles(HttpServletRequest request,
-                             Set<Role> roles, String email) {
+    static void setUserRole(HttpServletRequest request,
+                            Role role, String email) {
         HttpSession session = request.getSession();
         ServletContext context = request.getServletContext();
         context.setAttribute("email", email);
-        session.setAttribute("roles", roles);
+        session.setAttribute("role", role);
     }
 
     static boolean checkUserIsLogged(HttpServletRequest request, String email) {

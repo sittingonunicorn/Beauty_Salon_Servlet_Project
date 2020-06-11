@@ -8,17 +8,17 @@ public class BeautyService implements Serializable {
     private Long id;
     private String name;
     private BigDecimal price;
-    private Profession profession;
+    private ServiceType serviceType;
     private String nameUkr;
 
     public BeautyService() {
     }
 
-    public BeautyService(Long id, String name, BigDecimal price, Profession profession, String nameUkr) {
+    public BeautyService(Long id, String name, BigDecimal price, ServiceType serviceType, String nameUkr) {
         this.id = id;
         this.name = name;
         this.price = price;
-        this.profession = profession;
+        this.serviceType = serviceType;
         this.nameUkr = nameUkr;
     }
 
@@ -46,12 +46,12 @@ public class BeautyService implements Serializable {
         this.price = price;
     }
 
-    public Profession getProfession() {
-        return profession;
+    public ServiceType getServiceType() {
+        return serviceType;
     }
 
-    public void setProfession(Profession profession) {
-        this.profession = profession;
+    public void setServiceType(ServiceType serviceType) {
+        this.serviceType = serviceType;
     }
 
     public String getNameUkr() {
@@ -68,57 +68,48 @@ public class BeautyService implements Serializable {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", price=" + price +
-                ", profession=" + profession +
+                ", serviceType=" + serviceType +
                 ", nameUkr='" + nameUkr + '\'' +
                 '}';
     }
 
-    public static class BeautyServiceBuilder
-    {
+    public static class BeautyServiceBuilder {
         private final BeautyService beautyService;
 
-        private BeautyServiceBuilder()
-        {
+        private BeautyServiceBuilder() {
             beautyService = new BeautyService();
         }
 
-        public BeautyServiceBuilder withId(Long id)
-        {
+        public BeautyServiceBuilder withId(Long id) {
             beautyService.id = id;
             return this;
         }
 
-        public BeautyServiceBuilder withName(String name)
-        {
+        public BeautyServiceBuilder withName(String name) {
             beautyService.name = name;
             return this;
         }
 
-        public BeautyServiceBuilder withPrice(BigDecimal price)
-        {
+        public BeautyServiceBuilder withPrice(BigDecimal price) {
             beautyService.price = price;
             return this;
         }
 
-        public BeautyServiceBuilder withProfession(Profession profession)
-        {
-            beautyService.profession = profession;
+        public BeautyServiceBuilder withServiceType(ServiceType serviceType) {
+            beautyService.serviceType = serviceType;
             return this;
         }
 
-        public BeautyServiceBuilder withNameUkr(String nameUkr)
-        {
+        public BeautyServiceBuilder withNameUkr(String nameUkr) {
             beautyService.nameUkr = nameUkr;
             return this;
         }
 
-        public static BeautyServiceBuilder beautyService()
-        {
+        public static BeautyServiceBuilder beautyService() {
             return new BeautyServiceBuilder();
         }
 
-        public BeautyService build()
-        {
+        public BeautyService build() {
             return beautyService;
         }
     }

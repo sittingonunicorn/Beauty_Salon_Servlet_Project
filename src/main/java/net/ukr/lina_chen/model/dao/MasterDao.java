@@ -9,6 +9,6 @@ public interface MasterDao extends GenericDao<Master>{
 
     Master findByUserId(Long userId);
 
-    List<Master> findByProfessionId(Long professionId);
+    List<Master> findByServiceTypeId(Long professionId);
 
 }

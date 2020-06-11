@@ -1,11 +1,10 @@
 package net.ukr.lina_chen.model.entity;
 
 import java.io.Serializable;
-import java.util.Set;
 
 public class User implements Serializable {
     private Long id;
-    private Set<Role> roles;
+    private Role role;
     private String password;
     private String email;
     private String name;
@@ -14,9 +13,9 @@ public class User implements Serializable {
     public User() {
     }
 
-    public User(Long id, Set<Role> roles, String password, String email, String name, String nameUkr) {
+    public User(Long id, Role role, String password, String email, String name, String nameUkr) {
         this.id = id;
-        this.roles = roles;
+        this.role = role;
         this.password = password;
         this.email = email;
         this.name = name;
@@ -31,12 +30,12 @@ public class User implements Serializable {
         this.id = id;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
+    public Role getRole() {
+        return role;
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public String getPassword() {
@@ -75,15 +74,15 @@ public class User implements Serializable {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", role=" + roles +
-                ", password='" + password + '\'' +
+                ", role=" + role +
                 ", email='" + email + '\'' +
                 ", name='" + name + '\'' +
                 '}';
     }
+
     public static final class Builder {
         private Long id;
-        private Set<Role> roles;
+        private Role role;
         private String password;
         private String email;
         private String name;
@@ -101,8 +100,8 @@ public class User implements Serializable {
             return this;
         }
 
-        public Builder withRoles(Set<Role> roles) {
-            this.roles = roles;
+        public Builder withRole(Role roles) {
+            this.role = roles;
             return this;
         }
 
@@ -129,7 +128,7 @@ public class User implements Serializable {
         public User build() {
             User user = new User();
             user.setId(id);
-            user.setRoles(roles);
+            user.setRole(role);
             user.setPassword(password);
             user.setEmail(email);
             user.setName(name);
