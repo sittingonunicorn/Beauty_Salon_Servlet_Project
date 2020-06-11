@@ -11,7 +11,6 @@ import net.ukr.lina_chen.model.service.MasterService;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 
 import static net.ukr.lina_chen.controller.utility.PagesContainer.MASTER_COMMENTS_PAGE;
 import static net.ukr.lina_chen.controller.utility.PagesContainer.REDIRECT_MASTER;
@@ -28,7 +27,6 @@ public class MasterCommentsCommand implements Command{
     @Override
     public String execute(HttpServletRequest request) {
         Locale locale = CommandUtility.geLocale(request);
-        int page = Integer.parseInt(Optional.ofNullable(request.getParameter("page")).orElse("0"));
         MasterDTO master;
         try {
             master = masterService.getByUserId(
@@ -40,9 +38,7 @@ public class MasterCommentsCommand implements Command{
         List<ArchiveAppointmentDTO> archive = archiveService.getMasterCommentsOrderByDateTimeDesc(
                 master.getId(), locale);
         PageRequest<ArchiveAppointmentDTO> pageRequest = new PageRequest<>(archive);
-        archive = pageRequest.getPage(page);
-        request.setAttribute("archive", archive);
-        request.setAttribute("pageNumbers", pageRequest.getPageNumbers());
+        request.setAttribute("archive", pageRequest.makePaginatedRequest(request));
         return MASTER_COMMENTS_PAGE;
     }
 }

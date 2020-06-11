@@ -19,15 +19,6 @@ public class ServiceTypeMapper implements  ObjectMapper<ServiceType> {
                 .build();
     }
 
-    public ServiceType completeExtractFromResultSet (ResultSet rs, Locale locale) throws SQLException {
-        return ServiceType.ServiceTypeBuilder.serviceType()
-                .withId(rs.getLong("service_type_id"))
-                .withBeautyservicesType(rs.getString("beautyservices_type_"+locale.getLanguage()))
-                .withMasters(new HashSet<>())
-                .withBeautyServices(new HashSet<>())
-                .build();
-    }
-
     @Override
     public ServiceType makeUnique(Map<Long, ServiceType> map, ServiceType serviceType) {
         map.putIfAbsent(serviceType.getId(), serviceType);

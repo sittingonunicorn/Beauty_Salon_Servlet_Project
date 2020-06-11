@@ -30,7 +30,6 @@ public class MasterAppointmentsCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) {
         Locale locale = CommandUtility.geLocale(request);
-        int page = Integer.parseInt(Optional.ofNullable(request.getParameter("page")).orElse("0"));
         MasterDTO master;
         try {
             master = masterService.getByUserId(
@@ -45,11 +44,9 @@ public class MasterAppointmentsCommand implements Command {
                 master.getId(), LocalDate.parse(dateString.get()), locale)
                 : appointmentService.getMastersAppointmentsOrderByDateTimeAsc(master.getId(), locale);
         PageRequest<AppointmentDTO> pageRequest = new PageRequest<>(appointments);
-        appointments = pageRequest.getPage(page);
-        request.setAttribute("appointments", appointments);
+        request.setAttribute("appointments", pageRequest.makePaginatedRequest(request));
         request.setAttribute("master", master);
         request.setAttribute("dates", dates);
-        request.setAttribute("pageNumbers", pageRequest.getPageNumbers());
         return MASTER_APPOINTMENTS_PAGE;
     }
 }

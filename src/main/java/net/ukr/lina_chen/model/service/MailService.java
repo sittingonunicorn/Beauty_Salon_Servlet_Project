@@ -53,7 +53,8 @@ public class MailService {
             Transport.send(message);
 
         } catch (MessagingException e) {
-            throw new RuntimeException(e);
+            logger.warn(e.getLocalizedMessage());
+            logger.warn(e.getCause());
         }
     }
 }

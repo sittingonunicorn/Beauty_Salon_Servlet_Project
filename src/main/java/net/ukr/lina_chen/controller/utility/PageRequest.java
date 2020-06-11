@@ -1,7 +1,9 @@
 package net.ukr.lina_chen.controller.utility;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -21,13 +23,13 @@ public class PageRequest<T> {
         return (int) Math.ceil(((double) list.size()) / SIZE);
     }
 
-    public List<Integer> getPageNumbers() {
+    private List<Integer> getPageNumbers() {
         return IntStream.rangeClosed(MIN_QUANTITY_PAGES, getTotalPages())
                 .boxed()
                 .collect(Collectors.toList());
     }
 
-    public List<T> getPage(int pageNumber) {
+    private List<T> getPage(int pageNumber) {
         int start = pageNumber * SIZE;
         int end = Math.min((start + SIZE), list.size());
         if (start > list.size()) {
@@ -35,4 +37,11 @@ public class PageRequest<T> {
         }
         return list.subList(start, end);
     }
+
+    public List<T> makePaginatedRequest(HttpServletRequest request){
+        int page = Integer.parseInt(Optional.ofNullable(request.getParameter("page")).orElse("0"));
+        request.setAttribute("pageNumbers", this.getPageNumbers());
+        return this.getPage(page);
+    }
+
 }
