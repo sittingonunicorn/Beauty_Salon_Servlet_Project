@@ -37,7 +37,7 @@ public class ProvidedCommand implements Command {
         }
         String email = archiveService.getById(archiveAppointmentId, locale).getUser().getEmail();
         mailService.sendEmail(email, archiveAppointmentId);
-        Role roles = (Role) request.getSession().getAttribute("role");
+        Role roles = (Role) request.getSession().getAttribute("roles");
         return roles.equals(Role.ADMIN)? REDIRECT_ADMIN_APPOINTMENTS: REDIRECT_MASTER_APPOINTMENTS;
     }
 }

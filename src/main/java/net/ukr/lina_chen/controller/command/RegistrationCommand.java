@@ -8,7 +8,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
-import java.sql.SQLException;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -38,7 +37,7 @@ public class RegistrationCommand implements Command {
             logger.error(e);
             request.setAttribute("user_exists", true);
             return REGISTRATION_PAGE;
-        } catch (InvalidDataException |SQLException e) {
+        } catch (InvalidDataException e) {
             logger.error(e);
             return REGISTRATION_PAGE;
         }

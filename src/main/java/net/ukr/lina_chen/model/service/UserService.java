@@ -11,18 +11,33 @@ import net.ukr.lina_chen.model.entity.User;
 import org.mindrot.jbcrypt.BCrypt;
 
 import javax.servlet.http.HttpServletRequest;
-import java.sql.SQLException;
-import java.util.*;
+import java.util.Locale;
+import java.util.Optional;
 
+/**
+ * Class deals with JDBC for actions with User entity. Connects with database through DaoFactory.
+ * @author Lina Chentsova
+ */
 public class UserService {
+    /** Private final field factory. Getting instance of DaoFactory to get connection to database */
     private final DaoFactory factory = DaoFactory.getInstance();
+    /** Validator to check data before saving new user to database */
     private final NewUserDataValidator validator;
 
+    /**Constructor without params. Getting instance of NewUserDataValidator.*/
     public UserService() {
         this.validator = new NewUserDataValidator();
-
     }
 
+    /**
+     * Method for authentication of User. It gets user data from database by email and then checks with BCrypt
+     * if password matches.
+     * @param email - user's email.
+     * @param password - user's password.
+     * @param locale - current locale to get localized query,
+     * @return userDTO entity wrapped in Optional or empty Optional, if  there is either no such email found or
+     * user's entered a wrong password
+     */
     public Optional<UserDTO> getUserByEmailAndPassword(String email, String password, Locale locale) {
         try (UserDao userDao = factory.createUserDao(locale)) {
             Optional<User> user = userDao.findUserByEmail(email);
@@ -40,13 +55,26 @@ public class UserService {
         }
     }
 
+    /**
+     * Method is to check if user with entered email exists in database.
+     * @param email - user's email.
+     * @param locale- current locale to get localized query.
+     * @return boolean true if user with this email exists and false - if not.
+     */
     public boolean userExists(String email, Locale locale) {
         try (UserDao userDao = factory.createUserDao(locale)) {
             return userDao.findUserByEmail(email).isPresent();
         }
     }
 
-    public void saveNewUser(User user, Locale locale) throws SQLException, UserExistsException {
+    /**
+     * Method to save new user to database after registration. First checks if user with such email
+     * already exists in database
+     * @param user - user entity.
+     * @param locale - current locale to get localized query.
+     * @throws UserExistsException if user with this email already exists in database.
+     */
+    public void saveNewUser(User user, Locale locale) throws UserExistsException {
         if (userExists(user.getEmail(), locale)) {
             throw new UserExistsException();
         }
@@ -55,6 +83,13 @@ public class UserService {
         }
     }
 
+    /**
+     * Method to extract user's data from registration form, validate them, code the password with BCrypt
+     * and create user entity.
+     * @param request - request to get user data from it.
+     * @return user entity with user data.
+     * @throws InvalidDataException if user data don't pass the validation.
+     */
     public User extractUserFromRequest(HttpServletRequest request) throws InvalidDataException {
         validator.validateUser(request);
         return User.Builder.anUser()
@@ -66,6 +101,13 @@ public class UserService {
                 .build();
     }
 
+
+    /**
+     * Method to get user entity from database by id.
+     * @param id - user id.
+     * @param locale - current locale to get localized query.
+     * @return user entity wrapped in Optional.
+     */
     public Optional<User> getUserById(Long id, Locale locale) {
         Optional<User> user;
         try (UserDao userDao = factory.createUserDao(locale)) {
