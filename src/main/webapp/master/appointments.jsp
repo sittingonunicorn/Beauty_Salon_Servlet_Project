@@ -4,6 +4,13 @@
     <title>Appointments for Master</title>
 </head>
 <body>
+<div class="alert">
+    <c:if test="${param.error}">
+        <div class="alert alert-danger" role="alert">
+            <fmt:message key="message.error.servicetypes"/>
+        </div>
+    </c:if>
+</div>
 <div class="content-inside">
     <table class="table table-hover">
         <tr class="table-info">

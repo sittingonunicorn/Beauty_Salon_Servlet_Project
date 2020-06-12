@@ -5,8 +5,11 @@ import net.ukr.lina_chen.model.dao.factory.DaoFactory;
 import net.ukr.lina_chen.model.dto.MasterDTO;
 import net.ukr.lina_chen.model.entity.Master;
 
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class MasterService {
     private final DaoFactory factory = DaoFactory.getInstance();
@@ -52,5 +55,11 @@ public class MasterService {
                 .withTimeBegin(master.getTimeBegin())
                 .withTimeEnd(master.getTimeEnd())
                 .build();
+    }
+
+    public List<LocalTime> getMastersWorkingHours(Master master) {
+        return Stream.iterate(master.getTimeBegin(), curr -> curr.plusHours(1)).
+                limit(ChronoUnit.HOURS.between(master.getTimeBegin(), master.getTimeEnd())).
+                collect(Collectors.toList());
     }
 }

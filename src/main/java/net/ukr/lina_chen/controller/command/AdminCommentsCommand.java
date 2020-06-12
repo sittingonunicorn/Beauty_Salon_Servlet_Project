@@ -24,12 +24,12 @@ public class AdminCommentsCommand implements Command {
     public String execute(HttpServletRequest request) {
         Locale locale = CommandUtility.geLocale(request);
         request.setAttribute("masters", masterService.findAllOrderByNameAsc(locale));
-        Optional <String> masterIdString = Optional.ofNullable(request.getParameter("masterId"));
-        long masterId = (!masterIdString.isPresent()||Objects.equals(masterIdString.get(), "")) ? 0 :
+        Optional<String> masterIdString = Optional.ofNullable(request.getParameter("masterId"));
+        long masterId = (!masterIdString.isPresent() || Objects.equals(masterIdString.get(), "")) ? 0 :
                 Long.parseLong(request.getParameter("masterId"));
-        List<ArchiveAppointmentDTO> archive = (masterId != 0) ?
-                archiveService.getMasterCommentsOrderByDateTimeDesc(masterId, locale)
-                : archiveService.getAllCommentsOrderByDateTimeDesc(locale);
+        List<ArchiveAppointmentDTO> archive = (masterId == 0) ?
+                archiveService.getAllCommentsOrderByDateTimeDesc(locale)
+                : archiveService.getMasterCommentsOrderByDateTimeDesc(masterId, locale);
         PageRequest<ArchiveAppointmentDTO> pageRequest = new PageRequest<>(archive);
         request.setAttribute("archive", pageRequest.makePaginatedRequest(request));
         return ADMIN_COMMENTS_PAGE;

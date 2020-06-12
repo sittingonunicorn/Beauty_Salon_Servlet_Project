@@ -10,8 +10,7 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Locale;
 
-import static net.ukr.lina_chen.controller.utility.PagesContainer.REDIRECT_ADMIN_APPOINTMENTS;
-import static net.ukr.lina_chen.controller.utility.PagesContainer.REDIRECT_MASTER_APPOINTMENTS;
+import static net.ukr.lina_chen.controller.utility.PagesContainer.*;
 
 public class ProvidedCommand implements Command {
     private final TransactionService transactionService;
@@ -25,8 +24,10 @@ public class ProvidedCommand implements Command {
         this.mailService = mailService;
         this.archiveService = archiveService;
     }
+
     @Override
     public String execute(HttpServletRequest request) {
+        Role roles = (Role) request.getSession().getAttribute("roles");
         Locale locale = CommandUtility.geLocale(request);
         Long archiveAppointmentId = 0L;
         try {
@@ -34,10 +35,11 @@ public class ProvidedCommand implements Command {
                     Long.parseLong(request.getParameter("appointmentId")), locale);
         } catch (Exception e) {
             logger.error(e.getMessage());
+            return roles.equals(Role.ADMIN) ? REDIRECT_ADMIN_APPOINTMENTS + ERROR_PARAM
+                    : REDIRECT_MASTER_APPOINTMENTS + ERROR_PARAM;
         }
         String email = archiveService.getById(archiveAppointmentId, locale).getUser().getEmail();
         mailService.sendEmail(email, archiveAppointmentId);
-        Role roles = (Role) request.getSession().getAttribute("roles");
-        return roles.equals(Role.ADMIN)? REDIRECT_ADMIN_APPOINTMENTS: REDIRECT_MASTER_APPOINTMENTS;
+        return roles.equals(Role.ADMIN) ? REDIRECT_ADMIN_APPOINTMENTS : REDIRECT_MASTER_APPOINTMENTS;
     }
 }

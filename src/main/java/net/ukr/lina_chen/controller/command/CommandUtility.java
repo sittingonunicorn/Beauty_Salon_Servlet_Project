@@ -24,13 +24,14 @@ class CommandUtility {
 
     static boolean checkUserIsLogged(HttpServletRequest request, String email) {
         HashSet<String> loggedUsers = getLoggedUsers(request);
-        if (loggedUsers.stream().anyMatch(email::equals)) {
-            return true;
-        }
+        return loggedUsers.stream().anyMatch(email::equals);
+    }
+
+    static void userLogIn(HttpServletRequest request, String email){
+        HashSet<String> loggedUsers = getLoggedUsers(request);
         loggedUsers.add(email);
         request.getSession().getServletContext()
                 .setAttribute(LOGGED_USERS, loggedUsers);
-        return false;
     }
 
     static void removeUserFromSession(HttpServletRequest request) {
@@ -44,20 +45,12 @@ class CommandUtility {
 
     private static HashSet<String> getLoggedUsers(HttpServletRequest request) {
         @SuppressWarnings("unchecked")
-        HashSet<String> loggedUsers =(HashSet<String>) request.getSession().getServletContext()
+        HashSet<String> loggedUsers = (HashSet<String>) request.getSession().getServletContext()
                 .getAttribute(LOGGED_USERS);
-        return  loggedUsers;
+        return loggedUsers;
     }
 
-    static ResourceBundle getQueryBundle (Locale locale){
-        return ResourceBundle.getBundle("queries", locale);
-    }
-
-    static ResourceBundle getMessageBundle (Locale locale){
-        return ResourceBundle.getBundle("messages", locale);
-    }
-
-    static Locale geLocale(HttpServletRequest request){
+    static Locale geLocale(HttpServletRequest request) {
         return new Locale(Optional.ofNullable((String) request.getSession().getAttribute("lang")).orElse("en"));
     }
 }

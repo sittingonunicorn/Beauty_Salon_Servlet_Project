@@ -4,6 +4,13 @@
     <title><fmt:message key="link.master.appointments"/></title>
 </head>
 <body>
+<div class="alert">
+    <c:if test="${param.error}">
+        <div class="alert alert-danger" role="alert">
+            <fmt:message key="message.error.appointment.provided"/>
+        </div>
+    </c:if>
+</div>
 <table class="table table-hover">
     <thead>
     <tr>

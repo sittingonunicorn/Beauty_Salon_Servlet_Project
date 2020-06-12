@@ -9,7 +9,7 @@
         <div class="card bg-light mb-3" style="margin-left: auto;
         margin-right: auto; align-items: center">
             <div class="card-header">
-                <h3><fmt:message key="authentification"/></h3>
+                <h3><fmt:message key="authentication"/></h3>
             </div>
             <div class="card-body">
                 <div class="info">
@@ -19,7 +19,8 @@
                 </div>
                 <div class="alert">
                     <c:if test="${param.error}">
-                        <div class="alert alert-danger" role="alert">Invalid E-mail or Password!</div>
+                        <div class="alert alert-danger" role="alert">
+                            <fmt:message key="message.error.invalid.email.password"/></div>
                     </c:if>
                 </div>
                 <form method="get" action="${pageContext.request.contextPath}/app/login">
@@ -43,20 +44,4 @@
 </div>
 </body>
 </html>
-
-<%--<h3><fmt:message key="authentification"/></h3><br/>--%>
-
-<%--<form method="get" action="${pageContext.request.contextPath}/app/login">--%>
-<%--    <div class="alert">--%>
-<%--        <c:if test="${param.logout}">--%>
-<%--            <div class="alert alert-danger" role="alert"><fmt:message key="message.logged.out" /></div>--%>
-<%--        </c:if>--%>
-<%--    </div>--%>
-<%--    <input type="text" name="email" placeholder="Email"><br/>--%>
-<%--    <input type="password" name="password" placeholder=<fmt:message key="placeholder.password"/>><br/><br/>--%>
-<%--    <button class="button" type="submit" value="Login"><fmt:message key="button.login"/></button>--%>
-
-<%--</form>--%>
-<%--<br/>--%>
-<%--<a href="${pageContext.request.contextPath}/app/registration"><fmt:message key="button.registration"/></a><br>--%>
 

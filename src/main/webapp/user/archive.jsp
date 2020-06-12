@@ -3,7 +3,13 @@
     <%@ include file="../parts/menu.jsp" %>
     <title><fmt:message key="message.user.appointments"/></title>
 </head>
-
+<div class="alert">
+    <c:if test="${param.error}">
+        <div class="alert alert-danger" role="alert">
+            <fmt:message key="message.error.appointments"/>
+        </div>
+    </c:if>
+</div>
 <c:choose>
     <c:when test="${empty requestScope.archiveForUser}">
         <fmt:message key="no.archive"/>

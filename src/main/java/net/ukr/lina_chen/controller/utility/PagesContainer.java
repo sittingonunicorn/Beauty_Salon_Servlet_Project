@@ -2,10 +2,10 @@ package net.ukr.lina_chen.controller.utility;
 
 public interface PagesContainer {
     String ADMIN_MAIN = "/admin/adminmain.jsp";
-    String REDIRECT_ADMIN = "redirect:/admin";
-    String REDIRECT_DIRECT_ADMIN = "redirect:/app/admin";
+    String REDIRECT = "redirect:/";
+    String ERROR_ALREADY_LOGGED = "error?already_logged=true";
+    String LOGOUT_PARAM = "?logout=true";
     String USER_MAIN = "/user/usermain.jsp";
-    String REDIRECT_USER="redirect:/user";
     String MASTER_MAIN ="/master/mastermain.jsp";
     String REDIRECT_MASTER="redirect:/master";
     String INDEX_PAGE="/index.jsp";
@@ -29,4 +29,5 @@ public interface PagesContainer {
     String USER_APPOINTMENTS_PAGE = "/user/appointments.jsp";
     String ADMIN_COMMENTS_PAGE = "/admin/comments.jsp";
     String MASTER_COMMENTS_PAGE = "/master/comments.jsp";
+    String ERROR_PARAM = "?error=true";
 }

@@ -27,28 +27,24 @@ public class LoginCommand implements Command {
             return LOGIN_PAGE;
         }
         if (email.equals("") || password.equals("")) {
-            return LOGIN_PAGE + "?error=true";
+            return LOGIN_PAGE + ERROR_PARAM;
         }
+
         Optional<UserDTO> user = userService.getUserByEmailAndPassword(
                 email, password, locale);
         if (user.isPresent()) {
             if (CommandUtility.checkUserIsLogged(request, email)) {
-                return ERROR_PAGE;
+                return REDIRECT + ERROR_ALREADY_LOGGED;
             }
+            CommandUtility.userLogIn(request, email);
             request.getSession().setAttribute("user", user.get());
-            if (user.get().getRole().equals(Role.ADMIN)) {
+            Role role = user.get().getRole();
+            if (role.equals(Role.ADMIN)||role.equals(Role.MASTER)||role.equals(Role.USER)) {
                 CommandUtility.setUserRole(request, user.get().getRole(), email);
-                return REDIRECT_ADMIN;
-            } else if (user.get().getRole().equals(Role.MASTER)) {
-                CommandUtility.setUserRole(request, user.get().getRole(), email);
-                return REDIRECT_MASTER;
-            } else if (user.get().getRole().equals(Role.USER)) {
-                CommandUtility.setUserRole(request, user.get().getRole(), email);
-                return REDIRECT_USER;
-
+                return REDIRECT+role.toString().toLowerCase();
             }
         }
-        return REDIRECT_LOGIN + "?error=true";
+        return REDIRECT_LOGIN + ERROR_PARAM;
     }
 }
 
