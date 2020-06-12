@@ -8,6 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static net.ukr.lina_chen.controller.utility.IConstants.CSRF_TOKEN;
+import static net.ukr.lina_chen.controller.utility.PagesContainer.REDIRECT_ERROR_DIRECT;
+
 public class CSRFFilter implements Filter {
 
     private static final Logger logger = LogManager.getLogger(CSRFFilter.class);
@@ -18,14 +21,14 @@ public class CSRFFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         if (request.getMethod().equals("POST")) {
-            String csrfToken = request.getParameter("csrfToken");
+            String csrfToken = request.getParameter(CSRF_TOKEN);
             if (csrfToken == null) {
-                logger.error("csrf token missing");
-                response.sendRedirect(request.getContextPath() + "/app/error");
+                logger.error("csrf token is missing");
+                response.sendRedirect(REDIRECT_ERROR_DIRECT);
                 return;
-            } else if (!csrfToken.equals(request.getSession().getAttribute("csrfToken"))) {
+            } else if (!csrfToken.equals(request.getSession().getAttribute(CSRF_TOKEN))) {
                 logger.error("csrf token doesn't match");
-                response.sendRedirect(request.getContextPath() + "/app/error");
+                response.sendRedirect(REDIRECT_ERROR_DIRECT);
                 return;
             }
         }

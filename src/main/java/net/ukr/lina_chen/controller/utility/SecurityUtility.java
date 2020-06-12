@@ -9,7 +9,7 @@ import java.util.*;
 
 public class SecurityUtility {
     private final SecureRandom secureRandom = new SecureRandom();
-    private Map<Role, String> permissions = new HashMap<>();
+    private Map<Role, String> permissions = new EnumMap<>(Role.class);
 
     public SecurityUtility() {
         permissions.put(Role.ADMIN, "logout, admin, error, user");
@@ -23,16 +23,10 @@ public class SecurityUtility {
         return Optional.ofNullable(permissions.get(role))
                 .map(s -> Arrays.stream(s.split(", "))
                         .noneMatch(path::contains)).orElse(true);
-//        return permissions.entrySet()
-//                .stream()
-//                .filter(e -> roles.contains(e.getKey()))
-//                .map(Map.Entry::getValue)
-//                .flatMap(s -> Arrays.stream(s.split(", ")))
-//                .noneMatch(path::contains);
     }
 
     public String generateCSRFToken() {
-        byte[] bytes = new byte[50];
+        byte[] bytes = new byte[30];
         secureRandom.nextBytes(bytes);
         return DatatypeConverter.printHexBinary(bytes);
     }

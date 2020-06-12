@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+import static net.ukr.lina_chen.controller.utility.PagesContainer.REDIRECT_ERROR_DIRECT;
+import static net.ukr.lina_chen.controller.utility.PagesContainer.REDIRECT_LOGIN_PATH;
+
 public class AuthFilter implements Filter {
 
     @Override
@@ -27,10 +30,10 @@ public class AuthFilter implements Filter {
         }
         if (securityUtility.isForbiddenRequest(path, role)) {
             if (role.equals(Role.GUEST)) {
-                response.sendRedirect(request.getContextPath() + "/app/login");
+                response.sendRedirect(REDIRECT_LOGIN_PATH);
                 return;
             } else {
-                response.sendRedirect(request.getContextPath() + "/app/error");
+                response.sendRedirect(REDIRECT_ERROR_DIRECT);
                 return;
             }
         }

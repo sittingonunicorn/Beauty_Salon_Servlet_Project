@@ -42,12 +42,12 @@ public class BeautyservicesImpl {
                 .build();
     }
 
-    public String getPriceUa(BigDecimal price){
+    private String getPriceUa(BigDecimal price){
         return String.format("%.2f грн",price.multiply(new BigDecimal(26)).
                 round(new MathContext(0, RoundingMode.HALF_UP))) ;
     }
 
-    public String getPriceEn(BigDecimal price){
+    private String getPriceEn(BigDecimal price){
         return String.format("%.0f $",price) ;
     }
 }

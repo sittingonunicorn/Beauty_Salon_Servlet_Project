@@ -82,7 +82,7 @@ public class AppointmentService {
                 .collect(Collectors.toList());
     }
 
-    public AppointmentDTO getLocalizedDto(Appointment appointment, Locale locale) {
+    AppointmentDTO getLocalizedDto(Appointment appointment, Locale locale) {
         return AppointmentDTO.AppointmentDTOBuilder.appointmentDTO()
                 .withBeautyService(appointment.getBeautyService().getName())
                 .withMasterName(appointment.getMaster().getUser().getName())

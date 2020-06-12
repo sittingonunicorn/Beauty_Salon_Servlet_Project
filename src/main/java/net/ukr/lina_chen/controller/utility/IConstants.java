@@ -2,7 +2,8 @@ package net.ukr.lina_chen.controller.utility;
 
 public interface IConstants {
     String LOGGED_USERS = "loggedUsers";
-    String USERNAME = "username";
+    String CSRF_TOKEN = "csrfToken";
+    String USERNAME = "userName";
     String PASSWORD = "password";
     String SUBJECT = "subject";
     String TEXT = "text";
