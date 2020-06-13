@@ -1,5 +1,6 @@
 package net.ukr.lina_chen.controller.command;
 
+import net.ukr.lina_chen.exceptions.InvalidDataException;
 import net.ukr.lina_chen.exceptions.TimeIsBusyException;
 import net.ukr.lina_chen.model.entity.Appointment;
 import net.ukr.lina_chen.model.service.AppointmentService;
@@ -12,8 +13,7 @@ import java.time.LocalTime;
 import java.util.Locale;
 import java.util.Optional;
 
-import static net.ukr.lina_chen.controller.utility.PagesContainer.REDIRECT_TIME;
-import static net.ukr.lina_chen.controller.utility.PagesContainer.SAVE_PAGE;
+import static net.ukr.lina_chen.controller.utility.PagesContainer.*;
 
 public class SaveCommand implements Command {
     private final AppointmentService appointmentService;
@@ -39,9 +39,12 @@ public class SaveCommand implements Command {
             logger.error(e.getMessage());
             return REDIRECT_TIME + "/" + appointment.getMaster().getId() + "?timeBusy=true";
         }
-        request.setAttribute(
-                "appointment", appointmentId.map(
-                        id -> appointmentService.getById(id, locale)).orElse(null));
-        return SAVE_PAGE;
+        try {
+            appointment.setId(appointmentId.orElseThrow(InvalidDataException::new));
+        } catch (InvalidDataException e) {
+            logger.warn(e.getLocalizedMessage());
+            return REDIRECT_SERVICETYPES+ERROR_PARAM;
+        }
+        return REDIRECT_CREATED_PAGE;
     }
 }

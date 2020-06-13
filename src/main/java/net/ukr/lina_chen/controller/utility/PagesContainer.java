@@ -20,7 +20,8 @@ public interface PagesContainer {
     String MASTER_LIST_PAGE = "/user/masters.jsp";
     String TIME_PAGE = "/user/time.jsp";
     String REDIRECT_TIME = "redirect:/user/time";
-    String SAVE_PAGE = "/user/save.jsp";
+    String CREATED_PAGE = "/user/created.jsp";
+    String REDIRECT_CREATED_PAGE = "redirect:/user/created";
     String ARCHIVE_APPOINTMENTS_PAGE = "/user/archive.jsp";
     String USER_COMMENT_PAGE = "/user/comment.jsp";
     String REDIRECT_ARCHIVE_APPOINTMENTS = "redirect:/user/archive";

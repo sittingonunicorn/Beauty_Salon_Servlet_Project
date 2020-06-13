@@ -16,5 +16,4 @@ public class EncodingFilter implements Filter {
 
         chain.doFilter(servletRequest,servletResponse);
     }
-
 }

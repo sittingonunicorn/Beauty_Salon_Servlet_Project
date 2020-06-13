@@ -45,6 +45,7 @@ public class Servlet extends HttpServlet {
                 new TimeCommand(new MasterService(), new AppointmentService()));
         commands.put("user/save",
                 new SaveCommand(new AppointmentService()));
+        commands.put("user/created", new CreatedCommand(new AppointmentService()));
         commands.put("user/archive",
                 new UserArchiveCommand(new ArchiveService()));
         commands.put("user/appointments",
