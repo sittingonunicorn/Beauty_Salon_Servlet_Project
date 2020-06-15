@@ -7,6 +7,11 @@ import java.io.IOException;
 public class EncodingFilter implements Filter {
 
     @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+
+    }
+
+    @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse,
                          FilterChain chain) throws IOException, ServletException {
 
@@ -15,5 +20,10 @@ public class EncodingFilter implements Filter {
         servletRequest.setCharacterEncoding("UTF-8");
 
         chain.doFilter(servletRequest,servletResponse);
+    }
+
+    @Override
+    public void destroy() {
+
     }
 }

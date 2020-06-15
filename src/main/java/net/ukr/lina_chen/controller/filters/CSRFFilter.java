@@ -16,6 +16,11 @@ public class CSRFFilter implements Filter {
     private static final Logger logger = LogManager.getLogger(CSRFFilter.class);
 
     @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+
+    }
+
+    @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain)
             throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
@@ -33,6 +38,11 @@ public class CSRFFilter implements Filter {
             }
         }
         chain.doFilter(servletRequest, servletResponse);
+    }
+
+    @Override
+    public void destroy() {
+
     }
 }
 

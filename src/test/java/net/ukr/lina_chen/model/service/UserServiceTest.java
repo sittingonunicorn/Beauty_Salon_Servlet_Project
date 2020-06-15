@@ -26,6 +26,13 @@ public class UserServiceTest {
     }
 
     @Test
+    public void getUserByEmailAndPasswordFound() {
+        Optional<UserDTO> user = service.getUserByEmailAndPassword("anna@gmail.com", "1", Locale.ENGLISH);
+        assertTrue(user.isPresent());
+        assertEquals("Anna", user.get().getName());
+    }
+
+    @Test
     public void userExists() {
         boolean exists = service.userExists("anna@gmail.com", Locale.ENGLISH);
         assertTrue(exists);
@@ -61,5 +68,6 @@ public class UserServiceTest {
     public void getUserById() {
         Optional<User> user = service.getUserById(1L, Locale.ENGLISH);
         assert(user.isPresent());
+        assertEquals("anna@gmail.com", user.get().getEmail());
     }
 }

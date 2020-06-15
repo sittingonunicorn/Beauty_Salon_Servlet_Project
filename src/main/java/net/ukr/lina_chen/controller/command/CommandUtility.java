@@ -17,7 +17,7 @@ class CommandUtility {
     static void setUserRole(HttpServletRequest request,
                             Role role, String email) {
         HttpSession session = request.getSession();
-        ServletContext context = request.getServletContext();
+        ServletContext context = request.getSession().getServletContext();
         context.setAttribute("email", email);
         session.setAttribute("role", role);
     }

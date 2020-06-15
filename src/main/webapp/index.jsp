@@ -8,10 +8,10 @@
     <fmt:message key="welcome"/>
 </h2>
 <div class="alert">
-    <%--@elvariable id="unauthorized" type="java.lang.String"--%>
-    <c:if test="${unauthorized != null}">
-        <div class="alert alert-danger" role="alert">${unauthorized}</div>
+    <c:if test="${requestScope.unauthorized != null}">
+        <div class="alert alert-danger" role="alert">${requestScope.unauthorized}</div>
     </c:if>
 </div>
+<p><fmt:message key="message.task"/> </p>
 </body>
 </html>
