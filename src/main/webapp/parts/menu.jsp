@@ -36,36 +36,49 @@
     <ul class="hr">
         <c:choose>
             <c:when test="${sessionScope.role eq 'ADMIN'}">
-                <li style="float: left"><a href="${pageContext.request.contextPath}/app/admin/comments"><fmt:message
-                        key="link.comments"/></a></li>
-                <li style="float: left"><a href="${pageContext.request.contextPath}/app/admin/appointments"><fmt:message
+                <li style="float: left">
+                    <a href="${pageContext.request.contextPath}/app/admin/comments" class="btn btn-outline-info">
+                        <fmt:message key="link.comments"/></a></li>
+                <li style="float: left"><a href="${pageContext.request.contextPath}/app/admin/appointments"
+                                           class="btn btn-outline-info"><fmt:message
                         key="link.master.appointments"/></a></li>
-                <li style="float: left"><a href="${pageContext.request.contextPath}/app/user/servicetypes"><fmt:message
+                <li style="float: left"><a href="${pageContext.request.contextPath}/app/user/servicetypes"
+                                           class="btn btn-outline-info"><fmt:message
                         key="link.create.new.appointment"/></a></li>
-                <li style="float: left"><a href="${pageContext.request.contextPath}/app/user/archive"><fmt:message
+                <li style="float: left"><a href="${pageContext.request.contextPath}/app/user/archive"
+                                           class="btn btn-outline-info"><fmt:message
                         key="link.archive.appointments"/></a></li>
-                <li style="float: left"><a href="${pageContext.request.contextPath}/app/user/appointments"><fmt:message
+                <li style="float: left"><a href="${pageContext.request.contextPath}/app/user/appointments"
+                                           class="btn btn-outline-info"><fmt:message
                         key="link.user.appointments"/></a></li>
             </c:when>
             <c:when test="${sessionScope.role eq 'MASTER'}">
-                <li style="float: left"><a href="${pageContext.request.contextPath}/app/master/comments"><fmt:message
+                <li style="float: left"><a href="${pageContext.request.contextPath}/app/master/comments"
+                                           class="btn btn-outline-info"><fmt:message
                         key="link.comments"/></a></li>
                 <li style="float: left"><a
-                        href="${pageContext.request.contextPath}/app/master/appointments"><fmt:message
+                        href="${pageContext.request.contextPath}/app/master/appointments"
+                        class="btn btn-outline-info"><fmt:message
                         key="link.master.appointments"/></a></li>
-                <li style="float: left"><a href="${pageContext.request.contextPath}/app/user/servicetypes"><fmt:message
+                <li style="float: left"><a href="${pageContext.request.contextPath}/app/user/servicetypes"
+                                           class="btn btn-outline-info"><fmt:message
                         key="link.create.new.appointment"/></a></li>
-                <li style="float: left"><a href="${pageContext.request.contextPath}/app/user/archive"><fmt:message
+                <li style="float: left"><a href="${pageContext.request.contextPath}/app/user/archive"
+                                           class="btn btn-outline-info"><fmt:message
                         key="link.archive.appointments"/></a></li>
-                <li style="float: left"><a href="${pageContext.request.contextPath}/app/user/appointments"><fmt:message
+                <li style="float: left"><a href="${pageContext.request.contextPath}/app/user/appointments"
+                                           class="btn btn-outline-info"><fmt:message
                         key="link.user.appointments"/></a></li>
             </c:when>
             <c:when test="${sessionScope.role eq 'USER'}">
-                <li style="float: left"><a href="${pageContext.request.contextPath}/app/user/servicetypes"><fmt:message
+                <li style="float: left"><a href="${pageContext.request.contextPath}/app/user/servicetypes"
+                                           class="btn btn-outline-info"><fmt:message
                         key="link.create.new.appointment"/></a></li>
-                <li style="float: left"><a href="${pageContext.request.contextPath}/app/user/archive"><fmt:message
+                <li style="float: left"><a href="${pageContext.request.contextPath}/app/user/archive"
+                                           class="btn btn-outline-info"><fmt:message
                         key="link.archive.appointments"/></a></li>
-                <li style="float: left"><a href="${pageContext.request.contextPath}/app/user/appointments"><fmt:message
+                <li style="float: left"><a href="${pageContext.request.contextPath}/app/user/appointments"
+                                           class="btn btn-outline-info"><fmt:message
                         key="link.user.appointments"/></a></li>
             </c:when>
         </c:choose>

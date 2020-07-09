@@ -4,11 +4,6 @@
     box-sizing: border-box;
 }
 
-/*.container-low {*/
-/*    overflow: hidden;*/
-/*    height: 100px;*/
-
-/*}*/
 html, body {
     height: 100%;
     margin: 0;
@@ -35,15 +30,13 @@ html, body {
 
 .menu {
     margin-top: 10px;
-    /* display: inline; /* Отображать как строчный элемент *!*/
 }
 
 
 .hr li {
-    display: inline; /* Отображать как строчный элемент */
-    margin-right: 5px; /* Отступ слева */
-    border: 1px solid #20B2AA; /* Рамка вокруг текста */
-    padding: 3px; /* Поля вокруг текста */
+    display: inline;
+    margin-right: 5px;
+    padding: 3px;
 }
 
 
@@ -53,33 +46,10 @@ html, body {
 }
 
 
-
-/*ul.hr li {*/
-/*    display: inline; !* Отображать как строчный элемент *!*/
-/*    margin-right: 5px; !* Отступ слева *!*/
-/*    border: 1px solid #000; !* Рамка вокруг текста *!*/
-/*    padding: 3px; !* Поля вокруг текста *!*/
-/*}*/
-
 .logout {
     position: relative;
     left: 86%;
 }
-
-
-
-
-
-
-
-/*ul .hr {*/
-/*    margin: 0;*/
-/*    position: absolute;*/
-/*    left: 6%;*/
-/*    top: 20px;*/
-/*}*/
-
-
 
 .treeHTML {
     line-height: normal;
