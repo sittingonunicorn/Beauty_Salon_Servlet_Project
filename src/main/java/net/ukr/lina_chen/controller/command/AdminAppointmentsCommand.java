@@ -19,7 +19,8 @@ public class AdminAppointmentsCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) {
         Locale locale = CommandUtility.geLocale(request);
-        PageRequest<AppointmentDTO> pageRequest = new PageRequest<>(appointmentService.getAllOrderByDateTimeAsc(locale));
+        PageRequest<AppointmentDTO> pageRequest = new PageRequest<>(
+                appointmentService.getAllOrderByDateTimeAsc(locale));
         request.setAttribute("appointments", pageRequest.makePaginatedRequest(request));
         return ADMIN_APPOINTMENTS_PAGE;
     }

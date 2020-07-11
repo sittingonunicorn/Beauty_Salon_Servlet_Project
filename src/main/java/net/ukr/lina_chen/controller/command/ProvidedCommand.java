@@ -27,7 +27,7 @@ public class ProvidedCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
-        Role roles = (Role) request.getSession().getAttribute("roles");
+        Role role = (Role) request.getSession().getAttribute("role");
         Locale locale = CommandUtility.geLocale(request);
         Long archiveAppointmentId = 0L;
         try {
@@ -35,11 +35,11 @@ public class ProvidedCommand implements Command {
                     Long.parseLong(request.getParameter("appointmentId")), locale);
         } catch (Exception e) {
             logger.error(e.getMessage());
-            return roles.equals(Role.ADMIN) ? REDIRECT_ADMIN_APPOINTMENTS + ERROR_PARAM
+            return role.equals(Role.ADMIN) ? REDIRECT_ADMIN_APPOINTMENTS + ERROR_PARAM
                     : REDIRECT_MASTER_APPOINTMENTS + ERROR_PARAM;
         }
         String email = archiveService.getById(archiveAppointmentId, locale).getUser().getEmail();
         mailService.sendEmail(email, archiveAppointmentId);
-        return roles.equals(Role.ADMIN) ? REDIRECT_ADMIN_APPOINTMENTS : REDIRECT_MASTER_APPOINTMENTS;
+        return role.equals(Role.ADMIN) ? REDIRECT_ADMIN_APPOINTMENTS : REDIRECT_MASTER_APPOINTMENTS;
     }
 }

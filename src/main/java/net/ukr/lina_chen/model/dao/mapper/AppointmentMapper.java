@@ -19,7 +19,7 @@ public class AppointmentMapper implements ObjectMapper<Appointment> {
                 .withBeautyService(new BeautyserviceMapper().extractFromResultSet(rs, locale))
                 .withMaster(new MasterMapper().extractFromResultSet(rs, locale))
                 .withUser(User.Builder.anUser()
-                        .withId(rs.getLong("master_user_id"))
+                        .withId(rs.getLong("user_id"))
                         .withEmail(rs.getString("user_email"))
                         .withName(rs.getString("user_name"))
                         .build())
