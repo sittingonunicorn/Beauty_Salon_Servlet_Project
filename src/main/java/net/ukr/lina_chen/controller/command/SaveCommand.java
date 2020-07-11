@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Locale;
@@ -35,7 +36,7 @@ public class SaveCommand implements Command {
         Optional<Long> appointmentId;
         try {
             appointmentId = Optional.of(appointmentService.saveAppointment(appointment, locale));
-        } catch (TimeIsBusyException e) {
+        } catch (TimeIsBusyException | SQLException e) {
             logger.error(e.getMessage());
             return REDIRECT_TIME + "/" + appointment.getMaster().getId() + "?timeBusy=true";
         }

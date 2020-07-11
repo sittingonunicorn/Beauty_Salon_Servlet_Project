@@ -11,6 +11,7 @@ import net.ukr.lina_chen.model.entity.User;
 import org.mindrot.jbcrypt.BCrypt;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.SQLException;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -74,7 +75,7 @@ public class UserService {
      * @param locale - current locale to get localized query.
      * @throws UserExistsException if user with this email already exists in database.
      */
-    public void saveNewUser(User user, Locale locale) throws UserExistsException {
+    public void saveNewUser(User user, Locale locale) throws UserExistsException, SQLException {
         if (userExists(user.getEmail(), locale)) {
             throw new UserExistsException();
         }

@@ -4,6 +4,7 @@ import net.ukr.lina_chen.exceptions.TimeIsBusyException;
 import net.ukr.lina_chen.model.entity.Appointment;
 
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.List;
 
 public interface AppointmentDao extends GenericDao<Appointment> {
@@ -12,7 +13,7 @@ public interface AppointmentDao extends GenericDao<Appointment> {
 
     void setProvided (Long appointmentId);
 
-    Long create(Appointment entity) throws TimeIsBusyException;
+    Long create(Appointment entity) throws TimeIsBusyException, SQLException;
 
     List<Appointment> findMastersDailyAppointments (Long masterId, Date date);
 

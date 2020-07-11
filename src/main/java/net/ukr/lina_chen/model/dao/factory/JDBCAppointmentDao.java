@@ -22,14 +22,16 @@ public class JDBCAppointmentDao implements AppointmentDao {
         this.locale = locale;
     }
 
-    public Long create(Appointment entity) throws TimeIsBusyException {
+    public Long create(Appointment entity) throws TimeIsBusyException, SQLException {
         long appointmentId = 0L;
         try (PreparedStatement checkIfExists = connection.prepareStatement(
                 getLocalizedQuery(queryBundle.getString("query.find.appointments.by.master.date.time"), locale));
              PreparedStatement replace = connection.prepareStatement(
                      getLocalizedQuery(queryBundle.getString("query.replace.appointment"), locale));
              PreparedStatement getId = connection.prepareStatement(
-                     getLocalizedQuery(queryBundle.getString("query.get.appointment.id"), locale))) {
+                     getLocalizedQuery(queryBundle.getString("query.get.appointment.id"), locale));
+             PreparedStatement updateSequences = connection.prepareStatement(
+                     getLocalizedQuery(queryBundle.getString("query.update.sequences"), locale))) {
             checkIfExists.setLong(1, entity.getMaster().getId());
             checkIfExists.setDate(2, Date.valueOf(entity.getDate()));
             checkIfExists.setTime(3, Time.valueOf(entity.getTime()));
@@ -52,6 +54,8 @@ public class JDBCAppointmentDao implements AppointmentDao {
                     appointmentId = resultSet.getLong("appointment_id");
                 }
             }
+            updateSequences.setLong(1, appointmentId);
+            updateSequences.executeUpdate();
             connection.commit();
         } catch (SQLException e) {
             logger.error(e.getMessage());
@@ -59,6 +63,7 @@ public class JDBCAppointmentDao implements AppointmentDao {
                 connection.rollback();
             } catch (SQLException ex) {
                 logger.error(ex.getMessage());
+                throw new SQLException();
             }
         }
         return appointmentId;
@@ -87,7 +92,7 @@ public class JDBCAppointmentDao implements AppointmentDao {
     public List<Date> findMastersAppointmentDates(Long masterId) {
         List<Date> dates = new ArrayList<>();
         try (PreparedStatement ps = connection.prepareStatement(
-                getLocalizedQuery(queryBundle.getString("query.find.all.masters.appointment.dates"), locale))){
+                getLocalizedQuery(queryBundle.getString("query.find.all.masters.appointment.dates"), locale))) {
             ps.setLong(1, masterId);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {

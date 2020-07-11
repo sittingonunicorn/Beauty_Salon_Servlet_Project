@@ -2,7 +2,6 @@ package net.ukr.lina_chen.model.dao.factory;
 
 import net.ukr.lina_chen.exceptions.UserExistsException;
 import net.ukr.lina_chen.model.dao.UserDao;
-import net.ukr.lina_chen.model.dao.mapper.RolesMapper;
 import net.ukr.lina_chen.model.dao.mapper.UserMapper;
 import net.ukr.lina_chen.model.entity.User;
 import org.apache.logging.log4j.LogManager;
@@ -18,7 +17,6 @@ public class JDBCUserDao implements UserDao {
     private static final Logger logger = LogManager.getLogger(JDBCUserDao.class);
     private final Connection connection;
     private final UserMapper mapper = new UserMapper();
-    private final RolesMapper rolesMapper = new RolesMapper();
     private final Locale locale;
 
     public JDBCUserDao(Connection connection, Locale locale) {
@@ -26,7 +24,7 @@ public class JDBCUserDao implements UserDao {
         this.locale = locale;
     }
 
-    public Long create(User entity) throws UserExistsException {
+    public Long create(User entity) throws UserExistsException, SQLException {
         long userId = 0L;
         try (PreparedStatement checkIfExists = connection.prepareStatement(
                 getLocalizedQuery(queryBundle.getString("query.find.user.by.email"), locale));
@@ -34,12 +32,13 @@ public class JDBCUserDao implements UserDao {
                      getLocalizedQuery(queryBundle.getString("query.replace.user"), locale));
              PreparedStatement getId = connection.prepareStatement(
                      getLocalizedQuery(queryBundle.getString("query.get.user.id"), locale));
-             PreparedStatement setRoles = connection.prepareStatement(
-                     getLocalizedQuery(queryBundle.getString("query.replace.user.role"), locale))) {
+             PreparedStatement updateSequence = connection.prepareStatement(
+                     getLocalizedQuery(queryBundle.getString("query.update.sequence"), locale))) {
             replaceUser.setString(1, entity.getEmail());
             replaceUser.setString(2, entity.getName());
             replaceUser.setString(3, entity.getNameUkr());
             replaceUser.setString(4, entity.getPassword());
+            checkIfExists.setString(1, entity.getEmail());
             connection.setAutoCommit(false);
             try (ResultSet rs = checkIfExists.executeQuery()) {
                 if (rs.next()) {
@@ -52,8 +51,8 @@ public class JDBCUserDao implements UserDao {
                     userId = resultSet.getLong("user_id");
                 }
             }
-            setRoles.setLong(1, userId);
-            setRoles.executeUpdate();
+            updateSequence.setLong(1, userId);
+            updateSequence.executeUpdate();
             connection.commit();
         } catch (SQLException e) {
             logger.error(e.getMessage());
@@ -61,6 +60,7 @@ public class JDBCUserDao implements UserDao {
                 connection.rollback();
             } catch (SQLException ex) {
                 logger.error(ex.getMessage());
+                throw new SQLException();
             }
         }
         return userId;

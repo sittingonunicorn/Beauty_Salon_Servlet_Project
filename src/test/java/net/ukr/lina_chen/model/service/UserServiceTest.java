@@ -7,6 +7,7 @@ import net.ukr.lina_chen.model.entity.User;
 import org.junit.Test;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.SQLException;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -46,7 +47,7 @@ public class UserServiceTest {
 
 
     @Test(expected = UserExistsException.class)
-    public void saveNewUser() throws UserExistsException {
+    public void saveNewUser() throws UserExistsException, SQLException {
         User user = new User();
         user.setEmail("anna@gmail.com");
         service.saveNewUser(user, Locale.ENGLISH);

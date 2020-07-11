@@ -8,6 +8,7 @@ import net.ukr.lina_chen.model.entity.Appointment;
 import net.ukr.lina_chen.model.entity.Master;
 
 import java.sql.Date;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -48,7 +49,7 @@ public class AppointmentService {
                 .collect(Collectors.toList());
     }
 
-    public Long saveAppointment(Appointment appointment, Locale locale) throws TimeIsBusyException {
+    public Long saveAppointment(Appointment appointment, Locale locale) throws TimeIsBusyException, SQLException {
         Long id;
         try (AppointmentDao appointmentDao = factory.createAppointmentDao(locale)) {
             id = appointmentDao.create(appointment);
