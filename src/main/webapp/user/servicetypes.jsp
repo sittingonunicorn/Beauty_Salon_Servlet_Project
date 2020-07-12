@@ -3,13 +3,13 @@
     <title>Beauty Salon Choose Service type</title>
 </head>
 <body>
-<div class="alert">
-    <c:if test="${param.error}">
+<c:if test="${param.error}">
+    <div class="alert">
         <div class="alert alert-danger" role="alert">
             <fmt:message key="message.error.appointment.provided"/>
         </div>
-    </c:if>
-</div>
+    </div>
+</c:if>
 <table class="table table-hover">
     <thead>
     <tr>

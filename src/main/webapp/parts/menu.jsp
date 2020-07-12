@@ -1,3 +1,4 @@
+<!--suppress ALL -->
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
@@ -36,54 +37,87 @@
     <ul class="hr">
         <c:choose>
             <c:when test="${sessionScope.role eq 'ADMIN'}">
-                <li style="float: left">
-                    <a href="${pageContext.request.contextPath}/app/admin/comments" class="btn btn-outline-info">
-                        <fmt:message key="link.comments"/></a></li>
-                <li style="float: left"><a href="${pageContext.request.contextPath}/app/admin/appointments"
-                                           class="btn btn-outline-info"><fmt:message
-                        key="link.master.appointments"/></a></li>
-                <li style="float: left"><a href="${pageContext.request.contextPath}/app/user/servicetypes"
-                                           class="btn btn-outline-info"><fmt:message
-                        key="link.create.new.appointment"/></a></li>
-                <li style="float: left"><a href="${pageContext.request.contextPath}/app/user/archive"
-                                           class="btn btn-outline-info"><fmt:message
-                        key="link.archive.appointments"/></a></li>
-                <li style="float: left"><a href="${pageContext.request.contextPath}/app/user/appointments"
-                                           class="btn btn-outline-info"><fmt:message
-                        key="link.user.appointments"/></a></li>
+                <div class="dropdown" style="float: left">
+                    <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><fmt:message
+                            key="menu.admin"/>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="${pageContext.request.contextPath}/app/admin/comments"
+                        ><fmt:message key="link.comments"/></a>
+                        <a class="dropdown-item"
+                           href="${pageContext.request.contextPath}/app/admin/appointments"><fmt:message
+                                key="link.master.appointments"/></a>
+                    </div>
+                </div>
+                <div class="dropdown" style="margin-left:160px">
+                    <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><fmt:message
+                            key="menu.user"/>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="${pageContext.request.contextPath}/app/user/servicetypes"
+                        ><fmt:message key="link.create.new.appointment"/></a>
+                        <a class="dropdown-item"
+                           href="${pageContext.request.contextPath}/app/user/archive"><fmt:message
+                                key="link.archive.appointments"/></a>
+                        <a class="dropdown-item"
+                           href="${pageContext.request.contextPath}/app/user/appointments"><fmt:message
+                                key="link.user.appointments"/></a>
+                    </div>
+                </div>
             </c:when>
             <c:when test="${sessionScope.role eq 'MASTER'}">
-                <li style="float: left"><a href="${pageContext.request.contextPath}/app/master/comments"
-                                           class="btn btn-outline-info"><fmt:message
-                        key="link.comments"/></a></li>
-                <li style="float: left"><a
-                        href="${pageContext.request.contextPath}/app/master/appointments"
-                        class="btn btn-outline-info"><fmt:message
-                        key="link.master.appointments"/></a></li>
-                <li style="float: left"><a href="${pageContext.request.contextPath}/app/user/servicetypes"
-                                           class="btn btn-outline-info"><fmt:message
-                        key="link.create.new.appointment"/></a></li>
-                <li style="float: left"><a href="${pageContext.request.contextPath}/app/user/archive"
-                                           class="btn btn-outline-info"><fmt:message
-                        key="link.archive.appointments"/></a></li>
-                <li style="float: left"><a href="${pageContext.request.contextPath}/app/user/appointments"
-                                           class="btn btn-outline-info"><fmt:message
-                        key="link.user.appointments"/></a></li>
+                <div class="dropdown" style="float: left">
+                    <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><fmt:message
+                            key="menu.master"/>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="${pageContext.request.contextPath}/app/master/comments"
+                        ><fmt:message key="link.comments"/></a>
+                        <a class="dropdown-item"
+                           href="${pageContext.request.contextPath}/app/master/appointments"><fmt:message
+                                key="link.master.appointments"/></a>
+                    </div>
+                </div>
+                <div class="dropdown" style="margin-left:160px">
+                    <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><fmt:message
+                            key="menu.user"/>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="${pageContext.request.contextPath}/app/user/servicetypes"
+                        ><fmt:message key="link.create.new.appointment"/></a>
+                        <a class="dropdown-item"
+                           href="${pageContext.request.contextPath}/app/user/archive"><fmt:message
+                                key="link.archive.appointments"/></a>
+                        <a class="dropdown-item"
+                           href="${pageContext.request.contextPath}/app/user/appointments"><fmt:message
+                                key="link.user.appointments"/></a>
+                    </div>
+                </div>
             </c:when>
             <c:when test="${sessionScope.role eq 'USER'}">
-                <li style="float: left"><a href="${pageContext.request.contextPath}/app/user/servicetypes"
-                                           class="btn btn-outline-info"><fmt:message
-                        key="link.create.new.appointment"/></a></li>
-                <li style="float: left"><a href="${pageContext.request.contextPath}/app/user/archive"
-                                           class="btn btn-outline-info"><fmt:message
-                        key="link.archive.appointments"/></a></li>
-                <li style="float: left"><a href="${pageContext.request.contextPath}/app/user/appointments"
-                                           class="btn btn-outline-info"><fmt:message
-                        key="link.user.appointments"/></a></li>
+                <div class="dropdown" >
+                    <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><fmt:message
+                            key="menu.user"/>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="${pageContext.request.contextPath}/app/user/servicetypes"
+                        ><fmt:message key="link.create.new.appointment"/></a>
+                        <a class="dropdown-item"
+                           href="${pageContext.request.contextPath}/app/user/archive"><fmt:message
+                                key="link.archive.appointments"/></a>
+                        <a class="dropdown-item"
+                           href="${pageContext.request.contextPath}/app/user/appointments"><fmt:message
+                                key="link.user.appointments"/></a>
+                    </div>
+                </div>
             </c:when>
         </c:choose>
     </ul>
-    <br><br>
 </nav>
 <nav class="navbar fixed-bottom navbar-light bg-info">
     <div class="navbar-text" style="color: white">
@@ -93,5 +127,14 @@
         <fmt:message key="footer.rights.reserved"/>
     </div>
 </nav>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+        crossorigin="anonymous"></script>
 </body>
 </html>
