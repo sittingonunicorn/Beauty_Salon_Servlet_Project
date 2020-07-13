@@ -39,9 +39,9 @@ public class LoginCommand implements Command {
             CommandUtility.userLogIn(request, email);
             request.getSession().setAttribute("user", user.get());
             Role role = user.get().getRole();
-            if (role.equals(Role.ADMIN)||role.equals(Role.MASTER)||role.equals(Role.USER)) {
+            if (role.equals(Role.ADMIN) || role.equals(Role.MASTER) || role.equals(Role.USER)) {
                 CommandUtility.setUserRole(request, user.get().getRole(), email);
-                return REDIRECT+role.toString().toLowerCase();
+                return REDIRECT + role.toString().toLowerCase();
             }
         }
         return REDIRECT_LOGIN + ERROR_PARAM;

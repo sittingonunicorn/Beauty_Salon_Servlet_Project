@@ -1,15 +1,16 @@
+<!--suppress ALL -->
 <html>
 <head>
     <%@ include file="../parts/menu.jsp" %>
-    <title><fmt:message key="message.user.appointments"/></title>
+    <title>Beauty Salon Archive</title>
 </head>
-
-    <c:if test="${param.error}"><div class="alert">
+<c:if test="${param.error}">
+    <div class="alert">
         <div class="alert alert-danger" role="alert">
             <fmt:message key="message.error.appointments"/>
         </div>
     </div>
-    </c:if>
+</c:if>
 
 <c:choose>
     <c:when test="${empty requestScope.archiveForUser}">

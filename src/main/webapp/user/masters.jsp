@@ -1,8 +1,10 @@
+<!--suppress ALL -->
 <head>
     <%@ include file="../parts/menu.jsp" %>
-    <title>Choose master</title>
+    <title>Beauty Salon Choose master</title>
 </head>
 <body>
+<p><fmt:message key="message.choose.master"/></p>
 <table class="table table-hover" style="max-width: 25rem;">
     <thead>
     <tr>

@@ -1,3 +1,4 @@
+<!--suppress ALL -->
 <head>
     <%@ include file="../parts/menu.jsp" %>
     <title>Beauty Salon Choose Service type</title>

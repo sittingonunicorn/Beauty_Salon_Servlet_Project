@@ -1,7 +1,8 @@
+<!--suppress ALL -->
 <html>
 <head>
     <%@ include file="../parts/menu.jsp" %>
-    <title>Appointments for Master</title>
+    <title>Beauty Salon Appointments for Master</title>
 </head>
 <body>
 <c:if test="${param.error}">

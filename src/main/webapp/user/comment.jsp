@@ -1,7 +1,8 @@
+<!--suppress ALL -->
 <html>
 <head>
     <%@ include file="../parts/menu.jsp" %>
-    <title>Leave the comment</title>
+    <title>Beauty Salon Leave the comment</title>
 </head>
 <body>
 <table class="table table-hover">

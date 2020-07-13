@@ -1,7 +1,8 @@
+<!--suppress ALL -->
 <html>
 <head>
     <%@ include file="../parts/menu.jsp" %>
-    <title>Appointment's saved</title>
+    <title>Beauty Salon Appointment's saved</title>
 </head>
 <body>
 <p><fmt:message key="message.appointment.created"/></p>

@@ -1,7 +1,8 @@
+<!--suppress ALL -->
 <html>
 <head>
     <%@ include file="/commonmenu.jsp" %>
-    <title>Main page</title></head>
+    <title>Beauty Salon Main page</title></head>
 <body>
 
 <div class="alert">

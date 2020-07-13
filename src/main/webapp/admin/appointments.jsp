@@ -1,7 +1,8 @@
+<!--suppress ALL -->
 <html>
 <head>
     <%@ include file="../parts/menu.jsp" %>
-    <title><fmt:message key="link.master.appointments"/></title>
+    <title>Beauty Salon Appointments</title>
 </head>
 <body>
 <c:if test="${param.error}">

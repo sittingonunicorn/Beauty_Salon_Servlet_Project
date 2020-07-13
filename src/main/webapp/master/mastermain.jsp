@@ -1,7 +1,7 @@
-
+<!--suppress ALL -->
 <html>
 <head>
-    <title>Master Main</title>
+    <title>Beauty Salon Master Main</title>
     <%@ include file="../parts/menu.jsp" %>
 </head>
 <body>

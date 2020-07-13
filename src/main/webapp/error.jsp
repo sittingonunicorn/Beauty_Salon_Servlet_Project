@@ -1,7 +1,8 @@
+<!--suppress ALL -->
 <html>
 <head>
     <%@ include file="/parts/menu.jsp" %>
-    <title>Error page</title>
+    <title>Beauty Salon Error page</title>
 </head>
 <body>
 <c:choose>

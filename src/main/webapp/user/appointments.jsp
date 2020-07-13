@@ -1,7 +1,8 @@
+<!--suppress ALL -->
 <html>
 <head>
     <%@ include file="../parts/menu.jsp" %>
-    <title>Appointments for User</title>
+    <title>Beauty Salon Appointments for User</title>
 </head>
 <body>
 <div class="content-inside">

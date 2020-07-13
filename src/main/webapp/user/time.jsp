@@ -1,7 +1,8 @@
+<!--suppress ALL -->
 <html>
 <head>
     <%@ include file="../parts/menu.jsp" %>
-    <title>Choose time</title>
+    <title>Beauty Salon Choose time</title>
 </head>
 <body>
 <p><fmt:message key="message.chosen.master">

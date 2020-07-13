@@ -27,7 +27,7 @@ class CommandUtility {
         return loggedUsers.stream().anyMatch(email::equals);
     }
 
-    static void userLogIn(HttpServletRequest request, String email){
+    static void userLogIn(HttpServletRequest request, String email) {
         HashSet<String> loggedUsers = getLoggedUsers(request);
         loggedUsers.add(email);
         request.getSession().getServletContext()
@@ -51,6 +51,7 @@ class CommandUtility {
     }
 
     static Locale geLocale(HttpServletRequest request) {
-        return new Locale(Optional.ofNullable((String) request.getSession().getAttribute("lang")).orElse("en"));
+        return new Locale(Optional.ofNullable((String) request.getSession().getAttribute("lang"))
+                .orElse("en"));
     }
 }

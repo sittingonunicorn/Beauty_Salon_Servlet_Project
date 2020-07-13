@@ -1,7 +1,8 @@
+<!--suppress ALL -->
 <html>
 <head>
     <%@ include file="../parts/menu.jsp" %>
-    <title><fmt:message key="link.comments"/></title>
+    <title>Beauty Salon Comments</title>
 </head>
 <body>
 <div class="content">

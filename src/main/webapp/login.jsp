@@ -1,3 +1,4 @@
+<!--suppress ALL -->
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
@@ -7,7 +8,7 @@
 <html>
 <head>
     <%@ include file="/commonmenu.jsp" %>
-    <title>Login Page</title>
+    <title>Beauty Salon Login Page</title>
 </head>
 <body>
 <div class="container">

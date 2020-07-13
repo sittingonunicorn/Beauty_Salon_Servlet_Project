@@ -1,7 +1,8 @@
+<!--suppress ALL -->
 <html>
 <head>
     <%@ include file="../parts/menu.jsp" %>
-    <title>Comments for Master</title>
+    <title>Beauty Salon Comments for Master</title>
 </head>
 <body>
 <c:choose>
